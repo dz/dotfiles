@@ -82,7 +82,7 @@ if [ `uname` == "Darwin" ]; then
   export LSCOLORS=ExGxFxDxCxHxHxCbCeEbEb
   export LC_CTYPE=en_US.utf-8
 else
-  alias ls='ls --color=auto'
+  alias ls='ls --color=auto -F'
 fi
 export IGNOREEOF=1
 export LESS=FRSX
@@ -115,4 +115,31 @@ export FALLBACK_DYLD_LIBRARY_PATH=/usr/local/lib
 bind '"\e[A"':history-search-backward
 bind '"\e[B"':history-search-forward
 
-source ~/.profile
+alias c="clear"
+alias l="ls --color -F"
+alias less="less -R"
+alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen%cn%Creset %Cblue%cr%Creset' --abbrev-commit --date=relative"
+export GREP_OPTIONS='--color=auto'
+
+#emacs aliases
+alias emacs="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -c -a /Applications/Emacs.app/Contents/MacOS/Emacs"
+alias emacst="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a /Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+alias et="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a /Applications/Emacs.app/Contents/MacOS/Emacs -nw"
+alias em="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a /Applications/Emacs.app/Contents/MacOS/Emacs"
+
+#sublime text aliases
+alias slt='open -a "Sublime Text 2"'
+
+#vim aliases
+alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+
+#things for bash history to ignore
+export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
+
+source ~/.git-completion.sh
+
+export PATH=/opt/local/lib/postgresql84/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin/:/opt/local/bin:/opt/local/sbin:/Users/dzhou/.gem/ruby/1.8:$PATH
+
+#virtualenv stuff
+export WORKON_HOME=~/.virtualenvs
+source /opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin/virtualenvwrapper.sh
