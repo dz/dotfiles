@@ -1,0 +1,7 @@
+VIM files and plugins
+
+Intsall:
+
+ln -s /path/to/dotfiles/vim ~/.vim
+ln -s /path/to/dotfiles/vim/vimrc ~/.vimrc
+ln -s /path/to/dotfiles/vim/gvimrc ~/.gvimrc
