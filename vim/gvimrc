@@ -5,12 +5,16 @@ set columns=134
 set fuoptions=maxvert,maxhorz
 set guitablabel=%t 
 
-set guioptions-=T                                                   "kill toolbar
-set guioptions-=r                                                   "kill right scrollbar
+set guioptions-=T  
+"kill toolbar
+set guioptions-=r
+"kill right scrollbar
 set guioptions-=R
-set guioptions-=l                                                   "kill left scrollbar
+set guioptions-=l
+"kill left scrollbar
 set guioptions-=L
 
+"map command-arrow to move around splits
 noremap <D-up> <C-W><up>
 noremap <D-down> <C-W><down>
 noremap <D-left> <C-W><left>
