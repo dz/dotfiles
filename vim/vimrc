@@ -173,6 +173,7 @@ nmap <leader>. :LustyFilesystemExplorer<cr>
 "CommandT options
 let g:CommandTMaxFiles=20000
 let g:CommandTMaxHeight=10
+let g:CommandTMatchWindowReverse=1
 
 "No scrollbars
 set guioptions-=L
@@ -253,6 +254,7 @@ let g:jquerytmpl_django = 1
 autocmd BufWritePre *.html :call <SID>StripTrailingWhitespaces()
 
 "Python
+let g:pyflakes_user_quickfix = 0 
 autocmd BufWritePre *.py :call <SID>StripTrailingWhitespaces()
 autocmd BufRead,BufNewFile *.py set autoindent
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,except,finally,def,class
@@ -262,6 +264,7 @@ autocmd BufWritePre *.css :call <SID>StripTrailingWhitespaces()
 
 "Javascript
 autocmd BufWritePre *.js :call <SID>StripTrailingWhitespaces()
+autocmd BufWritePost *.js JSLint
 
 "SVNDiff
 hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
