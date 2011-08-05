@@ -1,4 +1,270 @@
+" Vimrc
+" David Zhou
+
+color ir_black
+set nocompatible
+set background=dark
 syntax on
 filetype plugin indent on
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+
+set shm=atI "disable intro screen
+set ttyfast " Improves redrawing for newer computers
+
+set mouse=a
+scriptencoding utf-8
+
+set viewoptions=folds, options, cursor, unix, slash
+set virtualedit=onemore
+set history=1000
+
+set nofoldenable " disable code folding
+set display=lastline,uhex
+set switchbuf=useopen, split
+
+set backup
+set backupdir=$HOME/.vimbackup//
+set directory=$HOME/.vimswap//
+set viewdir=$HOME/.vimviews//
+" Create directories if they don't exist
+silent execute '!mkdir -p $HOME/.vimbackup'
+silent execute '!mkdir -p $HOME/.vimswap'
+silent execute '!mkdir -p $HOME/.vimviews'
+
+" Saves position, folds, etc when entering and leaving a file
+au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
+au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
+
+"keep indents when going over lines.
+inoremap <CR> <CR><Space><BS>
+nnoremap o o<Space><BS>
+nnoremap O O<Space><BS>
+
+"typos sucks
+command! -bang -nargs=* W w<bang> <args>
+command! -bang -nargs=* Q q<bang> <args>
+command! -bang -nargs=* Wq wq<bang> <args>
+command! -bang -nargs=* WQ wq<bang> <args>
+
+set showmode " display the current mode
+set cursorline "highlight current line
+set showcmd
+set wildmode=longest,list,full
+set wildmenu
+set completeopt=menu
+set wildignore+=*.o,*.fasl,CVS,*.pyc,._*,.DS_Store,*~,*.gif,*.jpg,*.png,*.pdf,*.psd,*.svn,.svn,.git,.hg
+
+set ruler
+set number
+set nuw=4
+set vb "set visual bell
+set binary noeol
+set backspace=indent,eol,start
+set laststatus=2
+set showmatch
+
+set shiftwidth=4
+set expandtab
+set smarttab
+set softtabstop=4
+
+"change softwrap to sane setting
+set wrap linebreak textwidth=0
+
+"set mapleader
+let mapleader = ","
+let g:mapleader = ","
+
+" allow buffers to be fully squashed
+set winminheight=0
+set hidden
+
+nnoremap ' `
+nnoremap ` '
+
+"scrolling offset
+set scrolloff=3
+set shortmess=atI
+
+"turn off middleclicking
+noremap <MiddleMouse> <LeftMouse>
+noremap <2-MiddleMouse> <LeftMouse>
+noremap <3-MiddleMouse> <LeftMouse>
+noremap <4-MiddleMouse> <LeftMouse>
+
+"Set to auto read when a file is changed from the outside
+set autoread
+
+set statusline=%-.100f\ \  "filepath
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+
+"remove windows line endings
+map <Leader>m mz:%s/\r//g<cr>`z
+
+"Nerd Tree commands and options
+map <Leader>t :NERDTreeToggle<cr>
+
+"map control/command arrows for moving between windows
+map <C-up> <C-W><up>
+map <C-down> <C-W><down>
+map <C-left> <C-W><left>
+map <C-right> <C-W><right>
+"these should ideally be in gvimrc; duplicated there
+noremap <D-up> <C-W><up>
+noremap <D-down> <C-W><down>
+noremap <D-left> <C-W><left>
+noremap <D-right> <C-W><right>
+
+"map window manipulation to match emacs
+noremap <D-1> :only<cr>
+noremap <D-0> :close<cr>
+noremap <D-2> :sp<cr>
+noremap <D-3> :vsp<cr>
+noremap! <D-1> <esc>:only<cr>
+noremap! <D-0> <esc>:close<cr>
+noremap! <D-2> <esc>:sp<cr>
+noremap! <D-3> <esc>:vsp<cr>
+
+" map CTRL-E to end-of-line (insert mode)
+map <C-e> <esc>$<right><esc>
+imap <C-e> <esc>$i<right>
+" map CTRL-A to beginning-of-line (insert mode)
+map <C-a> <esc>^<esc>
+imap <C-a> <esc>^i
+
+"GUI Options
+set guioptions=e 
+"set guioptions=""
+set tabpagemax=15
+
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+
+ab teh the
+ab fro for
+
+set incsearch
+set ignorecase 
+set wrapscan
+set smartcase 
+
+"easily equalize windows with plus
+nmap + <c-w>= 
+
+nmap <Leader>e :LustyBufferExplorer<cr>
+nmap <Leader>b :LustyBufferExplorer<cr>
+nmap <silent> <Leader>, :CommandT<cr>
+nmap <silent> <Leader>r :CommandTFlush<cr>
+nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
+nmap <leader>. :LustyFilesystemExplorer<cr>
+
+"CommandT options
+let g:CommandTMaxFiles=20000
+let g:CommandTMaxHeight=10
+
+"No scrollbars
+set guioptions-=L
+set guioptions-=l
+set guioptions-=R
+set guioptions-=r 
+
+"OmniComplete options and shortcuts
+set completeopt=menuone
+
+"Supertab options
+let g:SuperTabDefaultCompletionType = "context"
+let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
+let g:SuperTabCompletionContexts = ['s:ContextDiscover', 's:ContextText']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
+"Gundo options
+nnoremap <leader>u :GundoToggle<CR>
+
+
+" LANGUAGE OPTIONS
+"
+"syntax color options for various languages
+
+"django templates and jquery tmpl 
+autocmd BufRead,BufNewFile *.html set filetype=djangohtml syntax=jquerytmpl
+autocmd BufRead,BufNewFile *.jquery.tmpl set filetype=djangohtml syntax=jquerytmpl
+
+"syntax coloring for apache log files
+autocmd BufRead,BufNewFile *access.log* set filetype=httplog
+
+"tumblr theme syntax coloring -- assumes files in with .tumblr.html
+autocmd BufRead,BufNewFile *.tumblr.html setfiletype=tumblr
+
+"Silverstripe ss files are html templates
+"So are facebook fbml files
+autocmd BufRead,BufNewFile *.ss set filetype=html
+autocmd BufRead,BufNewFile *.fbml set filetype=html
+"dreamweaver library items are html too
+autocmd BufRead,BufNewFile *.lbi set filetype=html
+
+"CSS3 syntax coloring
+autocmd BufRead,BufNewFile *.css set filetype=css syntax=css3
+
+"Google Go
+autocmd BufRead,BufNewFile *.go set filetype=go
+
+"LOLCODE
+autocmd BufRead,BufNewFile *.lol set filetype=lolcode
+
+"I edit actionscript files, not atlas files, whatever the hell they are
+autocmd BufRead,BufNewFile *.as set filetype=actionscript
+
+"jQuery syntax
+autocmd BufRead,BufNewFile *.js set ft=javascript.jquery
+"Disqus js templates are still js
+autocmd BufRead,BufNewFile *.dtjs set ft=javascript.jquery
+
+"closetags.vim support
+autocmd Filetype html,xml,xsl,php source ~/.vim/plugin/closetag.vim
+
+"language specific options
+
+"PHP
+let php_sql_query=1
+let php_baselib=1
+let php_htmlInStrings=1
+let PHP_BracesAtCodeLevel = 0 
+let PHP_removeCRwhenUnix = 1
+let php_noShortTags = 1
+autocmd BufWritePre *.php :call <SID>StripTrailingWhitespaces()
+
+"HTML
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc" 
+let g:jquerytmpl_django = 1
+autocmd BufWritePre *.html :call <SID>StripTrailingWhitespaces()
+
+"Python
+autocmd BufWritePre *.py :call <SID>StripTrailingWhitespaces()
+autocmd BufRead,BufNewFile *.py set autoindent
+autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,except,finally,def,class
+
+"CSS
+autocmd BufWritePre *.css :call <SID>StripTrailingWhitespaces()
+
+"Javascript
+autocmd BufWritePre *.js :call <SID>StripTrailingWhitespaces()
+
+"SVNDiff
+hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
+hi DiffDelete   ctermfg=0 ctermbg=1 guibg='red'
+hi DiffChange   ctermfg=0 ctermbg=3 guibg='yellow' 
+

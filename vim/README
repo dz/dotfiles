@@ -1,6 +1,6 @@
 VIM files and plugins
 
-Intsall:
+Install:
 
 ln -s /path/to/dotfiles/vim ~/.vim
 ln -s /path/to/dotfiles/vim/vimrc ~/.vimrc
