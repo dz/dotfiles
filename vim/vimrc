@@ -13,13 +13,12 @@ set ttyfast " Improves redrawing for newer computers
 set mouse=a
 scriptencoding utf-8
 
-set viewoptions=folds, options, cursor, unix, slash
 set virtualedit=onemore
 set history=1000
 
 set nofoldenable " disable code folding
 set display=lastline,uhex
-set switchbuf=useopen, split
+set switchbuf=useopen
 
 set backup
 set backupdir=$HOME/.vimbackup//
@@ -199,10 +198,6 @@ nnoremap <leader>u :GundoToggle<CR>
 "
 "syntax color options for various languages
 
-"django templates and jquery tmpl 
-autocmd BufRead,BufNewFile *.html set filetype=djangohtml syntax=jquerytmpl
-autocmd BufRead,BufNewFile *.jquery.tmpl set filetype=djangohtml syntax=jquerytmpl
-
 "syntax coloring for apache log files
 autocmd BufRead,BufNewFile *access.log* set filetype=httplog
 
@@ -215,9 +210,6 @@ autocmd BufRead,BufNewFile *.ss set filetype=html
 autocmd BufRead,BufNewFile *.fbml set filetype=html
 "dreamweaver library items are html too
 autocmd BufRead,BufNewFile *.lbi set filetype=html
-
-"CSS3 syntax coloring
-autocmd BufRead,BufNewFile *.css set filetype=css syntax=css3
 
 "Google Go
 autocmd BufRead,BufNewFile *.go set filetype=go
@@ -232,9 +224,6 @@ autocmd BufRead,BufNewFile *.as set filetype=actionscript
 autocmd BufRead,BufNewFile *.js set ft=javascript.jquery
 "Disqus js templates are still js
 autocmd BufRead,BufNewFile *.dtjs set ft=javascript.jquery
-
-"closetags.vim support
-autocmd Filetype html,xml,xsl,php source ~/.vim/plugin/closetag.vim
 
 "language specific options
 
@@ -263,11 +252,11 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,ex
 autocmd BufWritePre *.css :call <SID>StripTrailingWhitespaces()
 
 "Javascript
+" Use Node.js for JavaScript interpretation
+let $JS_CMD='node'
 autocmd BufWritePre *.js :call <SID>StripTrailingWhitespaces()
-autocmd BufWritePost *.js JSLint
 
 "SVNDiff
 hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
 hi DiffDelete   ctermfg=0 ctermbg=1 guibg='red'
 hi DiffChange   ctermfg=0 ctermbg=3 guibg='yellow' 
-
