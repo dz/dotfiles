@@ -2,6 +2,7 @@
 configs/custom.el
 projects/
 desktop-sessions/
+custom.el
 backups/
 saveplace
 auto-save-list/
