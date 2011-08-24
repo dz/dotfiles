@@ -21,11 +21,16 @@
      (font-lock-comment-face ((t (:foreground "#7C7C7C"))))
      (font-lock-constant-face ((t (:foreground "#99CC99"))))
      (font-lock-doc-string-face ((t (:foreground "#A8FF60"))))
+     (font-lock-string-face ((t (:foreground "#A8FF60"))))
      (font-lock-function-name-face ((t (:foreground "#FFD2A7"))))
      (font-lock-builtin-face ((t (:foreground "#96CBFE"))))
      (font-lock-keyword-face ((t (:foreground "#96CBFE"))))
+     (font-lock-type-face ((t (:foreground "#FFB774"))))
      (font-lock-preprocessor-face ((t (:foreground "#96CBFE"))))
      (font-lock-reference-face ((t (:foreground "#C6C5FE"))))
+     (font-lock-variable-face ((t (:foreground "#C6C5FE"))))
+     (font-lock-variable-name-face ((t (:foreground "#C6C5FE"))))
+     (font-lock-warning-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
 
      (font-lock-regexp-grouping-backslash ((t (:foreground "#E9C062"))))
      (font-lock-regexp-grouping-construct ((t (:foreground "red"))))
@@ -37,17 +42,13 @@
      (ido-first-match ((t (:foreground "#A8FF60"))))
      (ido-only-match ((t (:foreground "#A8FF60"))))
      (mumamo-background-chunk-submode ((t (:background "#222222"))))
-     
+
      (ibuffer-dired-buffer-face ((t (:foreground "#96CBFE"))))
      (ibuffer-help-buffer-face ((t (:foreground "#7C7C7C"))))
      (ibuffer-hidden-buffer-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
      (ibuffer-occure-match-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
      (ibuffer-title-face ((t (:foreground "#96CBFE"))))
-  
-     (font-lock-string-face ((t (:foreground "#A8FF60"))))
-     (font-lock-type-face ((t (:foreground "#FFFFB6"))))
-     (font-lock-variable-name-face ((t (:foreground "#C6C5FE"))))
-     (font-lock-warning-face ((t (:background "#CC1503" :foreground "#FFFFFF"))))
+
      (gui-element ((t (:background "#D4D0C8" :foreground "black"))))
      (region ((t (:background "#660000"))))
      (mode-line ((t (:background "grey75" :foreground "black"))))
