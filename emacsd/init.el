@@ -33,7 +33,7 @@
                   "whitespace"
                   "project" ;;project settings
                   "irc" ;;irc settings
-                  "vim" ;;vimpulse settings
+                  ;; "vim" ;;vimpulse settings
 
                   ;;languages
                   "html"
