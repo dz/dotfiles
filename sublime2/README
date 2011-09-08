@@ -1,0 +1,5 @@
+Sublime Text 2 files and plugins
+
+Install:
+
+ln -s /path/to/dotfiles/sublime2 ~/Library/Application\ Support/Sublime\ Text\ 2
