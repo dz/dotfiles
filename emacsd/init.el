@@ -47,6 +47,8 @@
 
 (setq custom-file "~/.emacs.d/configs/custom.el")
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 ;; remove font styles
 ;; (mapc
 ;; (lambda (face)
