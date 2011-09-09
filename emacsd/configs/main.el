@@ -173,8 +173,14 @@
 ;;enable scpaste
 (autoload 'scpaste "scpaste" "Paste the current buffer." t nil)
 
+;; don't put instructions into scratch buffer
+(setq initial-scratch-message nil)
+
 ;;enable smart scratch buffers
 (autoload 'scratch "scratch" nil t)
 
 ;;auto reload files that have been changed on disk
 (global-auto-revert-mode 1)
+
+(setq diff-switches "-u -w")
+

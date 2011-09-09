@@ -1,2 +1,10 @@
 [
+    { "keys": ["super+b"], "command": "toggle_side_bar" },
+    { "keys": ["ctrl+w"], "command": "delete_word", "args": { "forward": false } },
+    { "keys": ["ctrl+q"], "command": "delete_word", "args": { "forward": true } },
+    { "keys": ["ctrl+s"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": false} },
+    { "keys": ["ctrl+f"], "command": "move", "args": {"by": "pages", "forward": true} },
+    { "keys": ["ctrl+b"], "command": "move", "args": {"by": "pages", "forward": false} },
+    { "keys": ["super+left"], "command": "move", "args": {"by": "subwords", "forward": false} },
+    { "keys": ["super+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} }
 ]
