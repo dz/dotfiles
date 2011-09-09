@@ -6,5 +6,6 @@
     { "keys": ["ctrl+f"], "command": "move", "args": {"by": "pages", "forward": true} },
     { "keys": ["ctrl+b"], "command": "move", "args": {"by": "pages", "forward": false} },
     { "keys": ["super+left"], "command": "move", "args": {"by": "subwords", "forward": false} },
-    { "keys": ["super+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} }
+    { "keys": ["super+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} },
+    { "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} }
 ]

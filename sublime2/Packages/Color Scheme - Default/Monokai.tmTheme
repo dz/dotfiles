@@ -35,9 +35,9 @@
 				<key>bracketsOptions</key>
 				<string>foreground underline</string>
 
-				<key>bracketsContentForeground</key>
+				<key>bracketContentsForeground</key>
 				<string>#F8F8F2A5</string>
-				<key>bracketsContentsOptions</key>
+				<key>bracketContentsOptions</key>
 				<string>underline</string>
 
 				<key>tagsOptions</key>

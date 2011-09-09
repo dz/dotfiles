@@ -203,7 +203,8 @@
                 "id": "fold",
                 "children":
                 [
-                    { "command": "fold", "caption": "Fold / Unfold Selection" },
+                    { "command": "fold" },
+                    { "command": "unfold" },
                     { "command": "unfold_all", "caption": "Unfold All" },
                     { "command": "fold_tag_attributes", "caption": "Fold Tag Attributes" }
                 ]
@@ -283,6 +284,7 @@
                     { "command": "expand_selection_to_paragraph", "caption": "Expand Selection to Paragraph" },
                     { "command": "expand_selection", "args": {"to": "scope"}, "caption": "Expand Selection to Scope" },
                     { "command": "expand_selection", "args": {"to": "brackets"}, "caption": "Expand Selection to Brackets" },
+                    { "command": "expand_selection", "args": {"to": "indentation"}, "caption": "Expand Selection to Indentation" },
                     { "command": "expand_selection", "args": {"to": "tag"}, "caption": "Expand Selection to Tag" }
                 ]
             },

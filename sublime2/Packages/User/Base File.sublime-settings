@@ -6,6 +6,8 @@
 	"sublimelinter": true,
 	"sublimelinter_fill_outlines": true,
 	"sublimelinter_gutter_marks": true,
+    // E501 is line too long error
+    "pep8_ignore": ["E501"],
 	"font_face": "Inconsolata-dz",
 	"font_size": 14,
 	"translate_tabs_to_spaces": true,

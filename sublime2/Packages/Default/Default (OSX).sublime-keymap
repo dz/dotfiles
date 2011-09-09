@@ -141,6 +141,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 	{ "keys": ["super+shift+space"], "command": "expand_selection", "args": {"to": "scope"} },
 	{ "keys": ["ctrl+shift+m"], "command": "expand_selection", "args": {"to": "brackets"} },
 	{ "keys": ["ctrl+m"], "command": "move_to", "args": {"to": "brackets"} },
+	{ "keys": ["super+shift+j"], "command": "expand_selection", "args": {"to": "indentation"} },
 	{ "keys": ["super+shift+a"], "command": "expand_selection", "args": {"to": "tag"} },
 
 	{ "keys": ["super+alt+."], "command": "close_tag" },
@@ -500,7 +501,8 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 
 	{ "keys": ["super+alt+q"], "command": "wrap_lines" },
 
-	{ "keys": ["super+shift+j"], "command": "fold" },
+	{ "keys": ["super+shift+["], "command": "fold" },
+	{ "keys": ["super+shift+]"], "command": "unfold" },
 	{ "keys": ["super+k", "super+j"], "command": "unfold_all" },
 	{ "keys": ["super+k", "super+t"], "command": "fold_tag_attributes" },
 
