@@ -40,14 +40,12 @@
                   "css"
                   "xml"
                   "js"
-                  "python"
+                  ;; "python"
                   ;;custom file
                   "custom"
                   ))
 
 (setq custom-file "~/.emacs.d/configs/custom.el")
-
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; remove font styles
 ;; (mapc

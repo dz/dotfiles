@@ -1,4 +1,3 @@
-
 (setq-default flymake-gui-warnings-enabled nil)
 (require 'flymake)
 (load-library "flymake-cursor")

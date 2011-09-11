@@ -34,6 +34,7 @@
         (run-with-timer 0.5 nil '(lambda(ovl)
                                    (delete-overlay ovl)) ovl)))))
 
+
 (defun my-js2-indent-function ()
   (interactive)
   (save-restriction
@@ -43,14 +44,14 @@
            (offset (- (current-column) (current-indentation)))
            (indentation (espresso--proper-indentation parse-status))
            node)
-      
+
       (save-excursion
-        
+
         ;; I like to indent case and labels to half of the tab width
         (back-to-indentation)
         (if (looking-at "case\\s-")
             (setq indentation (+ indentation (/ espresso-indent-level 2))))
-        
+
         ;; consecutive declarations in a var statement are nice if
         ;; properly aligned, i.e:
         ;;
@@ -61,7 +62,7 @@
                    (= js2-NAME (js2-node-type node))
                    (= js2-VAR (js2-node-type (js2-node-parent node))))
           (setq indentation (+ 4 indentation))))
-      
+
       (indent-line-to indentation)
       (when (> offset 0) (forward-char offset)))))
 
@@ -74,7 +75,7 @@
   (c-toggle-hungry-state 1)
   (set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
   (define-key js2-mode-map [(meta control |)] 'cperl-lineup)
-  (define-key js2-mode-map [(meta control \;)] 
+  (define-key js2-mode-map [(meta control \;)]
     '(lambda()
        (interactive)
        (insert "/* -----[ ")
@@ -87,6 +88,10 @@
   (define-key js2-mode-map [(control meta q)] 'my-indent-sexp)
   (if (featurep 'js2-highlight-vars)
     (js2-highlight-vars-mode))
+  (add-hook 'local-write-file-hooks
+            '(lambda()
+               (save-excursion
+                 (delete-trailing-whitespace))))
   (message "My JS2 hook"))
 
 (add-hook 'js2-mode-hook 'my-js2-mode-hook)
