@@ -63,7 +63,6 @@ set showmatch
 
 set shiftwidth=4
 set expandtab
-set smarttab
 set softtabstop=4
 
 "change softwrap to sane setting
@@ -140,7 +139,7 @@ map <C-a> <esc>^<esc>
 imap <C-a> <esc>^i
 
 "GUI Options
-set guioptions=e 
+set guioptions=e
 "set guioptions=""
 set tabpagemax=15
 
@@ -155,12 +154,12 @@ ab teh the
 ab fro for
 
 set incsearch
-set ignorecase 
+set ignorecase
 set wrapscan
-set smartcase 
+set smartcase
 
 "easily equalize windows with plus
-nmap + <c-w>= 
+nmap + <c-w>=
 
 nmap <Leader>e :LustyBufferExplorer<cr>
 nmap <Leader>b :LustyBufferExplorer<cr>
@@ -168,6 +167,10 @@ nmap <silent> <Leader>, :CommandT<cr>
 nmap <silent> <Leader>r :CommandTFlush<cr>
 nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
 nmap <leader>. :LustyFilesystemExplorer<cr>
+noremap <D-e> :LustyBufferExplorer<cr>
+noremap! <D-e> <esc>:LustyBufferExplorer<cr>
+noremap <D-b> :LustyBufferExplorer<cr>
+noremap! <D-b> <esc>:LustyBufferExplorer<cr>
 
 "CommandT options
 let g:CommandTMaxFiles=20000
@@ -178,7 +181,7 @@ let g:CommandTMatchWindowReverse=1
 set guioptions-=L
 set guioptions-=l
 set guioptions-=R
-set guioptions-=r 
+set guioptions-=r
 
 "OmniComplete options and shortcuts
 set completeopt=menuone
@@ -210,12 +213,14 @@ autocmd BufRead,BufNewFile *.ss set filetype=html
 autocmd BufRead,BufNewFile *.fbml set filetype=html
 "dreamweaver library items are html too
 autocmd BufRead,BufNewFile *.lbi set filetype=html
+"Disqus dtpl fiels are still html mostly
+autocmd BufRead,BufNewFile *.dtpl set filetype=html
 
 "Google Go
 autocmd BufRead,BufNewFile *.go set filetype=go
 
 "LOLCODE
-autocmd BufRead,BufNewFile *.lol set filetype=lolcode
+autocmd BufRead,BufNewFile *.lol set filetype=lolcodtpl
 
 "I edit actionscript files, not atlas files, whatever the hell they are
 autocmd BufRead,BufNewFile *.as set filetype=actionscript
@@ -231,19 +236,19 @@ autocmd BufRead,BufNewFile *.dtjs set ft=javascript.jquery
 let php_sql_query=1
 let php_baselib=1
 let php_htmlInStrings=1
-let PHP_BracesAtCodeLevel = 0 
+let PHP_BracesAtCodeLevel = 0
 let PHP_removeCRwhenUnix = 1
 let php_noShortTags = 1
 autocmd BufWritePre *.php :call <SID>StripTrailingWhitespaces()
 
 "HTML
 let g:html_indent_script1 = "inc"
-let g:html_indent_style1 = "inc" 
+let g:html_indent_style1 = "inc"
 let g:jquerytmpl_django = 1
 autocmd BufWritePre *.html :call <SID>StripTrailingWhitespaces()
 
 "Python
-let g:pyflakes_user_quickfix = 0 
+let g:pyflakes_user_quickfix = 0
 autocmd BufWritePre *.py :call <SID>StripTrailingWhitespaces()
 autocmd BufRead,BufNewFile *.py set autoindent
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,except,finally,def,class
@@ -259,4 +264,4 @@ autocmd BufWritePre *.js :call <SID>StripTrailingWhitespaces()
 "SVNDiff
 hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
 hi DiffDelete   ctermfg=0 ctermbg=1 guibg='red'
-hi DiffChange   ctermfg=0 ctermbg=3 guibg='yellow' 
+hi DiffChange   ctermfg=0 ctermbg=3 guibg='yellow'

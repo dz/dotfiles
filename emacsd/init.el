@@ -4,6 +4,7 @@
 (load-library "iso-transl")
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
+
 ;; recursively add subdirs in vendor to load path
 (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
     (let* ((my-lisp-dir "~/.emacs.d/vendor")
@@ -33,9 +34,9 @@
                   "whitespace"
                   "project" ;;project settings
                   "irc" ;;irc settings
-                  ;; "vim" ;;vimpulse settings
-
+                  ;; "vim" ;;
                   ;;languages
+                  "scala"
                   "html"
                   "css"
                   "xml"

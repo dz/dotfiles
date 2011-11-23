@@ -49,27 +49,7 @@ function backgroundjobs() {
   '
 }
 
-function activevirtualenv() {
-  if [ -n "$VIRTUAL_ENV" ]; then
-      echo -n $'\033[00;1m\033[36;1m('
-      echo -n "${VIRTUAL_ENV#$WORKON_HOME/}) "
-  fi
-}
-
-# export BASEPROMPT='\e${USER_COLOR}\u \
-# \e${GRAY_COLOR}at \e${ORANGE_COLOR}\h \
-# \e${GRAY_COLOR}$(vcprompt)\
-# \e${GRAY_COLOR}in \e${GREEN_COLOR}\w\
-# `backgroundjobs`\
-# \e${DEFAULT_COLOR}'
-export BASEPROMPT='\n\e${USER_COLOR}\u\
-`activevirtualenv` \
-\e${GRAY_COLOR}[\e${GREEN_COLOR}\w\
-\e${GRAY_COLOR}]$(vcprompt)\
-`backgroundjobs`\
-\e${DEFAULT_COLOR}'
-
-export BASEPROMPT='`activevirtualenv`\e${GRAY_COLOR}\e${GREEN_COLOR}\w\e${GRAY_COLOR}$(vcprompt)\e${GRAY_COLOR} \e${USER_COLOR}\u\e${DEFAULT_COLOR}'
+export BASEPROMPT='\e${GREEN_COLOR}\w\e${GRAY_COLOR}$(vcprompt)\e${GRAY_COLOR} \e${USER_COLOR}\u\e${DEFAULT_COLOR}'
 
 export PROMPT="${BASEPROMPT}$ "
 export PS1=$PROMPT
@@ -92,17 +72,6 @@ export LIBTOOLIZE=glibtoolize
 # python
 export PYTHONDONTWRITEBYTECODE=1
 export PYTHONSTARTUP="$HOME/.pythonrc.py"
-
-# virtualenvwrapper and pip
-if [ `id -u` != '0' ]; then
-  export VIRTUALENV_USE_DISTRIBUTE=1
-  export WORKON_HOME=$HOME/.virtualenvs
-  source /usr/local/bin/virtualenvwrapper.sh
-  export PIP_VIRTUALENV_BASE=$WORKON_HOME
-  export PIP_REQUIRE_VIRTUALENV=true
-  export PIP_RESPECT_VIRTUALENV=true
-  #export PIP_USE_MIRRORS=true
-fi
 
 # Enable bash history
 export HISTCONTROL=erasedups
@@ -136,10 +105,4 @@ alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
 
-source ~/.git-completion.sh
-
-export PATH=/opt/local/lib/postgresql84/bin:/opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin/:/opt/local/bin:/opt/local/sbin:/Users/dzhou/.gem/ruby/1.8:$PATH
-
-#virtualenv stuff
-export WORKON_HOME=~/.virtualenvs
-source /opt/local/Library/Frameworks/Python.framework/Versions/2.6/bin/virtualenvwrapper.sh
+alias vagup="/Users/dz/Documents/Disqus/disqus-ops/vagrant/dev/vagrant up"
