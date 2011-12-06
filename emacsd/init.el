@@ -5,6 +5,9 @@
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 
+;; set emacs bash path to match shell bash path
+(setenv "PATH" (shell-command-to-string "bash -i -c 'echo -n $PATH'"))
+
 ;; recursively add subdirs in vendor to load path
 (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
     (let* ((my-lisp-dir "~/.emacs.d/vendor")
@@ -34,7 +37,7 @@
                   "whitespace"
                   "project" ;;project settings
                   "irc" ;;irc settings
-                  ;; "vim" ;;
+                  "vim" ;;
                   ;;languages
                   "scala"
                   "html"
