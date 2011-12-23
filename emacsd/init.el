@@ -37,7 +37,7 @@
                   "whitespace"
                   "project" ;;project settings
                   "irc" ;;irc settings
-                  "vim" ;;
+                  ;;"vim" ;;
                   ;;languages
                   "scala"
                   "html"
