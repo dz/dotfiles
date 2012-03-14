@@ -1,4 +1,11 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='/Users/dzhou/Documents/Code/dotfiles/.git'
-let g:netrw_dirhist_2='/Users/dzhou'
+let g:netrw_dirhist_cnt =9
+let g:netrw_dirhist_1='/Users/dzhou/Documents/Disqus/repo'
+let g:netrw_dirhist_2='/Users/dzhou/Documents/Code/peacecorps'
+let g:netrw_dirhist_3='/Users/dzhou/Documents/Disqus/repo'
+let g:netrw_dirhist_4='/Users/dzhou/Documents/Disqus/theme-related'
+let g:netrw_dirhist_5='/Users/dzhou/Documents/Disqus/repo'
+let g:netrw_dirhist_6='/Users/dzhou/Documents/Disqus/repo/disqus'
+let g:netrw_dirhist_7='/Users/dzhou/Documents/Disqus/repo'
+let g:netrw_dirhist_8='/Users/dzhou/Documents/Disqus/disqus-wordpress'
+let g:netrw_dirhist_9='/Users/dzhou/Documents/Disqus/repo/disqus/firehose'

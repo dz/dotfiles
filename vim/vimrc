@@ -1,21 +1,19 @@
 " Vimrc
 " David Zhou
+call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
-color ir_black
 set nocompatible
 set background=dark
+color ir_black
 syntax on
 filetype plugin indent on
-
 set shm=atI "disable intro screen
 set ttyfast " Improves redrawing for newer computers
-
 set mouse=a
 scriptencoding utf-8
-
 set virtualedit=onemore
 set history=1000
-
 set nofoldenable " disable code folding
 set display=lastline,uhex
 set switchbuf=useopen
@@ -23,20 +21,9 @@ set switchbuf=useopen
 set backup
 set backupdir=$HOME/.vimbackup//
 set directory=$HOME/.vimswap//
-set viewdir=$HOME/.vimviews//
 " Create directories if they don't exist
 silent execute '!mkdir -p $HOME/.vimbackup'
 silent execute '!mkdir -p $HOME/.vimswap'
-silent execute '!mkdir -p $HOME/.vimviews'
-
-" Saves position, folds, etc when entering and leaving a file
-au BufWinLeave * silent! mkview  "make vim save view (state) (folds, cursor, etc)
-au BufWinEnter * silent! loadview "make vim load view (state) (folds, cursor, etc)
-
-"keep indents when going over lines.
-inoremap <CR> <CR><Space><BS>
-nnoremap o o<Space><BS>
-nnoremap O O<Space><BS>
 
 "typos sucks
 command! -bang -nargs=* W w<bang> <args>
@@ -50,6 +37,7 @@ set showcmd
 set wildmode=longest,list,full
 set wildmenu
 set completeopt=menu
+
 set wildignore+=*.o,*.fasl,CVS,*.pyc,._*,.DS_Store,*~,*.gif,*.jpg,*.png,*.pdf,*.psd,*.svn,.svn,.git,.hg
 
 set ruler
@@ -61,9 +49,12 @@ set backspace=indent,eol,start
 set laststatus=2
 set showmatch
 
-set shiftwidth=4
 set expandtab
+set shiftwidth=4
 set softtabstop=4
+set tabstop=8
+
+set bs=2
 
 "change softwrap to sane setting
 set wrap linebreak textwidth=0
@@ -92,23 +83,17 @@ noremap <4-MiddleMouse> <LeftMouse>
 "Set to auto read when a file is changed from the outside
 set autoread
 
-set statusline=%-.100f\ \  "filepath
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=%=      "left/right separator
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file
+" make tab key more better
+noremap <tab> v>
+noremap <s-tab> v<
+vnoremap <tab> >gv
+vnoremap <s-tab> <gv
 
-"remove windows line endings
-map <Leader>m mz:%s/\r//g<cr>`z
+inoremap jj <esc>l
+cnoremap jj <c-c>l
 
-"Nerd Tree commands and options
-map <Leader>t :NERDTreeToggle<cr>
+" sudo write
+map w! w !sudo tee % >/dev/null
 
 "map control/command arrows for moving between windows
 map <C-up> <C-W><up>
@@ -138,18 +123,6 @@ imap <C-e> <esc>$i<right>
 map <C-a> <esc>^<esc>
 imap <C-a> <esc>^i
 
-"GUI Options
-set guioptions=e
-"set guioptions=""
-set tabpagemax=15
-
-fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
-
 ab teh the
 ab fro for
 
@@ -161,21 +134,74 @@ set smartcase
 "easily equalize windows with plus
 nmap + <c-w>=
 
+"fast file switching
+map <C-q> <esc>:b#<esc>
+nmap <C-q> <esc>:b#<cr>
+noremap <C-q> <esc>:b#<cr>
+noremap! <C-q> <esc>:b#<cr>
+map <Leader>; <esc>:b#<esc>
+nmap <Leader>; <esc>:b#<cr>
+noremap <Leader>; <esc>:b#<cr>
+noremap! <Leader>; <esc>:b#<cr>
+
+map <Leader>t :NERDTreeToggle<cr>
+map <Leader>m :NERDTreeToggle<cr>
 nmap <Leader>e :LustyBufferExplorer<cr>
+nmap <Leader>' :LustyBufferExplorer<cr>
 nmap <Leader>b :LustyBufferExplorer<cr>
+
 nmap <silent> <Leader>, :CommandT<cr>
 nmap <silent> <Leader>r :CommandTFlush<cr>
-nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
-nmap <leader>. :LustyFilesystemExplorer<cr>
-noremap <D-e> :LustyBufferExplorer<cr>
-noremap! <D-e> <esc>:LustyBufferExplorer<cr>
+
+
 noremap <D-b> :LustyBufferExplorer<cr>
 noremap! <D-b> <esc>:LustyBufferExplorer<cr>
+noremap <D-r> :CtrlPMRU<cr>
+noremap! <D-r> <esc>:CtrlPMRU<cr>
+
+nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
+nmap <leader>. :LustyFilesystemExplorer<cr>
+
+" NerdTree options
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
 
 "CommandT options
 let g:CommandTMaxFiles=20000
 let g:CommandTMaxHeight=10
 let g:CommandTMatchWindowReverse=1
+
+"CtrlP options
+let g:ctrlp_working_path_mode = 2
+let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
+let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
+let g:ctrlp_mruf_max = 2000
+let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*' " MacOSX/Linux
+let g:ctrlp_prompt_mappings = {
+    \ 'PrtSelectMove("j")':   ['<c-j>', '<c-n>'],
+    \ 'PrtSelectMove("k")':   ['<c-k>', '<c-p>'],
+    \ 'PrtHistory(-1)':       ['<down>'],
+    \ 'PrtHistory(1)':        ['<up>'],
+    \ 'PrtClearCache()':      ['<F5>', '<c-r>'],
+    \ }
+
+
+" Tagbar options
+noremap <leader>o :TagbarToggle<CR>
+set tags=tags,.git/tags,TAGS
+let g:tagbar_type_coffee = {
+  \ 'kinds' : [
+  \   'f:functions',
+  \   'o:object'
+  \ ],
+  \ 'kind2scope' : {
+  \  'f' : 'object',
+  \   'o' : 'object'
+  \},
+  \ 'sro' : ".",
+  \ 'ctagsbin' : 'coffeetags',
+  \ 'ctagsargs' : '--include-vars '
+  \}
 
 "No scrollbars
 set guioptions-=L
@@ -195,7 +221,6 @@ let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc
 
 "Gundo options
 nnoremap <leader>u :GundoToggle<CR>
-
 
 " LANGUAGE OPTIONS
 "
@@ -225,12 +250,21 @@ autocmd BufRead,BufNewFile *.lol set filetype=lolcodtpl
 "I edit actionscript files, not atlas files, whatever the hell they are
 autocmd BufRead,BufNewFile *.as set filetype=actionscript
 
-"jQuery syntax
-autocmd BufRead,BufNewFile *.js set ft=javascript.jquery
-"Disqus js templates are still js
-autocmd BufRead,BufNewFile *.dtjs set ft=javascript.jquery
+"Json is still javascript
+au BufNewFile,BufRead  *.json set filetype=javascript
 
 "language specific options
+
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+"ensure no tabs
+autocmd BufWritePre * :set expandtab
 
 "PHP
 let php_sql_query=1
@@ -239,27 +273,21 @@ let php_htmlInStrings=1
 let PHP_BracesAtCodeLevel = 0
 let PHP_removeCRwhenUnix = 1
 let php_noShortTags = 1
-autocmd BufWritePre *.php :call <SID>StripTrailingWhitespaces()
 
 "HTML
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
-let g:jquerytmpl_django = 1
-autocmd BufWritePre *.html :call <SID>StripTrailingWhitespaces()
 
 "Python
 let g:pyflakes_user_quickfix = 0
-autocmd BufWritePre *.py :call <SID>StripTrailingWhitespaces()
 autocmd BufRead,BufNewFile *.py set autoindent
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,except,finally,def,class
 
 "CSS
-autocmd BufWritePre *.css :call <SID>StripTrailingWhitespaces()
 
 "Javascript
 " Use Node.js for JavaScript interpretation
 let $JS_CMD='node'
-autocmd BufWritePre *.js :call <SID>StripTrailingWhitespaces()
 
 "SVNDiff
 hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
