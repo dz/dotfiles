@@ -32,7 +32,6 @@ command! -bang -nargs=* Wq wq<bang> <args>
 command! -bang -nargs=* WQ wq<bang> <args>
 
 set showmode " display the current mode
-set cursorline "highlight current line
 set showcmd
 set wildmode=longest,list,full
 set wildmenu
