@@ -3,6 +3,10 @@
 # Inspired greatly by Armin Ronacher's bashrc
 # https://github.com/mitsuhiko/dotfiles/blob/master/bash/bashrc
 
+# setup gcc
+export CC=gcc-4.2
+export CXX=g++-4.2
+
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -20,10 +24,14 @@ else
 fi
 
 VCPROMPT_EXECUTABLE=/usr/bin/vcprompt
-SSHUTTLE_EXECUTABLE=/usr/bin/vcprompt
+RVMPROMPT_EXECUTABLE=~/.rvm/bin/rvm-prompt
 
 function vcprompt() {
   $VCPROMPT_EXECUTABLE -f $' (\033[31;1m%[unknown]b\033[32;1m%m%u\033[37;1m)'
+}
+
+function rvmprompt() {
+  $RVMPROMPT_EXECUTABLE u v g
 }
 
 function lastcommandfailed() {
@@ -49,7 +57,7 @@ function backgroundjobs() {
   '
 }
 
-export BASEPROMPT='\e${GREEN_COLOR}\w\e${GRAY_COLOR}$(vcprompt)\e${GRAY_COLOR} \e${USER_COLOR}\u\e${DEFAULT_COLOR}'
+export BASEPROMPT='\e${GREEN_COLOR}\w \e${GRAY_COLOR}(\e${CYAN_COLOR}$(rvmprompt)\e${GRAY_COLOR})\e${GRAY_COLOR}$(vcprompt)\e${GRAY_COLOR} \e${USER_COLOR}\u\e${DEFAULT_COLOR}'
 
 export PROMPT="${BASEPROMPT}$ "
 export PS1=$PROMPT
@@ -104,8 +112,23 @@ alias slt='open -a "Sublime Text 2"'
 #vim aliases
 alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 
+# set editor to vim
+export EDITOR='vim'
+
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
 
-export WORKON_HOME=~/.virtualenvs
-source /usr/local/share/python/virtualenvwrapper.sh
+PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
+
+PATH="/usr/local/bin:${PATH}"
+export PATH
+
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
+
+# mysql path
+export PATH="/usr/local/mysql/bin:$PATH"
+
+# solr setup
+export SOLR_HOME=~/Documents/Vox/solr14
+
