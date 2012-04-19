@@ -34,6 +34,7 @@
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
                   "project" ;; project definitions
+                  "vim" ;; vim keybindings yo
                   ;; languages
                   "python"
                   "javascript"
