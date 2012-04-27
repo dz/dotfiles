@@ -135,3 +135,8 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\M-z" 'undo)
 (global-set-key "\M-Z" 'redo)
 
+;; command-j for ace jump
+(global-set-key "\M-j" 'ace-jump-mode)
+
+;; make command-J pop mark ring
+(global-set-key "\M-J" 'pop-to-mark-command)

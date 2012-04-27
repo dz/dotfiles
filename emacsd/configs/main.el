@@ -170,6 +170,9 @@
 
 (setq diff-switches "-u -w")
 
+;; ace jump mode
+(require 'ace-jump-mode)
+
 ;; settings for ido
 (require 'ido)
 (require 'ido-ubiquitous)
