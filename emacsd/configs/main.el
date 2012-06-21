@@ -76,7 +76,7 @@
 (setq read-file-name-completion-ignore-case t)
 
 ;; always remove trailing whitespace
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; change behavior of buffers with same name
 (require 'uniquify)

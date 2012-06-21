@@ -6,4 +6,7 @@
 (setq cssm-mirror-mode t)
 
 ;; sass support
-(require 'scss-mode )
+(require 'scss-mode)
+;; disable autocompilation on save
+(setq scss-compile-at-save nil)
+
