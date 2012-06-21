@@ -35,6 +35,20 @@
 (defun vox-startup ()
   (rvm-activate-corresponding-ruby))
 
+(project-def "hermano"
+      '((basedir          "/Users/dzhou/Vox/hermano")
+        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+        (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+        (file-list-cache  "/Users/dzhou/.emacs.d/projects/hermano/file-list-cache")
+        (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+        (startup-hook     hermano-startup)
+        (vcs              git)
+        (shutdown-hook    nil)))
+
+(defun hermano-startup ()
+  (rvm-activate-corresponding-ruby))
+
+
 (project-def "peacecorps"
       '((basedir          "/Users/dzhou/Documents/Code/peacecorps/")
         (src-patterns     ("*.html" "*.py" "*.js" "*.css" "*.tmpl" "*.txt" "*.sh"))
