@@ -132,3 +132,5 @@ export PATH="/usr/local/mysql/bin:$PATH"
 # solr setup
 export SOLR_HOME=~/Documents/Vox/solr14
 
+# rails aliases
+alias bun="bundle"

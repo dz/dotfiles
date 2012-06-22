@@ -52,6 +52,7 @@
 (setq default-tab-width 2)
 (setq-default default-tab-width 2)
 (setq-default c-basic-offset 2)
+(setq standard-indent 2)
 
 ;; disable line wrapping
 (setq default-truncate-lines nil)
