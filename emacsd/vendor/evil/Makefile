@@ -1,4 +1,4 @@
-SHELL = /bin/bash
+SHELL = /bin/sh
 EMACS = emacs
 FILES = $(filter-out evil-tests.el,$(filter-out evil-pkg.el,$(wildcard evil*.el)))
 VERSION := $(shell sed -n '3s/.*"\(.*\)".*/\1/p' evil-pkg.el)
@@ -110,5 +110,5 @@ elpa:
 
 # Change the version using make VERSION=x.y.z
 version:
-	cat evil-pkg.el | sed "3s/\".*\"/\"${VERSION}\"/" > evil-pkg.el
+	cat evil-pkg.el | sed "3s/\".*\"/\"${VERSION}\"/" > evil-pkg.el.new && mv evil-pkg.el.new evil-pkg.el
 

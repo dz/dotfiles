@@ -1,98 +1,65 @@
+# -*- coding: utf-8 -*-
 # perl.py - sublimelint package for checking perl files
 
-import subprocess
-import sublime
-
-from module_utils import get_startupinfo
-
-
-def is_enabled():
-    try:
-        subprocess.Popen(('perl', '-v'), startupinfo=get_startupinfo())
-    except OSError:
-        return (False, 'perl cannot be found')
-
-    return True
-
-
-def check(codeString, filename):
-    process = subprocess.Popen(('perl', '-c'),
-                                stdin=subprocess.PIPE,
-                                stdout=subprocess.PIPE,
-                                stderr=subprocess.STDOUT,
-                                startupinfo=get_startupinfo())
-    result = process.communicate(codeString)[0]
-
-    return result
-
-# start sublimelint perl plugin
 import re
-__all__ = ['run', 'language']
-language = 'Perl'
-description =\
-'''* view.run_command("lint", "Perl")
-        Turns background linter off and runs the default Perl linter
-        (perl - c, assumed to be on $PATH) on current view.
-'''
+import subprocess
+
+from base_linter import BaseLinter
+
+CONFIG = {
+    'language': 'Perl'
+}
 
 
-def run(code, view, filename='untitled'):
-    errors = check(code, filename)
-    print errors
+class Linter(BaseLinter):
+    PERLCRITIC_RE = re.compile(r'\[(?P<pbp>.+)\] (?P<error>.+?) at line (?P<line>\d+), column (?P<column>\d+).+?')
+    PERL_RE = re.compile(r'(?P<error>.+?) at .+? line (?P<line>\d+)(, near "(?P<near>.+?)")?')
 
-    lines = set()
-    underline = []  # leave this here for compatibility with original plugin
+    def __init__(self, config):
+        super(Linter, self).__init__(config)
+        self.linter = None
 
-    errorMessages = {}
+    def get_executable(self, view):
+        self.linter = view.settings().get('perl_linter', 'perlcritic')
 
-    def addMessage(lineno, message):
-        message = str(message)
-        if lineno in errorMessages:
-            errorMessages[lineno].append(message)
+        if self.linter == 'perl':
+            linter_name = 'Perl'
         else:
-            errorMessages[lineno] = [message]
+            linter_name = 'Perl::Critic'
 
-    def underlineRange(lineno, position, length=1):
-        line = view.full_line(view.text_point(lineno, 0))
-        position += line.begin()
+        try:
+            path = self.get_mapped_executable(view, self.linter)
+            subprocess.call([path, '--version'], startupinfo=self.get_startupinfo())
+            return (True, path, 'using {0}'.format(linter_name))
+        except OSError:
+            return (False, '', '{0} is required'.format(linter_name))
 
-        for i in xrange(length):
-            underline.append(sublime.Region(position + i))
+    def get_lint_args(self, view, code, filename):
+        if self.linter == 'perl':
+            return ['-c']
+        else:
+            return ['--verbose', '8']
 
-    def underlineRegex(lineno, regex, wordmatch=None, linematch=None):
-        lines.add(lineno)
-        offset = 0
-
-        line = view.full_line(view.text_point(lineno, 0))
-        lineText = view.substr(line)
-        if linematch:
-            match = re.match(linematch, lineText)
-            if match:
-                lineText = match.group('match')
-                offset = match.start('match')
+    def parse_errors(self, view, errors, lines, errorUnderlines, violationUnderlines, warningUnderlines, errorMessages, violationMessages, warningMessages):
+        for line in errors.splitlines():
+            if self.linter == 'perl':
+                match = self.PERL_RE.match(line)
             else:
-                return
+                match = self.PERLCRITIC_RE.match(line)
 
-        iters = re.finditer(regex, lineText)
-        results = [(result.start('underline'), result.end('underline')) for result in iters if
-                                            not wordmatch or result.group('underline') == wordmatch]
+            if match:
+                error, line = match.group('error'), match.group('line')
+                lineno = int(line)
 
-        for start, end in results:
-            underlineRange(lineno, start + offset, end - start)
+                if self.linter == 'perl':
+                    near = match.group('near')
 
-    for line in errors.splitlines():
-        match = re.match(r'(?P<error>.+?) at .+? line (?P<line>\d+)(, near "(?P<near>.+?)")?', line)
+                    if near:
+                        error = '{0}, near "{1}"'.format(error, near)
+                        self.underline_regex(view, lineno, '(?P<underline>{0})'.format(re.escape(near)), lines, errorUnderlines)
+                else:
+                    column = match.group('column')
+                    column = int(column) - 1
+                    self.underline_word(view, lineno, column, errorUnderlines)
 
-        if match:
-            error, line = match.group('error'), match.group('line')
-            lineno = int(line) - 1
-
-            near = match.group('near')
-            if near:
-                error = '{0}, near "{1}"'.format(error, near)
-                underlineRegex(lineno, '(?P<underline>{0})'.format(re.escape(near)))
-
-            lines.add(lineno)
-            addMessage(lineno, error)
-
-    return lines, underline, [], [], errorMessages, {}, {}
+                self.add_message(lineno, lines, error, errorMessages)

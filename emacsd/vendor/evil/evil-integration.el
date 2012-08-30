@@ -1,16 +1,42 @@
-;;;; Integrate Evil with other modules
+;;; evil-integration.el --- Integrate Evil with other modules
+
+;; Author: Vegard Øye <vegard_oye at hotmail.com>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'evil-maps)
 (require 'evil-core)
 
-(mapc #'evil-declare-motion evil-motions)
-(mapc #'evil-declare-not-repeat
+;;; Code:
+
+(mapc #'(lambda (cmd)
+          (evil-set-command-property cmd :keep-visual t)
+          (evil-declare-not-repeat cmd))
       '(digit-argument
         negative-argument
         universal-argument
         universal-argument-minus
-        universal-argument-other-key
-        what-cursor-position))
+        universal-argument-other-key))
+(mapc #'evil-declare-not-repeat
+      '(what-cursor-position))
 (mapc #'evil-declare-change-repeat
       '(dabbrev-expand
         hippie-expand))
@@ -18,6 +44,7 @@
       '(balance-windows
         eval-expression
         execute-extended-command
+        exit-minibuffer
         compile
         delete-window
         delete-other-windows
@@ -35,20 +62,9 @@
 (dolist (cmd '(keyboard-quit keyboard-escape-quit))
   (evil-set-command-property cmd :suppress-operator t))
 
-(dolist (cmd evil-visual-newline-commands)
-  (evil-set-command-property cmd :exclude-newline t))
-
-(dolist (map evil-overriding-maps)
-  (evil-delay `(and (boundp ',(car map)) (keymapp ,(car map)))
-      `(evil-make-overriding-map ,(car map) ',(cdr map))
-    'after-load-functions
-    (format "evil-make-overriding-%s" (car map))))
-
-(dolist (map evil-intercept-maps)
-  (evil-delay `(and (boundp ',(car map)) (keymapp ,(car map)))
-      `(evil-make-intercept-map ,(car map) ',(cdr map))
-    'after-load-functions
-    (format "evil-make-intercept-%s" (car map))))
+;;; Mouse
+(evil-declare-insert-at-point-repeat 'mouse-yank-primary)
+(evil-declare-insert-at-point-repeat 'mouse-yank-secondary)
 
 ;;; key-binding
 
@@ -68,6 +84,11 @@
 (defadvice read-key-sequence-vector (around evil activate)
   (let (evil-esc-mode)
     ad-do-it))
+
+;; Calling `keyboard-quit' should cancel repeat
+(defadvice keyboard-quit (before evil activate)
+  (when (fboundp 'evil-repeat-abort)
+    (evil-repeat-abort)))
 
 ;; etags-select
 ;; FIXME: probably etags-select should be recomended in docs

@@ -1,11 +1,13 @@
 {
 	"folder_history":
 	[
+		"/Users/dzhou/Documents/Vox/hermano",
+		"/Users/dzhou/Documents/Code/dotfiles"
 	],
-	"last_window_id": 30,
+	"last_window_id": 50,
 	"settings":
 	{
-		"new_window_height": 916,
+		"new_window_height": 916.0,
 		"new_window_settings":
 		{
 			"auto_complete":
@@ -17,9 +19,17 @@
 			"build_system": "",
 			"command_palette":
 			{
-				"height": 301,
+				"height": 50.0,
 				"selected_items":
 				[
+					[
+						"install",
+						"Package Control: Install Package"
+					],
+					[
+						"package",
+						"Package Control: Upgrade Package"
+					],
 					[
 						"package	",
 						"Package Control: Install Package"
@@ -29,23 +39,15 @@
 						"Package Control: Remove Package"
 					],
 					[
-						"install",
-						"Package Control: Install Package"
-					],
-					[
 						"discover",
 						"Package Control: Discover Packages"
-					],
-					[
-						"package",
-						"Package Control: Install Package"
 					]
 				],
-				"width": 579
+				"width": 579.0
 			},
 			"console":
 			{
-				"height": 117
+				"height": 117.0
 			},
 			"distraction_free":
 			{
@@ -58,6 +60,56 @@
 			},
 			"file_history":
 			[
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Preferences.sublime-settings",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/image/_builder.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/string/_builder.html.erb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/BracketHighlighter.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/SublimeBlockCursor/SublimeBlockCursor.py",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/BracketHighlighter/BracketHighlighter.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/Default/Preferences.sublime-settings",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprint_builder/views.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/new.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/stylesheets/builder.css.scss",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/_js_templates.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprint_builder/fields.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/models/record.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/stylesheets/base.css.scss",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/stylesheets/application.css.scss",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprint_builder/app.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/models/field_spec.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/models/group_spec.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprint_builder/models.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/models/field.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprint_builder/collections.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/hermano.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/records.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/blueprints.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/application.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/stylesheets/records.css.scss",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/edit.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/string/_preview.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/association/_blueprint_builder.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/association/_new.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/association/_edit.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/_backbone_views.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/assets/javascripts/networks.js",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/_backbone_views.html.er",
+				"/Users/dzhou/Documents/Vox/hermano/app/models/blueprint.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/string/_edit.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/_hermano_base.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/blueprints/_hermanojs.html.erb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/association/_preview.html.erb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/JavaScript.sublime-settings",
+				"/Users/dzhou/Documents/Vox/hermano/test/functional/records_controller_test.rb",
+				"/Users/dzhou/Documents/Vox/hermano/test/unit/helpers/blueprints_helper_test.rb",
+				"/Users/dzhou/Documents/Vox/hermano/test/unit/blueprint_test.rb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/Default/Default (OSX).sublime-keymap",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Default (OSX).sublime-keymap",
+				"/Users/dzhou/Documents/Vox/hermano/app/controllers/records_controller.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/controllers/networks_controller.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/controllers/application_controller.rb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Package Control.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/Package Control/Package Control.sublime-settings",
 				"/Users/dzhou/Library/Application Support/Sublime Text 2/Packages/User/Default (OSX).sublime-keymap",
 				"/Users/dzhou/Library/Application Support/Sublime Text 2/Packages/Default/Default (OSX).sublime-keymap",
 				"/Users/dzhou/Documents/Disqus/repo/disqus/locale/fr/LC_MESSAGES/django.po",
@@ -82,18 +134,14 @@
 			],
 			"find":
 			{
-				"height": 33
+				"height": 33.0
 			},
 			"find_in_files":
 			{
-				"height": 97,
-				"include_history":
+				"height": 0.0,
+				"where_history":
 				[
 					""
-				],
-				"location_history":
-				[
-					"<open folders>"
 				]
 			},
 			"find_state":
@@ -101,6 +149,21 @@
 				"case_sensitive": false,
 				"find_history":
 				[
+					"bracket",
+					"bracekt",
+					"bracket",
+					"<<",
+					"options",
+					"hidden",
+					"insert",
+					"keys",
+					"\n    ",
+					" [\"\"]}",
+					"[\"\"]}",
+					"scroll",
+					"smooth",
+					"blueprint",
+					"esc",
 					"tab",
 					"keys",
 					"msgid",
@@ -144,17 +207,17 @@
 				],
 				"reverse": false,
 				"show_context": true,
-				"use_buffer": true,
+				"use_buffer2": true,
 				"whole_word": false,
 				"wrap": true
 			},
 			"incremental_find":
 			{
-				"height": 35
+				"height": 35.0
 			},
 			"input":
 			{
-				"height": 35
+				"height": 35.0
 			},
 			"layout":
 			{
@@ -169,26 +232,38 @@
 				],
 				"cols":
 				[
-					0,
-					1
+					0.0,
+					1.0
 				],
 				"rows":
 				[
-					0,
-					1
+					0.0,
+					1.0
 				]
 			},
 			"menu_visible": true,
+			"output.find_results":
+			{
+				"height": 128.0
+			},
+			"output.package_control":
+			{
+				"height": 128.0
+			},
 			"replace":
 			{
-				"height": 0
+				"height": 0.0
 			},
 			"save_all_on_build": true,
 			"select_file":
 			{
-				"height": 0,
+				"height": 0.0,
 				"selected_items":
 				[
+					[
+						"pre",
+						"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Preferences.sublime-settings"
+					],
 					[
 						"fr/django",
 						"disqus/locale/fr/LC_MESSAGES/django.po"
@@ -250,24 +325,28 @@
 						"disqus/locale/fr/LC_MESSAGES/django.po"
 					]
 				],
-				"width": 0
+				"width": 0.0
 			},
 			"select_project":
 			{
-				"height": 500,
+				"height": 500.0,
 				"selected_items":
 				[
+					[
+						"herm",
+						"/Users/dzhou/Documents/Code/dotfiles/sublime2/Projects/hermano.sublime-project"
+					]
 				],
-				"width": 380
+				"width": 380.0
 			},
 			"show_minimap": false,
 			"show_open_files": false,
 			"show_tabs": true,
-			"side_bar_visible": false,
+			"side_bar_visible": true,
 			"side_bar_width": 226.20703125,
 			"status_bar_visible": true
 		},
-		"new_window_width": 1462
+		"new_window_width": 1462.0
 	},
 	"windows":
 	[
@@ -276,6 +355,7 @@
 	{
 		"recent_workspaces":
 		[
+			"/Users/dzhou/Documents/Code/dotfiles/sublime2/Projects/hermano.sublime-project"
 		]
 	}
 }

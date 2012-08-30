@@ -16,23 +16,27 @@
 
 ;; mac keys
 (global-set-key "\M-e" 'project-find-file-ido)
+(global-set-key "\M-E" 'project-index)
 (global-set-key "\M-t" 'project-find-file-ido)
-(global-set-key "\M-F" 'project-find-file-ido)
+(global-set-key "\M-F" 'project-grep)
 (global-set-key "\M-O" 'project-load)
+
+;; project global config
+(setq mk-proj-use-ido-selection t)
 
 ;; project definitions
 
-(project-def "vox"
+(project-def "sbn"
       '((basedir          "/Users/dzhou/Vox/sbn")
-        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
         (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
         (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
-        (open-files-cache "/Users/dzhou/.emacs.d/projects/vox/open-files-cache")
-        (startup-hook     vox-startup)
+        ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/vox/open-files-cache")
+        (startup-hook     sbn-startup)
         (vcs              git)
         (shutdown-hook    nil)))
 
-(defun vox-startup ()
+(defun sbn-startup ()
   (rvm-activate-corresponding-ruby))
 
 (project-def "hermano"
@@ -40,7 +44,7 @@
         (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
         (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
         (file-list-cache  "/Users/dzhou/.emacs.d/projects/hermano/file-list-cache")
-        (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+        ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
         (startup-hook     hermano-startup)
         (vcs              git)
         (shutdown-hook    nil)))

@@ -51,7 +51,7 @@ set showmatch
 set expandtab
 set shiftwidth=2
 set softtabstop=2
-set tabstop=4
+set tabstop=2
 
 set bs=2
 
@@ -166,7 +166,7 @@ let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
 
 "CommandT options
-let g:CommandTMaxFiles=20000
+let g:CommandTMaxFiles=10000
 let g:CommandTMaxHeight=10
 let g:CommandTMatchWindowReverse=1
 

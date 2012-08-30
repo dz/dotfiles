@@ -10,6 +10,11 @@
      (add-hook 'ruby-mode-hook 'inf-ruby-keys)
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)))
 
+;; this lets emacs recognize new ruby 1.9 hash syntax
+(font-lock-add-keywords
+ 'ruby-mode
+ '(("\\(\\b\\sw[_a-zA-Z0-9]*:\\)\\(?:\\s-\\|$\\)" (1 font-lock-constant-face))))
+
 ;; This allows indentation like:
 ;; object.method(
 ;;   arg1

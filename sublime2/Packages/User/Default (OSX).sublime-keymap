@@ -5,9 +5,16 @@
     { "keys": ["ctrl+s"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": false} },
     { "keys": ["ctrl+f"], "command": "move", "args": {"by": "pages", "forward": true} },
     { "keys": ["ctrl+b"], "command": "move", "args": {"by": "pages", "forward": false} },
-    { "keys": ["super+left"], "command": "move", "args": {"by": "subwords", "forward": false} },
-    { "keys": ["super+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} },
+    { "keys": ["ctrl+left"], "command": "move", "args": {"by": "subwords", "forward": false} },
+    { "keys": ["ctrl+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} },
     { "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
+
+    // these assume that the layout is a 2 column
+    { "keys": ["super+left"], "command": "focus_group", "args": { "group": 0 } },
+    { "keys": ["super+right"], "command": "focus_group", "args": { "group": 1 } },
+
+    // auto reindent
+    { "keys": ["super+d"], "command": "reindent" },
 
     // tab window keys
     { "keys": ["super+shift+]"], "command": "next_view_in_stack" },

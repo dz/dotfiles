@@ -1,108 +1,80 @@
 # -*- coding: utf-8 -*-
 # javascript.py - sublimelint package for checking Javascript files
 
-import os
 import json
+import re
 import subprocess
-import sublime
 
-from module_utils import get_startupinfo
+from base_linter import BaseLinter, INPUT_METHOD_TEMP_FILE
 
-__all__ = ['run', 'language']
-language = 'JavaScript'
-description =\
-'''* view.run_command("lint", "JavaScript")
-        Turns background linter off and runs the JSHint linter
-        (jshint, assumed to be on $PATH) on current view.
-'''
-
-jsc_path = '/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc'
+CONFIG = {
+    'language': 'JavaScript'
+}
 
 
-def jshint_path():
-    return os.path.join(os.path.dirname(__file__), 'libs', 'jshint')
+class Linter(BaseLinter):
+    GJSLINT_RE = re.compile(r'Line (?P<line>\d+),\s*E:(?P<errnum>\d+):\s*(?P<message>.+)')
 
+    def __init__(self, config):
+        super(Linter, self).__init__(config)
+        self.linter = None
 
-def is_enabled():
-    if os.path.exists(jsc_path):
-        return (True, 'using JavaScriptCore')
-    try:
-        subprocess.call(['node', '-v'], startupinfo=get_startupinfo())
-        return (True, 'using node.js')
-    except OSError:
-        return (False, 'JavaScriptCore or node.js is required')
-    except Exception as ex:
-        return (False, unicode(ex))
+    def get_executable(self, view):
+        self.linter = view.settings().get('javascript_linter', 'jshint')
 
-
-def check(codeString, filename):
-    path = jshint_path()
-
-    if os.path.exists(jsc_path):
-        process = subprocess.Popen((jsc_path, os.path.join(path, 'jshint_jsc.js'), '--', str(codeString.count('\n')), '{}', path + os.path.sep),
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT,
-                                    startupinfo=get_startupinfo())
-    else:
-        process = subprocess.Popen(('node', os.path.join(path, 'jshint_node.js')),
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT,
-                                    startupinfo=get_startupinfo())
-
-    result = process.communicate(codeString)
-
-    if result:
-        if process.returncode == 0:
-            if result[0].startswith('jshint: '):
-                print '{0}: {1}'.format(language, result[0][len('jshint: '):])
-            else:
-                return json.loads(result[0].strip() or '[]')
+        if (self.linter in ('jshint', 'jslint')):
+            return self.get_javascript_engine(view)
+        elif (self.linter == 'gjslint'):
+            try:
+                path = self.get_mapped_executable(view, 'gjslint')
+                subprocess.call([path, '--help'], startupinfo=self.get_startupinfo())
+                self.input_method = INPUT_METHOD_TEMP_FILE
+                return (True, path, 'using gjslint')
+            except OSError:
+                return (False, '', 'gjslint cannot be found')
         else:
-            print '{0}: {1}'.format(language, result[0])
-    else:
-        print '{0}: no result returned from jshint'
+            return (False, '', '"{0}" is not a valid javascript linter'.format(self.linter))
 
-    return []
-
-
-def run(code, view, filename='untitled'):
-
-    try:
-        errors = check(code, filename)
-    except OSError as (errno, message):
-        print 'SublimeLinter: error executing linter: {0}'.format(message)
-        errors = []
-
-    lines = set()
-    underlines = []
-    errorMessages = {}
-
-    def addMessage(lineno, message):
-        if lineno in errorMessages:
-            errorMessages[lineno].append(message)
+    def get_lint_args(self, view, code, filename):
+        if (self.linter == 'gjslint'):
+            args = []
+            gjslint_options = view.settings().get("gjslint_options", [])
+            args.extend(gjslint_options)
+            args.extend(['--nobeep', filename])
+            return args
+        elif (self.linter in ('jshint', 'jslint')):
+            return self.get_javascript_args(view, self.linter, code)
         else:
-            errorMessages[lineno] = [message]
+            return []
 
-    def underlineRange(lineno, position, length=1):
-        line = view.full_line(view.text_point(lineno, 0))
-        position += line.begin()
+    def get_javascript_options(self, view):
+        if self.linter == 'jshint':
+            rc_options = self.find_file('.jshintrc', view)
 
-        for i in xrange(length):
-            underlines.append(sublime.Region(position + i))
+            if rc_options != None:
+                rc_options = self.strip_json_comments(rc_options)
+                return json.dumps(json.loads(rc_options))
 
-    for error in errors:
-        lineno = error['line'] - 1  # jshint uses one-based line numbers
-        lines.add(lineno)
+    def parse_errors(self, view, errors, lines, errorUnderlines, violationUnderlines, warningUnderlines, errorMessages, violationMessages, warningMessages):
+        if (self.linter == 'gjslint'):
+            ignore = view.settings().get('gjslint_ignore', [])
 
-        # Remove trailing period from error message
-        reason = error['reason']
+            for line in errors.splitlines():
+                match = self.GJSLINT_RE.match(line)
 
-        if reason[-1] == '.':
-            reason = reason[:-1]
+                if match:
+                    line, errnum, message = match.group('line'), match.group('errnum'), match.group('message')
 
-        addMessage(lineno, reason)
-        underlineRange(lineno, error['character'] - 1)
+                    if (int(errnum) not in ignore):
+                        self.add_message(int(line), lines, message, errorMessages)
 
-    return lines, underlines, [], [], errorMessages, {}, {}
+        elif (self.linter in ('jshint', 'jslint')):
+            try:
+                errors = json.loads(errors.strip() or '[]')
+            except ValueError:
+                raise ValueError("Error from {0}: {1}".format(self.linter, errors))
+
+            for error in errors:
+                lineno = error['line']
+                self.add_message(lineno, lines, error['reason'], errorMessages)
+                self.underline_range(view, lineno, error['character'] - 1, errorUnderlines)

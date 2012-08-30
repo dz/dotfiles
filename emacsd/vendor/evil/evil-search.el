@@ -1,7 +1,31 @@
-;;;; Search
+;;; evil-search.el --- Search and substitute
+
+;; Author: Vegard Øye <vegard_oye at hotmail.com>
+;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+;;
+;; This file is NOT part of GNU Emacs.
+
+;;; License:
+
+;; This file is part of Evil.
+;;
+;; Evil is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+;;
+;; Evil is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with Evil.  If not, see <http://www.gnu.org/licenses/>.
 
 (require 'evil-common)
 (require 'evil-ex)
+
+;;; Code:
 
 (defun evil-select-search-module (option module)
   "Change the search module according to MODULE.
@@ -34,20 +58,22 @@ search module is used."
   :type '(radio (const :tag "Emacs built-in isearch." :value isearch)
                 (const :tag "Evil interactive search." :value evil-search))
   :group 'evil
-  :set 'evil-select-search-module)
+  :set 'evil-select-search-module
+  :initialize 'evil-custom-initialize-pending-reset)
 
 (defun evil-search-incrementally (forward regexp-p)
   "Search incrementally for user-entered text."
   (let ((evil-search-prompt (evil-search-prompt forward))
         (isearch-search-fun-function 'evil-isearch-function)
         (point (point))
-        search-nonincremental-instead)
+        isearch-success search-nonincremental-instead)
     (setq isearch-forward forward)
     (evil-save-echo-area
       (if forward
           (isearch-forward regexp-p)
         (isearch-backward regexp-p))
-      (when isearch-success
+      (if (not isearch-success)
+          (goto-char point)
         ;; always position point at the beginning of the match
         (when (and forward isearch-other-end)
           (goto-char isearch-other-end))
@@ -262,10 +288,13 @@ Returns nil if nothing is found."
 
 (defadvice isearch-delete-char (around evil activate)
   "Exit search if no search string."
-  (if (and evil-search-prompt
-           (string= isearch-string ""))
-      (isearch-exit)
-    ad-do-it))
+  (cond
+   ((and evil-search-prompt (string= isearch-string ""))
+    (let (search-nonincremental-instead)
+      (setq isearch-success nil)
+      (isearch-exit)))
+   (t
+    ad-do-it)))
 
 (defadvice isearch-lazy-highlight-search (around evil activate)
   "Never wrap the search in this context."
@@ -284,9 +313,16 @@ Here `smart' means the pattern is case sensitive if and only if
 it contains a capital character. If WHOLE-LINE is non-nil,
 all occurrences of the pattern on a line will be highlighted,
 otherwise only the first one."
-  (list (evil-ex-regex-without-case regexp)
-        (evil-ex-regex-case regexp casefold)
-        whole-line))
+  (let ((re (evil-ex-regex-without-case regexp)))
+    (when evil-ex-search-vim-style-regexp
+      (setq re (evil-transform-vim-style-regexp re)))
+    (setq re (evil-transform-regexp re
+                                    '((?t . "\t")
+                                      (?n . "\n")
+                                      (?r . "\r"))))
+    (list re
+          (evil-ex-regex-case regexp casefold)
+          whole-line)))
 
 (defun evil-ex-pattern-regex (pattern)
   "Return the regular expression of a search PATTERN."
@@ -302,8 +338,7 @@ otherwise only the first one."
 
 (defun evil-ex-regex-without-case (re)
   "Return the regular expression without all occurrences of \\c and \\C."
-  (replace-regexp-in-string
-   "\\(\\(?:^\\|[^\\\\]\\)\\(?:\\\\\\\\\\)*\\)\\\\[cC]" "\\1" re))
+  (evil-transform-regexp re '((?c . "") (?C . ""))))
 
 (defun evil-ex-regex-case (re default-case)
   "Return the case as implied by \\c or \\C in regular expression RE.
@@ -477,83 +512,90 @@ The following properties are supported:
           (face (evil-ex-hl-face hl))
           (match-hook (evil-ex-hl-match-hook hl))
           result)
-      (when pattern
-        ;; collect all visible ranges
-        (let (ranges sranges)
-          (dolist (win (if (eq evil-ex-interactive-search-highlight
-                               'all-windows)
-                           (get-buffer-window-list (current-buffer) nil t)
-                         (list (evil-ex-hl-window hl))))
-            (let ((beg (max (window-start win)
-                            (or (evil-ex-hl-min hl) (point-min))))
-                  (end (min (window-end win)
-                            (or (evil-ex-hl-max hl) (point-max)))))
-              (when (< beg end)
-                (push (cons beg end) ranges))))
-          (setq ranges
-                (sort ranges #'(lambda (r1 r2) (< (car r1) (car r2)))))
-          (while ranges
-            (let ((r1 (pop ranges))
-                  (r2 (pop ranges)))
-              (cond
-               ;; last range
-               ((null r2)
-                (push r1 sranges))
-               ;; ranges overlap, union
-               ((>= (cdr r1) (car r2))
-                (push (cons (car r1)
-                            (max (cdr r1) (cdr r2)))
-                      ranges))
-               ;; ranges distinct
-               (t
-                (push r1 sranges)
-                (push r2 ranges)))))
+      (if pattern
+          ;; collect all visible ranges
+          (let (ranges sranges)
+            (dolist (win (if (eq evil-ex-interactive-search-highlight
+                                 'all-windows)
+                             (get-buffer-window-list (current-buffer) nil t)
+                           (list (evil-ex-hl-window hl))))
+              (let ((beg (max (window-start win)
+                              (or (evil-ex-hl-min hl) (point-min))))
+                    (end (min (window-end win)
+                              (or (evil-ex-hl-max hl) (point-max)))))
+                (when (< beg end)
+                  (push (cons beg end) ranges))))
+            (setq ranges
+                  (sort ranges #'(lambda (r1 r2) (< (car r1) (car r2)))))
+            (while ranges
+              (let ((r1 (pop ranges))
+                    (r2 (pop ranges)))
+                (cond
+                 ;; last range
+                 ((null r2)
+                  (push r1 sranges))
+                 ;; ranges overlap, union
+                 ((>= (cdr r1) (car r2))
+                  (push (cons (car r1)
+                              (max (cdr r1) (cdr r2)))
+                        ranges))
+                 ;; ranges distinct
+                 (t
+                  (push r1 sranges)
+                  (push r2 ranges)))))
 
-          ;; run through all ranges
-          (condition-case lossage
-              (save-match-data
-                (dolist (r sranges)
-                  (let ((beg (car r))
-                        (end (cdr r)))
+            ;; run through all ranges
+            (condition-case lossage
+                (save-match-data
+                  (dolist (r sranges)
+                    (let ((beg (car r))
+                          (end (cdr r)))
+                      (save-excursion
+                        (goto-char beg)
+                        ;; set the overlays for the current highlight,
+                        ;; reusing old overlays (if possible)
+                        (while (and (not (eobp))
+                                    (evil-ex-search-find-next-pattern pattern)
+                                    (<= (match-end 0) end))
+                          (let ((ov (or (pop old-ovs) (make-overlay 0 0))))
+                            (move-overlay ov (match-beginning 0) (match-end 0))
+                            (overlay-put ov 'face face)
+                            (overlay-put ov 'evil-ex-hl (evil-ex-hl-name hl))
+                            (overlay-put ov 'priority 1000)
+                            (push ov new-ovs)
+                            (when match-hook (funcall match-hook hl ov)))
+                          (cond
+                           ((not (evil-ex-pattern-whole-line pattern))
+                            (forward-line))
+                           ((= (match-beginning 0) (match-end 0))
+                            (forward-char))
+                           (t (goto-char (match-end 0))))))))
+                  (mapc #'delete-overlay old-ovs)
+                  (evil-ex-hl-set-overlays hl new-ovs)
+                  (if (or (null pattern) new-ovs)
+                      (setq result t)
+                    ;; Maybe the match could just not be found somewhere else?
                     (save-excursion
-                      (goto-char beg)
-                      ;; set the overlays for the current highlight,
-                      ;; reusing old overlays (if possible)
-                      (while (and (evil-ex-search-find-next-pattern pattern)
-                                  (< (match-beginning 0) (match-end 0))
-                                  (<= (match-end 0) end))
-                        (let ((ov (or (pop old-ovs) (make-overlay 0 0))))
-                          (move-overlay ov (match-beginning 0) (match-end 0))
-                          (overlay-put ov 'face face)
-                          (overlay-put ov 'evil-ex-hl (evil-ex-hl-name hl))
-                          (overlay-put ov 'priority 1000)
-                          (push ov new-ovs)
-                          (when match-hook (funcall match-hook hl ov)))
-                        (unless (evil-ex-pattern-whole-line pattern)
-                          (forward-line))))))
-                (mapc #'delete-overlay old-ovs)
-                (evil-ex-hl-set-overlays hl new-ovs)
-                (if (or (null pattern) new-ovs)
-                    (setq result t)
-                  ;; Maybe the match could just not be found somewhere else?
-                  (save-excursion
-                    (goto-char (or (evil-ex-hl-min hl) (point-min)))
-                    (if (and (evil-ex-search-find-next-pattern pattern)
-                             (< (match-end 0) (or (evil-ex-hl-max hl)
-                                                  (point-max))))
-                        (setq result (format "Match in line %d"
-                                             (line-number-at-pos
-                                              (match-beginning 0))))
-                      (setq result "No match")))))
+                      (goto-char (or (evil-ex-hl-min hl) (point-min)))
+                      (if (and (evil-ex-search-find-next-pattern pattern)
+                               (< (match-end 0) (or (evil-ex-hl-max hl)
+                                                    (point-max))))
+                          (setq result (format "Match in line %d"
+                                               (line-number-at-pos
+                                                (match-beginning 0))))
+                        (setq result "No match")))))
 
-            (invalid-regexp
-             (setq result (cadr lossage)))
+              (invalid-regexp
+               (setq result (cadr lossage)))
 
-            (search-failed
-             (setq result (nth 2 lossage)))
+              (search-failed
+               (setq result (nth 2 lossage)))
 
-            (error
-             (setq result (format "%s" lossage))))))
+              (error
+               (setq result (format "%s" lossage)))))
+        ;; no pattern, remove all highlights
+        (mapc #'delete-overlay old-ovs)
+        (evil-ex-hl-set-overlays hl new-ovs))
       (when (evil-ex-hl-update-hook hl)
         (funcall (evil-ex-hl-update-hook hl) hl result)))))
 
@@ -578,7 +620,7 @@ Note that this function ignores the whole-line property of PATTERN."
     (when evil-ex-hl-update-timer
       (cancel-timer evil-ex-hl-update-timer))
     (setq evil-ex-hl-update-timer
-          (run-at-time 0.1 nil
+          (run-at-time evil-ex-hl-update-delay nil
                        #'evil-ex-hl-do-update-highlight
                        (current-buffer)))))
 
@@ -765,6 +807,8 @@ any error conditions."
                                             t))
           (setq pat evil-ex-search-pattern
                 offset (or offset evil-ex-search-offset)))
+        (when (zerop (length pat))
+          (throw 'done (list 'empty-pattern pat offset)))
         (let (search-result)
           (while (> count 0)
             (let ((result (evil-ex-find-next pat direction)))
@@ -812,7 +856,7 @@ any error conditions."
                 (evil-ex-search-update pattern offset
                                        (match-beginning 0) (match-end 0)
                                        "Wrapped"))
-               ((eq success 'empty-string)
+               ((eq success 'empty-pattern)
                 (evil-ex-search-update nil nil nil nil nil))
                (success
                 (evil-ex-search-update pattern offset
@@ -902,16 +946,17 @@ current search result."
                (success (pop result))
                (pattern (pop result))
                (offset (pop result)))
+          (setq evil-ex-search-pattern pattern
+                evil-ex-search-offset offset)
           (cond
            ((memq success '(t wrap))
-            (setq evil-ex-search-pattern pattern
-                  evil-ex-search-offset offset)
             (goto-char (match-beginning 0))
             (setq evil-ex-search-match-beg (match-beginning 0)
                   evil-ex-search-match-end (match-end 0))
             (evil-ex-search-goto-offset offset))
            (t
             (goto-char evil-ex-search-start-point)
+            (evil-ex-delete-hl 'evil-ex-search)
             (signal 'search-failed (list search-string)))))))))
 
 (defun evil-ex-start-symbol-search (unbounded direction count)
@@ -924,19 +969,18 @@ The DIRECTION argument should be either `forward' or
   (let ((string (evil-find-symbol (eq direction 'forward))))
     (if (null string)
         (error "No symbol under point")
-      (setq evil-ex-search-count count
-            evil-ex-search-direction direction
-            evil-ex-search-pattern
-            (evil-ex-make-pattern
-             (if unbounded
-                 (regexp-quote (match-string 0))
-               (format "\\_<%s\\_>" (regexp-quote (match-string 0))))
-             (cond
-              ((memq evil-ex-search-case '(sensitive smart))
-               'sensitive)
-              ((eq evil-ex-search-case 'insensitive)
-               'insensitive)) t)
-            evil-ex-search-offset nil)
+      (let ((regex (if unbounded
+                       (regexp-quote (match-string 0))
+                     (format "\\_<%s\\_>" (regexp-quote (match-string 0))))))
+        (setq evil-ex-search-count count
+              evil-ex-search-direction direction
+              evil-ex-search-pattern
+              (evil-ex-make-pattern regex evil-ex-search-case t)
+              evil-ex-search-offset nil)
+        ;; update search history unless this pattern equals the
+        ;; previous pattern
+        (unless (equal (car-safe evil-ex-search-history) regex)
+          (push regex evil-ex-search-history)))
       (evil-ex-delete-hl 'evil-ex-search)
       (when (fboundp 'evil-ex-search-next)
         (evil-ex-search-next count)))))
@@ -953,6 +997,7 @@ This handler highlights the pattern of the current substitution."
          ((eq flag 'start)
           (evil-ex-make-hl
            'evil-ex-substitute
+           :face 'evil-ex-substitute-matches
            :update-hook #'evil-ex-pattern-update-ex-info
            :match-hook (and evil-ex-substitute-interactive-replace
                             #'evil-ex-pattern-update-replacement))
@@ -990,9 +1035,7 @@ This handler highlights the pattern of the current substitution."
 (defun evil-ex-pattern-update-replacement (hl overlay)
   "Update the replacement display."
   (when (fboundp 'match-substitute-replacement)
-    (let ((fixedcase (not (eq (evil-ex-pattern-case-fold
-                               (evil-ex-hl-pattern hl))
-                              'insensitive)))
+    (let ((fixedcase (not case-replace))
           repl)
       (setq repl (if evil-ex-substitute-current-replacement
                      (evil-match-substitute-replacement
@@ -1000,7 +1043,7 @@ This handler highlights the pattern of the current substitution."
                       fixedcase)
                    ""))
       (put-text-property 0 (length repl)
-                         'face 'evil-ex-substitute
+                         'face 'evil-ex-substitute-replacement
                          repl)
       (overlay-put overlay 'after-string repl))))
 
