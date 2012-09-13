@@ -136,4 +136,4 @@ export SOLR_HOME=~/Documents/Vox/solr14
 alias bun="bundle"
 
 # node and npm shit
-export NODE_PATH="/usr/local/lib/node"
+export NODE_PATH="/usr/local/lib/node:/usr/local/lib/jsctags"
