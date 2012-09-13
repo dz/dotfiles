@@ -24,12 +24,21 @@
 ;; project global config
 (setq mk-proj-use-ido-selection t)
 
+;; helper functions
+(defun sbn-find-cmd (context)
+  (let* ((ignore-clause  (concat "\\( -path " mk-proj-basedir ".?* -prune \\)"))
+         (src-clause     "\\( -type f \\( -name '*.cpp' -o -name '*.[cChH]' -o -name '*.java' \\) -print \\)"))
+    (ecase context
+      ('src   (concat "find " mk-proj-basedir " " ignore-clause " -o " src-clause))
+      ('grep  (replace-regexp-in-string "-print" "-print0" (concat "find . " src-clause) t))
+      ('index (concat "find " mk-proj-basedir " " ignore-clause " -o -print")))))
+
 ;; project definitions
 
 (project-def "sbn"
       '((basedir          "/Users/dzhou/Vox/sbn")
         (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
-        (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+        (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
         (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
         ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/vox/open-files-cache")
         (startup-hook     sbn-startup)

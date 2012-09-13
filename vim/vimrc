@@ -153,13 +153,16 @@ nmap <silent> <Leader>, :CommandT<cr>
 nmap <silent> <Leader>r :CommandTFlush<cr>
 
 
-noremap <D-b> :LustyBufferExplorer<cr>
-noremap! <D-b> <esc>:LustyBufferExplorer<cr>
+noremap <D-e> :CommandT<cr>
+noremap! <D-e> <esc>:CommandT<cr>
+noremap <D-b> :CommandTBuffer<cr>
+noremap! <D-b> <esc>:CommandTBuffer<cr>
 noremap <D-r> :CtrlPMRU<cr>
 noremap! <D-r> <esc>:CtrlPMRU<cr>
 
 nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
 nmap <leader>. :LustyFilesystemExplorer<cr>
+nmap <D-o> :LustyFilesystemExplorer<cr>
 
 " NerdTree options
 let NERDTreeMinimalUI=1
