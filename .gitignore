@@ -1,4 +1,6 @@
 .DS_Store
+vim/installed
+installed/
 .netrwhist
 configs/custom.el
 projects/
