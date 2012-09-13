@@ -2,52 +2,60 @@
 " David Zhou
 set nocompatible
 filetype on "os x needs this sometimes. don't ask. its a mystery
-filetype off "required for vundle
-set rtp+=~/.vim/bundle/vundle/
+filetype off "required for neobundle
+if has('vim_starting')
+  set runtimepath+=~/.vim/bundle/neobundle/
+endif
 let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
-call vundle#rc("$HOME/.vim/installed") " gitignore is on for /installed, so use that instead of default bundle dir
-" let Vundle manage Vundle
+call neobundle#rc(expand('~/.vim/installed/')) " gitignore is on for /installed, so use that instead of default bundle dir
 " required!
-Bundle 'gmarik/vundle'
+NeoBundle 'Shougo/neobundle.vim'
+" After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
+NeoBundle 'Shougo/vimproc'
 
 " BUNDLES
-Bundle 'vim-scripts/L9.git'
-Bundle 'Lokaltog/vim-powerline'
-Bundle 'mileszs/ack.vim'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'https://github.com/tpope/vim-fugitive'
-Bundle 'kien/ctrlp.vim'
-Bundle 'FuzzyFinder'
-Bundle 'git://git.wincent.com/command-t.git'
-Bundle 'ervandew/supertab'
-Bundle 'scrooloose/nerdtree'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'scrooloose/syntastic'
-Bundle 'Raimondi/delimitMate'
-Bundle 'vim-scripts/IndexedSearch'
-Bundle 'vim-scripts/matchit.zip'
-Bundle 'majutsushi/tagbar'
+NeoBundle 'vim-scripts/L9.git'
+NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'mileszs/ack.vim'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'tpope/vim-surround'
+NeoBundle 'tpope/vim-unimpaired'
+NeoBundle 'https://github.com/tpope/vim-fugitive'
+NeoBundle 'kien/ctrlp.vim'
+NeoBundle 'LustyExplorer'
+NeoBundle 'git://git.wincent.com/command-t.git'
+NeoBundle 'ervandew/supertab'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'vim-scripts/IndexedSearch'
+NeoBundle 'vim-scripts/matchit.zip'
+NeoBundle 'majutsushi/tagbar'
 
 " HTML/CSS
-Bundle 'tudorprodan/html_annoyance.vim'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'groenewege/vim-less'
-Bundle 'tpope/vim-haml'
+NeoBundle 'tudorprodan/html_annoyance.vim'
+NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'groenewege/vim-less'
+NeoBundle 'tpope/vim-haml'
 
 " Javascript
-Bundle 'pangloss/vim-javascript'
+NeoBundle 'pangloss/vim-javascript'
 
 " Ruby/Rails
-Bundle 'tpope/vim-rails.git'
-Bundle 'tpope/vim-endwise'
-
-
-
+NeoBundle 'tpope/vim-rails.git'
+NeoBundle 'tpope/vim-endwise'
 " Now that vundle has finished its thing
 " turn filetype back on
 filetype plugin indent on
+
+if neobundle#exists_not_installed_bundles()
+  echomsg 'Not installed bundles : ' .
+        \ string(neobundle#get_not_installed_bundle_names())
+  echomsg 'Please execute ":NeoBundleInstall" command.'
+  "finish
+endif
+
 set background=dark
 color ir_black
 syntax on
