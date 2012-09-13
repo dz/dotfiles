@@ -132,9 +132,6 @@ noremap <4-MiddleMouse> <LeftMouse>
 "Set to auto read when a file is changed from the outside
 set autoread
 
-inoremap jj <esc>l
-cnoremap jj <c-c>l
-
 " sudo write
 map w! w !sudo tee % >/dev/null
 
@@ -231,6 +228,7 @@ let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_mruf_max = 2000
 let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*' " MacOSX/Linux
+let g:ctrlp_dont_split = 'Help'
 let g:ctrlp_prompt_mappings = {
     \ 'PrtSelectMove("j")':   ['<c-j>', '<c-n>'],
     \ 'PrtSelectMove("k")':   ['<c-k>', '<c-p>'],
@@ -239,10 +237,14 @@ let g:ctrlp_prompt_mappings = {
     \ 'PrtClearCache()':      ['<F5>', '<c-r>'],
     \ }
 
-
 " Tagbar options
 noremap <leader>o :TagbarToggle<CR>
+noremap <D-d> :TagbarToggle<CR>
+noremap! <D-d> <esc>:TagbarToggle<cr>
+
 set tags=tags,.git/tags,TAGS
+let g:tagbar_compact = 1
+let g:tagbar_autoshowtag = 1
 let g:tagbar_type_coffee = {
   \ 'kinds' : [
   \   'f:functions',
@@ -256,6 +258,24 @@ let g:tagbar_type_coffee = {
   \ 'ctagsbin' : 'coffeetags',
   \ 'ctagsargs' : '--include-vars '
   \}
+let g:tagbar_type_markdown = {
+  \ 'ctagstype' : 'markdown',
+  \ 'kinds' : [
+    \ 'h:Heading_L1',
+    \ 'i:Heading_L2',
+    \ 'k:Heading_L3'
+  \ ]
+\ }
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
 
 "No scrollbars
 set guioptions-=L
