@@ -33,8 +33,8 @@ Bundle 'majutsushi/tagbar'
 " HTML/CSS
 Bundle 'tudorprodan/html_annoyance.vim'
 Bundle 'kchmck/vim-coffee-script'
-Bundle 'groenewege/vim-less' " for less CSS files
-Bundle 'tpope/vim-haml' " for haml, sass and scss
+Bundle 'groenewege/vim-less'
+Bundle 'tpope/vim-haml'
 
 " Javascript
 Bundle 'pangloss/vim-javascript'
