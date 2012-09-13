@@ -120,7 +120,7 @@ export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
 
 PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
 
-PATH="/usr/local/bin:${PATH}"
+PATH="/usr/local/share/npm/bin:/usr/local/bin:${PATH}"
 export PATH
 
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
@@ -134,3 +134,6 @@ export SOLR_HOME=~/Documents/Vox/solr14
 
 # rails aliases
 alias bun="bundle"
+
+# node and npm shit
+export NODE_PATH="/usr/local/lib/node"
