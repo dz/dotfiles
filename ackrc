@@ -16,6 +16,7 @@
 #   FYI: .sqlite3, .log are not Ack types so don't need to be ignored
 --ignore-dir=.bundle
 --ignore-dir=public/system
+--ignore-dir=public/cache
 --ignore-dir=tmp
 --ignore-dir=vendor
 # ignore - Django
