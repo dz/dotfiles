@@ -17,6 +17,7 @@
 --ignore-dir=.bundle
 --ignore-dir=public/system
 --ignore-dir=public/cache
+--ignore-dir=test/fixtures
 --ignore-dir=tmp
 --ignore-dir=vendor
 # ignore - Django
