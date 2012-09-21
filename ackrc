@@ -1,0 +1,23 @@
+--color
+# only search with case sensitivity if there is mixed case
+--smart-case
+# follow symlinks
+--follow
+# custom filetypes
+--type-set=cucumber=.feature
+--type-set=doc=.markdown,.md,.mdown,.rdoc,.rst
+--type-set=erb=.erb
+--type-set=rb=.rb
+--type-set=scss=.scss
+--type-set=coffee=.coffee
+# ignore
+--nosql
+# ignore - Rails (matches .gitignore)
+#   FYI: .sqlite3, .log are not Ack types so don't need to be ignored
+--ignore-dir=.bundle
+--ignore-dir=public/system
+--ignore-dir=tmp
+--ignore-dir=vendor
+# ignore - Django
+--ignore-dir=migrations
+--ignore-dir=media
