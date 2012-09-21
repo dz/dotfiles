@@ -19,11 +19,10 @@ NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'https://github.com/tpope/vim-fugitive'
+NeoBundle 'tpope/vim-unimpaired'
 NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'LustyExplorer'
-NeoBundle 'git://git.wincent.com/command-t.git'
 NeoBundle 'ervandew/supertab'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -198,13 +197,13 @@ noremap! <C-q> <esc>:b#<cr>
 map <Leader>t :NERDTreeToggle<cr>
 map <Leader>m :NERDTreeToggle<cr>
 
-nmap <silent> <Leader>, :CommandT<cr>
-nmap <silent> <Leader>r :CommandTFlush<cr>
-noremap <D-e> :CommandT<cr>
-noremap! <D-e> <esc>:CommandT<cr>
+nmap <silent> <Leader>, :CtrlP<cr>
+nmap <silent> <Leader>r :CtrlPClearCache<cr>
+noremap <D-e> :CtrlP<cr>
+noremap! <D-e> <esc>:CtrlP<cr>
 
-noremap <D-b> :CommandTBuffer<cr>
-noremap! <D-b> <esc>:CommandTBuffer<cr>
+noremap <D-b> :CtrlPBuffer<cr>
+noremap! <D-b> <esc>:CtrlPBuffer<cr>
 
 noremap <D-r> :CtrlPMRU<cr>
 noremap! <D-r> <esc>:CtrlPMRU<cr>
@@ -223,12 +222,15 @@ let g:CommandTMaxHeight=10
 let g:CommandTMatchWindowReverse=1
 
 "CtrlP options
-let g:ctrlp_working_path_mode = 2
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_mruf_case_sensitive = 0
+let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_mruf_max = 2000
 let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*' " MacOSX/Linux
 let g:ctrlp_dont_split = 'Help'
+let g:ctrlp_extensions = ['tag', 'quickfix', 'undo']
 let g:ctrlp_prompt_mappings = {
     \ 'PrtSelectMove("j")':   ['<c-j>', '<c-n>'],
     \ 'PrtSelectMove("k")':   ['<c-k>', '<c-p>'],
@@ -277,6 +279,12 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 
+"Syntastic options
+let g:syntastic_check_on_open = 1
+let g:syntastic_enable_signs = 0
+let g:syntastic_enable_highlighting = 1
+
+
 "No scrollbars
 set guioptions-=L
 set guioptions-=l
@@ -292,6 +300,9 @@ let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
 let g:SuperTabCompletionContexts = ['s:ContextDiscover', 's:ContextText']
 let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
+"Ack options
+
 
 "Gundo options
 nnoremap <leader>u :GundoToggle<CR>
@@ -334,6 +345,33 @@ function! QuickfixFilenames()
   return join(values(buffer_numbers))
 endfunction
 
+" when entering a file, automatically set the file's working
+" directory to either the first source control dir it finds
+" or the parent directory
+function! s:setcwd()
+  let cph = expand('%:p:h', 1)
+  if cph =~ '^.\+://' | retu | en
+  for mkr in ['.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects']
+    let wd = call('find'.(mkr =~ '/$' ? 'dir' : 'file'), [mkr, cph.';'])
+    if wd != '' | let &acd = 0 | brea | en
+  endfo
+  exe 'lc!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
+endfunction
+
+autocmd BufEnter * call s:setcwd()
+
+" strip whitespace
+fun! <SID>StripTrailingWhitespaces()
+    let l = line(".")
+    let c = col(".")
+    %s/\s\+$//e
+    call cursor(l, c)
+endfun
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+"ensure no tabs
+autocmd BufWritePre * :set expandtab
+
 " LANGUAGE OPTIONS
 "
 "syntax color options for various languages
@@ -363,17 +401,6 @@ au BufNewFile,BufRead  *.json set filetype=javascript
 
 "language specific options
 
-fun! <SID>StripTrailingWhitespaces()
-    let l = line(".")
-    let c = col(".")
-    %s/\s\+$//e
-    call cursor(l, c)
-endfun
-autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
-
-"ensure no tabs
-autocmd BufWritePre * :set expandtab
-
 "PHP
 let php_sql_query=1
 let php_baselib=1
@@ -385,6 +412,14 @@ let php_noShortTags = 1
 "HTML
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
+"matchtagalways
+let g:mta_filetypes = {
+    \ 'html' : 1,
+    \ 'xhtml' : 1,
+    \ 'xml' : 1,
+    \ 'jinja' : 1,
+    \ 'eruby': 1
+    \}
 
 "Python
 let g:pyflakes_user_quickfix = 0
