@@ -53,6 +53,7 @@
 	"highlight_line": true,
 	"ignored_packages":
 	[
+    "vintage"
 	],
 	"overlay_scroll_bars": "enabled",
 	"pep8_ignore":

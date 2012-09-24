@@ -13,12 +13,9 @@
     { "keys": ["super+left"], "command": "focus_group", "args": { "group": 0 } },
     { "keys": ["super+right"], "command": "focus_group", "args": { "group": 1 } },
 
-    // auto reindent
-    { "keys": ["super+d"], "command": "reindent" },
-
     // tab window keys
-    { "keys": ["super+shift+]"], "command": "next_view_in_stack" },
-    { "keys": ["super+shift+["], "command": "prev_view_in_stack" },
+    { "keys": ["super+shift+]"], "command": "next_view" },
+    { "keys": ["super+shift+["], "command": "prev_view" },
 
     // find panel bindings
     { "keys": ["enter"], "command": "hide_panel", "context":
