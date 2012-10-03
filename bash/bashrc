@@ -98,6 +98,9 @@ alias c="clear"
 alias l="ls --color -F"
 alias less="less -R"
 alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen%cn%Creset %Cblue%cr%Creset' --abbrev-commit --date=relative"
+alias gits="git status"
+alias gs="git status"
+alias gd="git diff"
 export GREP_OPTIONS='--color=auto'
 
 #emacs aliases

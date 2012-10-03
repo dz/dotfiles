@@ -1,16 +1,24 @@
 {
-	"auto_upgrade_last_run": 1348522374,
+	"auto_upgrade_last_run": 1349293054,
 	"installed_packages":
 	[
 		"Alignment",
 		"All Autocomplete",
 		"ApacheConf.tmLanguage",
+		"AutoFileName",
 		"BracketHighlighter",
 		"CoffeeScript",
 		"Gist",
+		"Git",
+		"GotoOpenFile",
+		"HTML5",
+		"jQuery",
+		"Origami",
 		"Package Control",
 		"Sass",
+		"SideBarEnhancements",
 		"SublimeBlockCursor",
+		"SublimeCodeIntel",
 		"SublimeLinter",
 		"Theme - Soda"
 	]

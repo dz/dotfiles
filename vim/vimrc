@@ -44,6 +44,7 @@ NeoBundle 'pangloss/vim-javascript'
 " Ruby/Rails
 NeoBundle 'tpope/vim-rails.git'
 NeoBundle 'tpope/vim-endwise'
+NeoBundle 'tpope/vim-rvm'
 " Now that vundle has finished its thing
 " turn filetype back on
 filetype plugin indent on
@@ -201,6 +202,8 @@ nmap <silent> <Leader>, :CtrlP<cr>
 nmap <silent> <Leader>r :CtrlPClearCache<cr>
 noremap <D-e> :CtrlP<cr>
 noremap! <D-e> <esc>:CtrlP<cr>
+noremap <D-E> :CtrlPClearCache<cr>
+noremap! <D-E> <esc>:CtrlPClearCache<cr>
 
 noremap <D-b> :CtrlPBuffer<cr>
 noremap! <D-b> <esc>:CtrlPBuffer<cr>
@@ -283,7 +286,7 @@ let g:tagbar_type_ruby = {
 let g:syntastic_check_on_open = 1
 let g:syntastic_enable_signs = 0
 let g:syntastic_enable_highlighting = 1
-
+let g:syntastic_ruby_exec = '/Users/dzhou/.rvm/rubies/ruby-1.9.2-p290/bin/ruby'
 
 "No scrollbars
 set guioptions-=L
@@ -296,13 +299,6 @@ set completeopt=menuone
 
 "Supertab options
 let g:SuperTabDefaultCompletionType = "context"
-let g:SuperTabContextDefaultCompletionType = "<c-x><c-n>"
-let g:SuperTabCompletionContexts = ['s:ContextDiscover', 's:ContextText']
-let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
-let g:SuperTabContextDiscoverDiscovery = ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-
-"Ack options
-
 
 "Gundo options
 nnoremap <leader>u :GundoToggle<CR>
@@ -372,6 +368,9 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 "ensure no tabs
 autocmd BufWritePre * :set expandtab
 
+"diffing is better in tabs in order to preserve window layout
+command! GdiffInTab tabedit %|Gdiff
+
 " LANGUAGE OPTIONS
 "
 "syntax color options for various languages
@@ -426,13 +425,12 @@ let g:pyflakes_user_quickfix = 0
 autocmd BufRead,BufNewFile *.py set autoindent
 autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,except,finally,def,class
 
+"Ruby
+
 "CSS
 
 "Javascript
 " Use Node.js for JavaScript interpretation
 let $JS_CMD='node'
 
-"SVNDiff
-hi DiffAdd      ctermfg=0 ctermbg=2 guibg='green'
-hi DiffDelete   ctermfg=0 ctermbg=1 guibg='red'
-hi DiffChange   ctermfg=0 ctermbg=3 guibg='yellow'
+

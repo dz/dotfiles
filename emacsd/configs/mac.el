@@ -23,7 +23,7 @@
 (set-face-attribute 'vertical-border nil :foreground "#666666")
 
 ;; no line highlighting
-(global-hl-line-mode 0)
+(global-hl-line-mode 1)
 
 ;; turn off fringe
 (set-fringe-mode 0)
@@ -74,7 +74,12 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\M-2" 'split-window-vertically)
 (global-set-key "\M-3" 'split-window-horizontally)
 (global-set-key "\M-0" 'delete-window)
-(global-set-key "\M-+" 'balance-windows)
+
+(global-set-key "\M--" (kbd "C-u - 1 6 C-x {"))
+(global-set-key "\M-+" (kbd "C-u - 1 6 C-x }"))
+(global-set-key "\M-[" (kbd "C-u - 1 6 C-x {"))
+(global-set-key "\M-]" (kbd "C-u - 1 6 C-x }"))
+(global-set-key "\M-=" 'balance-windows)
 
 ;; allow command-h to hide emacs
 (global-set-key "\M-h" 'ns-do-hide-emacs)

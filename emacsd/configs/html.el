@@ -11,5 +11,7 @@
           (lambda ()
             (set (make-local-variable 'sgml-basic-offset) 2)))
 
+(add-hook 'html-mode-hook 'highlight-indentation-mode)
+
 (add-to-list 'auto-mode-alist '("\\.tmpl$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.dtpl$" . htlm-mode))

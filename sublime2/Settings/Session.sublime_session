@@ -2,13 +2,14 @@
 	"folder_history":
 	[
 		"/Users/dzhou/Documents/Vox/hermano",
-		"/Users/dzhou/Documents/Vox/hermano/app",
-		"/Users/dzhou/Documents/Vox/sbn"
+		"/Users/dzhou/Documents/Vox/sbn",
+		"/Users/dzhou/Documents/Vox/banana_stand",
+		"/Users/dzhou/Documents/Vox/hermano/app"
 	],
-	"last_window_id": 9,
+	"last_window_id": 36,
 	"settings":
 	{
-		"new_window_height": 802.0,
+		"new_window_height": 884.0,
 		"new_window_settings":
 		{
 			"auto_complete":
@@ -20,23 +21,67 @@
 			"build_system": "",
 			"command_palette":
 			{
-				"height": 375.0,
+				"height": 71.0,
 				"selected_items":
 				[
 					[
+						"diffcurr",
+						"Git: Diff Current File"
+					],
+					[
+						"packageinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"gitstatus",
+						"Git: Status"
+					],
+					[
+						"gitpull",
+						"Git: Pull"
+					],
+					[
+						"packinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"packagelist",
+						"Package Control: List Packages"
+					],
+					[
+						"packinstall",
+						"Package Control: Install Package"
+					],
+					[
+						"packli",
+						"Package Control: List Packages"
+					],
+					[
 						"package",
-						"Package Control: Upgrade Package"
+						"Package Control: Discover Packages"
+					],
+					[
+						"pack",
+						"Package Control: Remove Package"
+					],
+					[
+						"Package Control: ",
+						"Package Control: List Packages"
+					],
+					[
+						"packin",
+						"Package Control: Install Package"
 					],
 					[
 						":w",
 						":w - Save"
 					]
 				],
-				"width": 579.0
+				"width": 588.0
 			},
 			"console":
 			{
-				"height": 0.0
+				"height": 162.0
 			},
 			"distraction_free":
 			{
@@ -49,6 +94,12 @@
 			},
 			"file_history":
 			[
+				"/Users/dzhou/Documents/Vox/hermano/Gemfile.lock",
+				"/Users/dzhou/Documents/Vox/hermano/config.ru",
+				"/Users/dzhou/Documents/Vox/banana_stand/app/controllers/campfire_controller.rb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/BracketHighlighter.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/AutoFileName/autofilename.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/GotoRecent/goto_recent.py",
 				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Default (OSX).sublime-keymap",
 				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Preferences.sublime-settings",
 				"/Users/dzhou/Documents/Vox/hermano/tmp/cache/assets/DBC/AA0/sprockets%2Fa0b0445a27bf8df1c813f7ab3abce671",
@@ -74,6 +125,21 @@
 				"case_sensitive": false,
 				"find_history":
 				[
+					"keys",
+					"\n    ",
+					"quick_add_next",
+					"keys",
+					"super+d",
+					"d",
+					"ad",
+					"s",
+					" ",
+					"    {",
+					"keys",
+					"},",
+					"alt",
+					"},\n",
+					"      ",
 					"will_paginate",
 					"total_pages",
 					"vintage"
@@ -93,7 +159,7 @@
 			},
 			"incremental_find":
 			{
-				"height": 0.0
+				"height": 38.0
 			},
 			"input":
 			{
@@ -122,9 +188,13 @@
 				]
 			},
 			"menu_visible": true,
+			"output.git":
+			{
+				"height": 132.0
+			},
 			"replace":
 			{
-				"height": 0.0
+				"height": 68.0
 			},
 			"save_all_on_build": true,
 			"select_file":
@@ -133,8 +203,32 @@
 				"selected_items":
 				[
 					[
+						"fieldsp",
+						"app/models/field_spec.rb"
+					],
+					[
+						"recordrb",
+						"app/models/record.rb"
+					],
+					[
+						"poly",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
 						"record.rb",
 						"app/models/record.rb"
+					],
+					[
+						"polygon.rb",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
+						"game/index.r",
+						"app/modules/polygon/game/index_cell.rb"
+					],
+					[
+						"campfirecon",
+						"app/controllers/campfire_controller.rb"
 					],
 					[
 						"records.rb",
@@ -178,7 +272,7 @@
 			"side_bar_width": 150.0,
 			"status_bar_visible": true
 		},
-		"new_window_width": 1625.0
+		"new_window_width": 1605.0
 	},
 	"windows":
 	[
@@ -192,23 +286,67 @@
 			"build_system": "",
 			"command_palette":
 			{
-				"height": 375.0,
+				"height": 71.0,
 				"selected_items":
 				[
 					[
+						"diffcurr",
+						"Git: Diff Current File"
+					],
+					[
+						"packageinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"gitstatus",
+						"Git: Status"
+					],
+					[
+						"gitpull",
+						"Git: Pull"
+					],
+					[
+						"packinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"packagelist",
+						"Package Control: List Packages"
+					],
+					[
+						"packinstall",
+						"Package Control: Install Package"
+					],
+					[
+						"packli",
+						"Package Control: List Packages"
+					],
+					[
 						"package",
-						"Package Control: Upgrade Package"
+						"Package Control: Discover Packages"
+					],
+					[
+						"pack",
+						"Package Control: Remove Package"
+					],
+					[
+						"Package Control: ",
+						"Package Control: List Packages"
+					],
+					[
+						"packin",
+						"Package Control: Install Package"
 					],
 					[
 						":w",
 						":w - Save"
 					]
 				],
-				"width": 579.0
+				"width": 588.0
 			},
 			"console":
 			{
-				"height": 0.0
+				"height": 162.0
 			},
 			"distraction_free":
 			{
@@ -221,6 +359,12 @@
 			},
 			"file_history":
 			[
+				"/Users/dzhou/Documents/Vox/hermano/Gemfile.lock",
+				"/Users/dzhou/Documents/Vox/hermano/config.ru",
+				"/Users/dzhou/Documents/Vox/banana_stand/app/controllers/campfire_controller.rb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/BracketHighlighter.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/AutoFileName/autofilename.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/GotoRecent/goto_recent.py",
 				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Default (OSX).sublime-keymap",
 				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Preferences.sublime-settings",
 				"/Users/dzhou/Documents/Vox/hermano/tmp/cache/assets/DBC/AA0/sprockets%2Fa0b0445a27bf8df1c813f7ab3abce671",
@@ -246,6 +390,21 @@
 				"case_sensitive": false,
 				"find_history":
 				[
+					"keys",
+					"\n    ",
+					"quick_add_next",
+					"keys",
+					"super+d",
+					"d",
+					"ad",
+					"s",
+					" ",
+					"    {",
+					"keys",
+					"},",
+					"alt",
+					"},\n",
+					"      ",
 					"will_paginate",
 					"total_pages",
 					"vintage"
@@ -265,7 +424,7 @@
 			},
 			"incremental_find":
 			{
-				"height": 0.0
+				"height": 38.0
 			},
 			"input":
 			{
@@ -294,10 +453,14 @@
 				]
 			},
 			"menu_visible": true,
-			"position": "467 276 1625 824 0 0 2560 1418 ",
+			"output.git":
+			{
+				"height": 132.0
+			},
+			"position": "477 235 1605 906 0 0 2560 1418 ",
 			"replace":
 			{
-				"height": 0.0
+				"height": 68.0
 			},
 			"save_all_on_build": true,
 			"select_file":
@@ -306,8 +469,32 @@
 				"selected_items":
 				[
 					[
+						"fieldsp",
+						"app/models/field_spec.rb"
+					],
+					[
+						"recordrb",
+						"app/models/record.rb"
+					],
+					[
+						"poly",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
 						"record.rb",
 						"app/models/record.rb"
+					],
+					[
+						"polygon.rb",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
+						"game/index.r",
+						"app/modules/polygon/game/index_cell.rb"
+					],
+					[
+						"campfirecon",
+						"app/controllers/campfire_controller.rb"
 					],
 					[
 						"records.rb",
@@ -350,7 +537,7 @@
 			"side_bar_visible": true,
 			"side_bar_width": 150.0,
 			"status_bar_visible": true,
-			"window_id": 9
+			"window_id": 36
 		}
 	],
 	"workspaces":

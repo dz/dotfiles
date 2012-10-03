@@ -67,6 +67,15 @@
      (show-paren-mismatch ((t (:background "#FF1100"))))
      (underline ((nil (:underline nil))))
 
+     ;; highlight line mode
+     (hl-line ((t (:background "#181818"))))
+
+     ;; indentation changes
+     (highlight-indentation-face ((t (:background "#181818"))))
+
+     ;; copmilation mode
+     (compilation-error ((t (:background "black" :foreground "#E60B29" :underline nil :weight ,bold :slant normal))))
+
      ;; mumamo
      (mumamo-border-face-in ((t (:foreground "#96CBFE" :underline nil :slant normal))))
      (mumamo-border-face-out ((t (:foreground "#96CBFE" :underline nil :slant normal))))

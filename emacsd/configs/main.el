@@ -79,6 +79,10 @@
 ;; always remove trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; highlight indentation
+(require 'highlight-indentation)
+(setq highlight-indentation-offset 2)
+
 ;; change behavior of buffers with same name
 (require 'uniquify)
 (setq uniquify-buffer-name-style 'reverse)

@@ -70,10 +70,12 @@ If the region is activated, enter Visual state."
   (cond
    ((evil-insert-state-p)
     (add-hook 'pre-command-hook #'evil-insert-repeat-hook)
+    (add-hook 'post-command-hook #'evil-insert-post-command nil t)
     (unless evil-want-fine-undo
       (evil-start-undo-step t)))
    (t
     (remove-hook 'pre-command-hook #'evil-insert-repeat-hook)
+    (remove-hook 'post-command-hook #'evil-insert-post-command t)
     (setq evil-insert-repeat-info evil-repeat-info)
     (evil-set-marker ?^ nil t)
     (unless evil-want-fine-undo
@@ -88,6 +90,16 @@ If the region is activated, enter Visual state."
   (setq evil-insert-repeat-info (last evil-repeat-info))
   (remove-hook 'pre-command-hook #'evil-insert-repeat-hook))
 (put 'evil-insert-repeat-hook 'permanent-local-hook t)
+
+(defun evil-insert-post-command ()
+  "Adjust cursor after each command."
+  (when (and (eobp) (bolp))
+    (evil-with-restriction
+        (field-beginning nil nil (line-beginning-position -1)) nil
+      (forward-line -1)
+      (back-to-indentation)
+      (setq temporary-goal-column (current-column)))))
+(put 'evil-insert-post-command 'permanent-local-hook t)
 
 (defun evil-cleanup-insert-state ()
   "Called when Insert state is about to be exited.
@@ -273,6 +285,8 @@ If COMMAND is a motion, refresh the selection;
 otherwise exit Visual state."
   (when (evil-visual-state-p)
     (setq command (or command this-command))
+    (when evil-visual-x-select-timer
+      (cancel-timer evil-visual-x-select-timer))
     (if (or quit-flag
             (eq command #'keyboard-quit)
             ;; Is `mark-active' nil for an unexpanded region?
@@ -286,15 +300,24 @@ otherwise exit Visual state."
       (if evil-visual-region-expanded
           (evil-visual-contract-region)
         (evil-visual-refresh))
-      (when (and (fboundp 'x-select-text)
-                 (or (not (boundp 'ns-initialized))
-                     (with-no-warnings ns-initialized))
-                 (not (eq evil-visual-selection 'block)))
-        (x-select-text (buffer-substring-no-properties
-                        evil-visual-beginning
-                        evil-visual-end)))
+      (setq evil-visual-x-select-timer
+            (run-with-idle-timer evil-visual-x-select-timeout nil
+                                 #'evil-visual-update-x-selection
+                                 (current-buffer)))
       (evil-visual-highlight))))
 (put 'evil-visual-post-command 'permanent-local-hook t)
+
+(defun evil-visual-update-x-selection (&optional buffer)
+  "Update the X selection with the current visual region."
+  (with-current-buffer (or buffer (current-buffer))
+    (when (and (evil-visual-state-p)
+               (fboundp 'x-select-text)
+               (or (not (boundp 'ns-initialized))
+                   (with-no-warnings ns-initialized))
+               (not (eq evil-visual-selection 'block)))
+      (x-select-text (buffer-substring-no-properties
+                      evil-visual-beginning
+                      evil-visual-end)))))
 
 (defun evil-visual-activate-hook (&optional command)
   "Enable Visual state if the region is activated."
@@ -336,6 +359,7 @@ If LATER is non-nil, exit after the current command."
   :repeat abort
   (with-current-buffer (or buffer (current-buffer))
     (when (evil-visual-state-p)
+      (evil-visual-update-x-selection)
       (if later
           (setq deactivate-mark t)
         (when evil-visual-region-expanded

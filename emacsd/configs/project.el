@@ -18,7 +18,7 @@
 (global-set-key "\M-e" 'project-find-file-ido)
 (global-set-key "\M-E" 'project-index)
 (global-set-key "\M-t" 'project-find-file-ido)
-(global-set-key "\M-F" 'project-grep)
+(global-set-key "\M-F" 'project-ack)
 (global-set-key "\M-O" 'project-load)
 
 ;; project global config

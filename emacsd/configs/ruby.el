@@ -10,6 +10,8 @@
      (add-hook 'ruby-mode-hook 'inf-ruby-keys)
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)))
 
+(add-hook 'ruby-mode-hook 'highlight-indentation-mode)
+
 ;; this lets emacs recognize new ruby 1.9 hash syntax
 (font-lock-add-keywords
  'ruby-mode

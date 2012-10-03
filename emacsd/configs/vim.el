@@ -3,9 +3,9 @@
 (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
 (define-key evil-motion-state-map "\C-e" 'evil-end-of-line)
 (define-key evil-insert-state-map "\C-e" 'evil-end-of-line)
-(define-key evil-normal-state-map "\C-a" 'evil-beginning-of-line)
-(define-key evil-motion-state-map "\C-a" 'evil-beginning-of-line)
-(define-key evil-insert-state-map "\C-a" 'evil-beginning-of-line)
+(define-key evil-normal-state-map "\C-a" 'evil-first-non-blank)
+(define-key evil-motion-state-map "\C-a" 'evil-first-non-blank)
+(define-key evil-insert-state-map "\C-a" 'evil-first-non-blank)
+(define-key evil-normal-state-map (kbd "TAB") 'evil-indent-line)
+(define-key evil-visual-state-map (kbd "TAB") 'evil-indent-line)
 (evil-mode 1)
-
-

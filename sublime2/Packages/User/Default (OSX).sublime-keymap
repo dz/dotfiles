@@ -1,5 +1,5 @@
 [
-    { "keys": ["super+b"], "command": "toggle_side_bar" },
+    { "keys": ["super+shift+b"], "command": "toggle_side_bar" },
     { "keys": ["ctrl+w"], "command": "delete_word", "args": { "forward": false } },
     { "keys": ["ctrl+q"], "command": "delete_word", "args": { "forward": true } },
     { "keys": ["ctrl+s"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse": false} },
@@ -9,9 +9,25 @@
     { "keys": ["ctrl+right"], "command": "move", "args": {"by": "subword_ends", "forward": true} },
     { "keys": ["super+l"], "command": "show_overlay", "args": {"overlay": "goto", "text": ":"} },
 
-    // these assume that the layout is a 2 column
-    { "keys": ["super+left"], "command": "focus_group", "args": { "group": 0 } },
-    { "keys": ["super+right"], "command": "focus_group", "args": { "group": 1 } },
+    // reindent
+    { "keys": ["super+d"], "command": "reindent"},
+    { "keys": ["super+shift+d"], "command": "find_under_expand"},
+
+    // origami
+    { "keys": ["super+up"], "command": "travel_to_pane", "args": {"direction": "up"} },
+    { "keys": ["super+right"], "command": "travel_to_pane", "args": {"direction": "right"} },
+    { "keys": ["super+down"], "command": "travel_to_pane", "args": {"direction": "down"} },
+    { "keys": ["super+left"], "command": "travel_to_pane", "args": {"direction": "left"} },
+
+    { "keys": ["super+shift+up"], "command": "create_pane", "args": {"direction": "up"} },
+    { "keys": ["super+shift+right"], "command": "create_pane", "args": {"direction": "right"} },
+    { "keys": ["super+shift+down"], "command": "create_pane", "args": {"direction": "down"} },
+    { "keys": ["super+shift+left"], "command": "create_pane", "args": {"direction": "left"} },
+
+    { "keys": ["super+k", "up"], "command": "destroy_pane", "args": {"direction": "up"} },
+    { "keys": ["super+k", "right"], "command": "destroy_pane", "args": {"direction": "right"} },
+    { "keys": ["super+k", "down"], "command": "destroy_pane", "args": {"direction": "down"} },
+    { "keys": ["super+k", "left"], "command": "destroy_pane", "args": {"direction": "left"} },
 
     // tab window keys
     { "keys": ["super+shift+]"], "command": "next_view" },
@@ -23,5 +39,15 @@
     },
     { "keys": ["enter"], "command": "hide_panel", "context":
         [{"key": "panel", "operand": "replace"}, {"key": "panel_has_focus"}]
+    },
+
+    // goto open file package
+    {
+      "keys": ["super+b"], "command": "goto_open_file", "args": {"active_group": false}
+    },
+
+    // goto recent files package
+    {
+      "keys": ["super+shift+r"], "command": "goto_recent"
     }
 ]

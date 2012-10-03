@@ -12,4 +12,5 @@
 
 (setq css-indent-offset 2)
 
+(add-hook 'css-mode-hook 'highlight-indentation-mode)
 
