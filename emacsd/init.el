@@ -37,6 +37,7 @@
                   ;; "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
+                  "autocomplete"
                   ;; languages
                   "python"
                   "javascript"

@@ -1,0 +1,11 @@
+(add-to-list 'load-path "~/.emacs.d/vendor/autocomplete/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d/vendor/autocomplete//ac-dict")
+(ac-config-default)
+(global-set-key "\M-/" 'auto-complete)
+(define-key ac-mode-map (kbd "M-/") 'auto-complete)
+(setq ac-use-menu-map t)
+;; Default settings
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
+(setq ac-ignore-case t)

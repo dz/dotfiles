@@ -1,6 +1,12 @@
 (require 'rvm)
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
 
+;; this is for autocomplete mode
+(add-hook 'ruby-mode-hook
+          (lambda ()
+            (make-local-variable 'ac-ignores)
+            (add-to-list 'ac-ignores "end")))
+
 (eval-after-load 'ruby-mode
   '(progn
      ;; work around possible elpa bug
