@@ -77,7 +77,7 @@
 (setq read-file-name-completion-ignore-case t)
 
 ;; always remove trailing whitespace
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; highlight indentation
 (require 'highlight-indentation)
@@ -184,6 +184,7 @@
 (require 'ido-hacks)
 (ido-mode t)
 (ido-everywhere)
+(ido-ubiquitous)
 
 (setq ido-create-new-buffer (quote never))
 (setq ido-enable-flex-matching t)
