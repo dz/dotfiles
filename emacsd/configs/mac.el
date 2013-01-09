@@ -84,6 +84,9 @@ If point was already at that position, move point to beginning of line."
 ;; allow command-k to kill buffer
 (global-set-key "\M-k" 'ido-kill-buffer)
 
+;; kill the buffer *and* delete the file
+(global-set-key "\M-K" 'delete-current-buffer-file)
+
 ;; allow command-o to open file
 (global-set-key "\M-o" 'find-file)
 
