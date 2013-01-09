@@ -51,10 +51,11 @@
       (*constant*           "#99CC99")
       (*current-line*       "#151515")
       (*cursor-block*       "#FFFFFFF")
-      (*cursor-underscore*  "#FFFAAA")
+      (*cursor-underscore*  "#888888")
       (*keywords*           "#96CBFE")
       (*light-purple*       "#FFCCFF")
-      (*line-number*        "#3D3D3D")
+      (*line-number-fg*     "#666666")
+      (*line-number-bg*     "#121212")
       (*method-declaration* "#FFD2A7")
       (*mode-line-bg*       "#202020")
       (*mode-line-fg*       "#CCCCCC")
@@ -70,7 +71,9 @@
       (*string*             "#A8FF60")
       (*string-inner*       "#00A0A0")
       (*variable*           "#C6C5FE")
-      (*visual-selection*   "#FF6C60"))
+      (*visual-selection*   "#FF6C60")
+      (*vertical-split*     "#404040")
+      (*minibuffer-prompt*  "#888888"))
 
   (custom-theme-set-faces
    'ir-black
@@ -79,6 +82,7 @@
    `(button ((t (:foreground, *keywords*))))
    `(default ((t (:background, *background-color* :foreground, *normal*))))
    `(escape-glyph ((t (:foreground, *string-inner*))))
+   '(border-glyph ((t (nil))))
    `(header-line ((t (:background, *mode-line-bg* :foreground, *normal*)))) ;; info header
    `(highlight ((t (:background, *current-line*))))
    `(highlight-face ((t (:background, *current-line*))))
@@ -109,13 +113,22 @@
 
    ;; GUI
    `(fringe ((t (:background, *background-color*))))
-   `(linum ((t (:background, *line-number*))))
-   `(minibuffer-prompt ((t (:foreground, *variable*))))
-   `(mode-line ((t (:background, *mode-line-bg* :foreground, *mode-line-fg*))))
-   `(mode-line-inactive ((t (:background, *mode-line-bg* :foreground, *background-color*))))
+   `(linum ((t (:background, *line-number-bg* :foreground, *line-number-fg*))))
+   `(minibuffer-prompt ((t (:foreground, *minibuffer-prompt*))))
    `(cursor ((t (:background, *cursor-underscore*))))
    `(text-cursor ((t (:background, *cursor-underscore*))))
-   `(vertical-border ((t (:foreground, *background-color*)))) ;; between splits
+   `(vertical-border ((t (:foreground, *vertical-split*)))) ;; between splits
+
+   ;; indentation
+   `(highlight-indentation-face ((t (:background, "#181818"))))
+
+   ;; ido
+   `(ido-subdir ((t (:foreground, "#CF6A4C"))))
+   `(ido-first-match ((t (:foreground, "#A8FF60"))))
+   `(ido-only-match ((t (:foreground, "#A8FF60"))))
+
+   ;; mumamo
+   `(mumamo-background-chunk-submode ((t (:background, "#222222"))))
 
    ;; show-paren
    `(show-paren-mismatch ((t (:background, *red* :foreground, *normal* :weight bold))))
