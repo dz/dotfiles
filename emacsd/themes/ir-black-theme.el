@@ -70,21 +70,21 @@
       (*string*             "#A8FF60")
       (*string-inner*       "#00A0A0")
       (*variable*           "#C6C5FE")
-      (*visual-selection*   "#262D51"))
+      (*visual-selection*   "#FF6C60"))
 
   (custom-theme-set-faces
    'ir-black
 
    `(bold ((t (:bold t))))
-   `(button ((t (:foreground, *keywords* :underline t))))
+   `(button ((t (:foreground, *keywords*))))
    `(default ((t (:background, *background-color* :foreground, *normal*))))
    `(escape-glyph ((t (:foreground, *string-inner*))))
    `(header-line ((t (:background, *mode-line-bg* :foreground, *normal*)))) ;; info header
    `(highlight ((t (:background, *current-line*))))
    `(highlight-face ((t (:background, *current-line*))))
-   `(hl-line ((t (:background, *current-line* :underline t))))
-   `(info-xref ((t (:foreground, *keywords* :underline t))))
-   `(region ((t (:background, *visual-selection*))))
+   `(hl-line ((t (:background, *current-line*))))
+   `(info-xref ((t (:foreground, *keywords*))))
+   `(region ((t (:background, *visual-selection* :foreground, *normal*))))
    `(underline ((nil (:underline t))))
 
    ;; font-lock
@@ -131,10 +131,10 @@
    `(magit-diff-del ((t (:foreground, *red*))))
 
    ;; org-mode
-   `(org-date ((t (:foreground, *light-purple* :underline t))))
+   `(org-date ((t (:foreground, *light-purple*))))
    `(org-level-1 ((t (:foreground, *string*))))
    `(org-special-keyword ((t (:foreground, *variable*))))
-   `(org-link ((t (:foreground, *keywords* :underline t))))
+   `(org-link ((t (:foreground, *keywords*))))
    `(org-checkbox ((t (:foreground, *keywords* :background, *background-color* :bold t))))
    `(org-clock-overlay ((t (:foreground, *mode-line-bg* :background, *string*))))
 
