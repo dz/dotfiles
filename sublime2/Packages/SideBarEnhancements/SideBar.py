@@ -10,6 +10,10 @@ from sidebar.SideBarProject import SideBarProject
 
 from send2trash import send2trash
 
+# needed for getting local app data path on windows
+if sublime.platform() == 'windows':
+	import _winreg
+
 def disable_default():
 	default = sublime.packages_path()+'/Default/Side Bar.sublime-menu'
 	desired = sublime.packages_path()+'/SideBarEnhancements/disable_default/Side Bar.sublime-menu.txt'
@@ -36,14 +40,27 @@ def expand_vars(path):
 
 s = sublime.load_settings('Side Bar.sublime-settings')
 
+class SideBarNewFile2Command(sublime_plugin.WindowCommand):
+	def run(self, paths = [], name = ""):
+		import functools
+		self.window.run_command('hide_panel');
+		self.window.show_input_panel("File Name:", name, functools.partial(SideBarNewFileCommand(sublime_plugin.WindowCommand).on_done, paths, True), None, None)
+
 class SideBarNewFileCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = [], name = ""):
 		import functools
 		self.window.run_command('hide_panel');
-		self.window.show_input_panel("File Name:", name, functools.partial(self.on_done, paths), None, None)
+		self.window.show_input_panel("File Name:", name, functools.partial(self.on_done, paths, False), None, None)
 
-	def on_done(self, paths, name):
-		paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+	def on_done(self, paths, relative_to_project, name):
+		if relative_to_project and s.get('new_files_relative_to_project_root'):
+			paths = SideBarProject().getDirectories()
+			if paths:
+				paths = [SideBarItem(paths[0], False)]
+			if not paths:
+				paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
+		else:
+			paths = SideBarSelection(paths).getSelectedDirectoriesOrDirnames()
 		if not paths:
 			paths = SideBarProject().getDirectories()
 			if paths:
@@ -1043,7 +1060,10 @@ class SideBarDeleteCommand(sublime_plugin.WindowCommand):
 		no = []
 		no.append('No');
 		no.append('Cancel the operation.');
-		sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
+		if sublime.platform() == 'osx':
+			sublime.set_timeout(lambda:window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths)), 200);
+		else:
+			window.show_quick_panel([yes, no], functools.partial(self.on_confirm, paths))
 
 	def on_confirm(self, paths, result):
 		if result != -1:
@@ -1178,32 +1198,59 @@ class SideBarOpenInBrowserCommand(sublime_plugin.WindowCommand):
 			if sublime.platform() == 'osx':
 				items = ['open']
 				commands = ['-a', 'Google Chrome', url]
-			else:
+			elif sublime.platform() == 'windows':
+				# read local app data path from registry
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
+
 				items = [
-					'/usr/bin/google-chrome'
+					'%HOMEPATH%\AppData\Local\Google\Chrome\Application\chrome.exe'
 
-					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
-					,'%USERPROFILE%\\Configuración local\\Datos de programa\\Google\\Chrome\\Application\\chrome.exe'
-					,'C:\\Users\\%USERNAME%\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'
-
-					,'chrome'
+					,reg_value+'\\Chrome\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Google\\Chrome\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Google\\Chrome\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Google\\Chrome\\Application\\chrome.exe'
 					,'chrome.exe'
 				]
 				commands = ['-new-tab', url]
+			else:
+				items = [
+					'/usr/bin/google-chrome'
+					,'chrome'
+				]
+				commands = ['-new-tab', url]
+
 		elif browser == 'chromium':
 			if sublime.platform() == 'osx':
 				items = ['open']
 				commands = ['-a', 'Chromium', url]
+			elif sublime.platform() == 'windows':
+				# read local app data path from registry
+				aKey = _winreg.OpenKey(_winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+				reg_value, reg_type = _winreg.QueryValueEx (aKey, "Local AppData")
+
+				items = [
+					'%HOMEPATH%\AppData\Local\Google\Chrome SxS\Application\chrome.exe'
+
+					, reg_value+'\\Chromium\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES%\\Chromium\\Application\\chrome.exe'
+					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chrome.exe'
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chrome.exe'
+					,'chrome.exe'
+
+					, reg_value+'\\Chromium\\Application\\chromium.exe'
+					,'%HOMEPATH%\\Chromium\\Application\\chromium.exe'
+					,'%PROGRAMFILES%\\Chromium\\Application\\chromium.exe'
+					,'%PROGRAMFILES(X86)%\\Chromium\\Application\\chromium.exe'
+					,'%HOMEPATH%\\Local Settings\\Application Data\\Google\\Chrome\\Application\\chromium.exe'
+					,'chromium.exe'
+				]
+				commands = ['-new-tab', url]
 			else:
 				items = [
 					'/usr/bin/chromium'
-
-					,'%HOMEPATH%\\Local Settings\\Application Data\\Chromium\\Application\\chrome.exe'
-					,'%USERPROFILE%\\Configuración local\\Datos de programa\\Chromium\\Application\\chrome.exe'
-					,'C:\\Users\\%USERNAME%\\AppData\\Local\\Chromium\\Application\\chrome.exe'
-
 					,'chromium'
-					,'chromium.exe'
 				]
 				commands = ['-new-tab', url]
 		elif browser == 'firefox':
@@ -1317,6 +1364,15 @@ class SideBarOpenInNewWindowCommand(sublime_plugin.WindowCommand):
 
 	def is_visible(self, paths =[]):
 		return not s.get('disabled_menuitem_open_in_new_window')
+
+class SideBarOpenWithFinderCommand(sublime_plugin.WindowCommand):
+	def run(self, paths = []):
+		import subprocess
+		for item in SideBarSelection(paths).getSelectedDirectoriesOrDirnames():
+			subprocess.Popen(['open', item.nameSystem()], cwd=item.dirnameSystem())
+
+	def is_visible(self, paths =[]):
+		return sublime.platform() == 'osx'
 
 class SideBarProjectItemRemoveFolderCommand(sublime_plugin.WindowCommand):
 	def run(self, paths = []):

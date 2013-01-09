@@ -7,11 +7,10 @@ if has('vim_starting')
   set runtimepath+=~/.vim/bundle/neobundle/
 endif
 let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
+let g:neobundle#log_filename = '' " don't spit out to logfile
 call neobundle#rc(expand('~/.vim/installed/')) " gitignore is on for /installed, so use that instead of default bundle dir
 " required!
 NeoBundle 'Shougo/neobundle.vim'
-" After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
-NeoBundle 'Shougo/vimproc'
 
 " BUNDLES
 NeoBundle 'vim-scripts/L9.git'
@@ -19,18 +18,21 @@ NeoBundle 'Lokaltog/vim-powerline'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'https://github.com/tpope/vim-fugitive'
 NeoBundle 'tpope/vim-unimpaired'
-NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'sjbach/lusty'
-NeoBundle 'ervandew/supertab'
+NeoBundle 'kien/ctrlp.vim'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'scrooloose/syntastic'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'vim-scripts/IndexedSearch'
 NeoBundle 'vim-scripts/matchit.zip'
 NeoBundle 'majutsushi/tagbar'
+NeoBundle 'sjl/gundo.vim'
+NeoBundle 'vim-scripts/YankRing.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+" GIT SHIT
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 'int3/vim-extradite'
 
 " HTML/CSS
 NeoBundle 'tudorprodan/html_annoyance.vim'
@@ -186,8 +188,18 @@ set ignorecase
 set wrapscan
 set smartcase
 
+"No scrollbars
+set guioptions-=L
+set guioptions-=l
+set guioptions-=R
+set guioptions-=r
+
 "easily equalize windows with plus
 nmap + <c-w>=
+
+"tab key in normal mode autoindents
+
+nmap <tab> ==
 
 "fast file switching
 map <C-q> <esc>:b#<esc>
@@ -234,6 +246,8 @@ let g:ctrlp_mruf_max = 2000
 let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*' " MacOSX/Linux
 let g:ctrlp_dont_split = 'Help'
 let g:ctrlp_extensions = ['tag', 'quickfix', 'undo']
+" press control-v instead of enter to open buffer in existing window
+let g:ctrlp_switch_buffer = 'v'
 let g:ctrlp_prompt_mappings = {
     \ 'PrtSelectMove("j")':   ['<c-j>', '<c-n>'],
     \ 'PrtSelectMove("k")':   ['<c-k>', '<c-p>'],
@@ -246,7 +260,6 @@ let g:ctrlp_prompt_mappings = {
 noremap <leader>o :TagbarToggle<CR>
 noremap <D-d> :TagbarToggle<CR>
 noremap! <D-d> <esc>:TagbarToggle<cr>
-
 set tags=tags,.git/tags,TAGS
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
@@ -282,26 +295,31 @@ let g:tagbar_type_ruby = {
     \ ]
 \ }
 
-"Syntastic options
-let g:syntastic_check_on_open = 1
-let g:syntastic_enable_signs = 0
-let g:syntastic_enable_highlighting = 1
-let g:syntastic_ruby_exec = '/Users/dzhou/.rvm/rubies/ruby-1.9.2-p290/bin/ruby'
+"vim indent guide options
+let g:indent_guides_enable_on_vim_startup = 1
 
-"No scrollbars
-set guioptions-=L
-set guioptions-=l
-set guioptions-=R
-set guioptions-=r
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 1
 
-"OmniComplete options and shortcuts
-set completeopt=menuone
+"yankring options
+let g:yankring_enabled = 1
+let g:yankring_max_history = 1000
+let g:yankring_max_display = 100
+let g:yankring_ignore_duplicate = 1
 
 "Supertab options
 let g:SuperTabDefaultCompletionType = "context"
 
 "Gundo options
 nnoremap <leader>u :GundoToggle<CR>
+
+" OmniComplete options
+set completeopt=menuone
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Define a command to make it easier to use
 command! -nargs=+ QFDo call QFDo(<q-args>)
@@ -341,21 +359,6 @@ function! QuickfixFilenames()
   return join(values(buffer_numbers))
 endfunction
 
-" when entering a file, automatically set the file's working
-" directory to either the first source control dir it finds
-" or the parent directory
-function! s:setcwd()
-  let cph = expand('%:p:h', 1)
-  if cph =~ '^.\+://' | retu | en
-  for mkr in ['.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects']
-    let wd = call('find'.(mkr =~ '/$' ? 'dir' : 'file'), [mkr, cph.';'])
-    if wd != '' | let &acd = 0 | brea | en
-  endfo
-  exe 'lc!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
-endfunction
-
-autocmd BufEnter * call s:setcwd()
-
 " strip whitespace
 fun! <SID>StripTrailingWhitespaces()
     let l = line(".")
@@ -374,7 +377,6 @@ command! GdiffInTab tabedit %|Gdiff
 " LANGUAGE OPTIONS
 "
 "syntax color options for various languages
-
 "syntax coloring for apache log files
 autocmd BufRead,BufNewFile *access.log* set filetype=httplog
 
@@ -399,7 +401,6 @@ autocmd BufRead,BufNewFile *.as set filetype=actionscript
 au BufNewFile,BufRead  *.json set filetype=javascript
 
 "language specific options
-
 "PHP
 let php_sql_query=1
 let php_baselib=1
@@ -432,5 +433,4 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,ex
 "Javascript
 " Use Node.js for JavaScript interpretation
 let $JS_CMD='node'
-
 

@@ -38,6 +38,7 @@
                   "grep"
                   "ack"
                   "autocomplete"
+                  "git"
                   ;; languages
                   "python"
                   "javascript"

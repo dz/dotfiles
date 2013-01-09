@@ -12,6 +12,7 @@ import tempfile
 import traceback
 import contextlib
 import shutil
+import re
 
 DEFAULT_CREATE_PUBLIC_VALUE = 'false'
 DEFAULT_USE_PROXY_VALUE = 'false'
@@ -30,7 +31,8 @@ if settings.get('max_gists'):
     if settings.get('max_gists') <= 100:
         GISTS_URL += '?per_page=%d' % settings.get('max_gists'); 
     else:
-        sublime.error_message("Gist: GitHub API does not support a value of higher than 100")
+        settings.set( "max_gists",100 )
+        sublime.status_message("Gist: GitHub API does not support a value of higher than 100")
 
 class MissingCredentialsException(Exception):
     pass
@@ -43,6 +45,9 @@ class SimpleHTTPError(Exception):
         self.code = code
         self.response = response
 
+class MissingTokenException(Exception):
+    pass
+
 def get_credentials():
     username = settings.get('username')
     password = settings.get('password')
@@ -52,6 +57,16 @@ def get_credentials():
 
 def basic_auth_string():
     auth_string = u'%s:%s' % get_credentials()
+    return auth_string.encode('utf-8')
+
+def get_token():
+    token = settings.get('token')
+    if not token:
+        raise MissingTokenException()
+    return token
+
+def token_auth_string():
+    auth_string = u'%s' % get_token()
     return auth_string.encode('utf-8')
 
 if sublime.platform() == 'osx':
@@ -216,10 +231,10 @@ def open_gist(gist_url):
         edit = view.begin_edit()
         view.insert(edit, 0, gist['files'][gist_filename]['content'])
         view.end_edit(edit)
+        if not "language" in locals(): continue
         language = gist['files'][gist_filename]['language']        
         new_syntax = os.path.join(language,"{0}.tmLanguage".format(language))
         new_syntax_path = os.path.join(sublime.packages_path(), new_syntax)
-        print new_syntax_path
         if os.path.exists(new_syntax_path):
             view.set_syntax_file( new_syntax_path )
 
@@ -245,7 +260,10 @@ def api_request_native(url, data=None, method=None):
     request = urllib2.Request(url)
     if method:
         request.get_method = lambda: method
-    request.add_header('Authorization', 'Basic ' + base64.urlsafe_b64encode(basic_auth_string()))
+    try:
+        request.add_header('Authorization', 'token ' + token_auth_string())
+    except MissingTokenException:
+        request.add_header('Authorization', 'Basic ' + base64.urlsafe_b64encode(basic_auth_string()))
     request.add_header('Accept', 'application/json')
     request.add_header('Content-Type', 'application/json')
 
@@ -328,7 +346,10 @@ class GistCommand(sublime_plugin.TextCommand):
 
     @catch_errors
     def run(self, edit):
-        get_credentials()
+        try:
+            get_token()
+        except MissingTokenException:
+            get_credentials()
         regions = [region for region in self.view.sel() if not region.empty()]
 
         if len(regions) == 0:
@@ -468,6 +489,10 @@ class GistListCommandBase(object):
     def run(self, *args):
         gists = get_gists()
         gist_names = [gist_title(gist) for gist in gists]
+        if settings.get('gist_prefix'):
+            prefix_pattern = "^%s" % (settings.get('gist_prefix'))
+            gist_names = filter (lambda a: re.search(prefix_pattern, a), gist_names)
+        print gist_names
 
         def on_gist_num(num):
             if num != -1:
