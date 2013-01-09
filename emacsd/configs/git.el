@@ -5,6 +5,22 @@
 (require 'magit)
 (require 'magit-blame)
 
+;; i'm using a weird version of emacs maybe so this workaround
+;; is needed
+(eval-after-load 'magit
+  '(setq magit-process-connection-type nil))
+
+;; the default magit diff colors are *really* bad
+;; change magit diff colors
+(eval-after-load 'magit
+  '(progn
+     (set-face-foreground 'magit-diff-add "green3")
+     (set-face-foreground 'magit-diff-del "red3")
+     (set-face-foreground 'diff-refine-change "green3")
+     (set-face-background 'diff-refine-change "DarkGreen")
+     (when (not window-system)
+       (set-face-background 'magit-item-highlight "black"))))
+
 ;; make magit status go full-screen but remember previous window
 ;; settings
 ;; from: http://whattheemacsd.com/setup-magit.el-01.html
@@ -23,13 +39,13 @@
       (jump-to-register :magit-fullscreen))))
 
 ;; to play well with evil, i still want hljk in magit
-(evil-add-hjkl-bindings magit-branch-manager-mode-map 'emacs
-  "K" 'magit-discard-item
-  "L" 'magit-key-mode-popup-logging)
-(evil-add-hjkl-bindings magit-status-mode-map 'emacs
-  "K" 'magit-discard-item
-  "l" 'magit-key-mode-popup-logging
-  "h" 'magit-toggle-diff-refine-hunk)
+;; (evil-add-hjkl-bindings magit-branch-manager-mode-map 'emacs
+;;  "K" 'magit-discard-item
+;;  "L" 'magit-key-mode-popup-logging)
+;; (evil-add-hjkl-bindings magit-status-mode-map 'emacs
+;;  "K" 'magit-discard-item
+;;  "l" 'magit-key-mode-popup-logging
+;;  "h" 'magit-toggle-diff-refine-hunk)
 
 ;; magit aliases
 (defalias 'blame 'magit-blame-mode)
@@ -46,4 +62,3 @@
 (setq magit-diff-refine-hunk t)
 (setq magit-rewrite-inclusive 'ask)
 (setq magit-save-some-buffers nil)
-(setq magit-process-popup-time 10)
