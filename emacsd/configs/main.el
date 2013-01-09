@@ -193,12 +193,8 @@
 
 ;; show choices vertically
 (setq ido-decorations (quote ("\n> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-
-;; truncate long lines in choices
-(defun my-ido-minibuffer-setup-hook ()
-  ;; allow line wrapping in the minibuffer
-  (set (make-local-variable 'truncate-lines) nil))
-(add-hook 'ido-minibuffer-setup-hook 'my-ido-minibuffer-setup-hook)
+(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
+  (add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
 
 (defun xsteve-ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"

@@ -2,6 +2,7 @@
 (server-start)
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
 ;; set emacs bash path to match shell bash path
 (setenv "PATH" (shell-command-to-string "bash -i -c 'echo -n $PATH'"))

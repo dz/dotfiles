@@ -9,9 +9,8 @@
             (modify-frame-parameters cur-frame
                                      (list
                                       (cons 'font my-font)))))
-(require 'color-theme)
-(load-file "~/.emacs.d/vendor/themes/color-theme-irblack.el")
-(color-theme-irblack)
+
+(load-theme 'ir-black t)
 
 ;; set larger line spacing
 (setq-default line-spacing 2)
@@ -22,7 +21,7 @@
 ;; change vertical border color
 (set-face-attribute 'vertical-border nil :foreground "#666666")
 
-;; no line highlighting
+;; yes to line highlighting
 (global-hl-line-mode 1)
 
 ;; turn off fringe
@@ -46,28 +45,14 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key "\C-a" 'smart-beginning-of-line)
 
-(setq interprogram-cut-function nil)
-(setq interprogram-paste-function nil)
-(defun paste-from-pasteboard ()
-  (interactive)
-  (and mark-active (filter-buffer-substring (region-beginning) (region-end) t))
-  (insert (ns-get-pasteboard))
-  )
-(defun copy-to-pasteboard (p1 p2)
-  (interactive "r*")
-  (ns-set-pasteboard (buffer-substring p1 p2))
-  (message "Copied selection to pasteboard")
-  )
-(defun cut-to-pasteboard (p1 p2) (interactive "r*") (ns-set-pasteboard (filter-buffer-substring p1 p2 t)) )
-
 ;; allow command-c to copy as normal
-(global-set-key "\M-c" 'copy-to-pasteboard)
+(global-set-key "\M-c" 'clipboard-kill-ring-save)
 
 ;; allow command-C to cut as normal
-(global-set-key "\M-C" 'cut-to-pasteboard)
+(global-set-key "\M-C" 'clipboard-kill-region)
 
 ;; set command-v to paste
-(global-set-key "\M-v" 'paste-from-pasteboard)
+(global-set-key "\M-v" 'clipboard-yank)
 
 ;; use comamnd-1, command-2, etc instead of c-x number
 (global-set-key "\M-1" 'delete-other-windows)
@@ -88,7 +73,13 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\M-a" 'mark-whole-buffer)
 
 ;; allow command-return to trigger fulscreen
-(global-set-key [(meta return)] 'ns-toggle-fullscreen)
+(defun mac-toggle-max-window ()
+  (interactive)
+  (set-frame-parameter nil 'fullscreen
+                       (if (frame-parameter nil 'fullscreen)
+                           nil
+                         'fullboth)))
+(global-set-key [(meta return)] 'mac-toggle-max-window)
 
 ;; allow command-k to kill buffer
 (global-set-key "\M-k" 'ido-kill-buffer)

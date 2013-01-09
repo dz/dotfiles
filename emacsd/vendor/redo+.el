@@ -258,55 +258,6 @@ A numeric argument serves as a repeat count."
       (message "Undo!"))
   (setq last-buffer-undo-list buffer-undo-list))
 
-;; Modify menu-bar and tool-bar item of GNU Emacs
-(unless (featurep 'xemacs)
-  ;; condition to undo
-  (mapc (lambda (map)
-	  (setcar (cdr (memq :enable (assq 'undo (cdr map))))
-		  '(and (not buffer-read-only)
-			(consp buffer-undo-list)
-			(or (not (or (eq last-buffer-undo-list
-					 buffer-undo-list)
-				     (eq last-buffer-undo-list
-					 (cdr buffer-undo-list))))
-			    (listp pending-undo-list)))))
-	(append (list menu-bar-edit-menu)
-		(if window-system (list tool-bar-map))))
-  ;; redo's menu-bar entry
-  (define-key-after menu-bar-edit-menu [redo]
-    '(menu-item "Redo" redo
-		:enable
-		(and
-		 (not buffer-read-only)
-		 (not (eq buffer-undo-list t))
-		 (not (eq last-buffer-undo-list nil))
-		 (or (eq last-buffer-undo-list buffer-undo-list)
-		     (let ((p buffer-undo-list))
-		       (and (null (car-safe p)) (setq p (cdr-safe p)))
-		       (while (and p (integerp (car-safe p)))
-			 (setq p (cdr-safe p)))
-		       (eq last-buffer-undo-list p)))
-		 (not (eq (cdr buffer-undo-list) pending-undo-list)))
-		:help "Redo the most recent undo")
-    'undo)
-  ;; redo's tool-bar icon
-  (when window-system
-    (tool-bar-add-item-from-menu
-     'redo "redo" nil
-     :visible '(not (eq 'special (get major-mode 'mode-class))))
-    (define-key-after tool-bar-map [redo]
-      (cdr (assq 'redo tool-bar-map)) 'undo)
-    ;; use gtk+ icon if Emacs23
-    (if (boundp 'x-gtk-stock-map)
-	(setq x-gtk-stock-map
-	      (cons '("etc/images/redo" . "gtk-redo") x-gtk-stock-map)))
-    ;; update tool-bar icon immediately
-    (defun redo-toolbar-update (&optional bgn end lng)
-      (interactive)
-      (set-buffer-modified-p (buffer-modified-p)))
-    (add-hook 'after-change-functions 'redo-toolbar-update))
-  )
-
 (provide 'redo+)
 
 ;;; redo+.el ends here

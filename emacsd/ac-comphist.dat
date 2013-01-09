@@ -1,4 +1,12 @@
-((("magit" .
+((("mac-toggle-max-window" .
+   [0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0])
+  ("set-face-background" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("diff-refine-change" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("set-face-foreground" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("magit" .
    [1 0 0 0 0])
   ("require" .
    [1 0 0 0 0 0 0])
@@ -33,4 +41,10 @@
   ("defalias" .
    [1 0 0 0 0 0 0 0])
   ("replace-string" .
-   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])))
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("clipboard-yank" .
+   [2 0 0 0 0 0 0 0 0 0 0 0 0 0])
+  ("clipboard-kill-region" .
+   [0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0])
+  ("clipboard-kill-ring-save" .
+   [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0])))
