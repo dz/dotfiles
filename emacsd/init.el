@@ -48,6 +48,7 @@
                   "ack"
                   "autocomplete"
                   "git"
+                  "mumamo"
                   ;; languages
                   "python"
                   "javascript"
