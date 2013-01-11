@@ -36,7 +36,7 @@
     ))
 
 ;; load nxhtml mode
-(load "~/.emacs.d/vendor/nxhtml/autostart.el")
+;; (load "~/.emacs.d/vendor/nxhtml/autostart.el")
 
 (load-cfg-files '(
                   "main"

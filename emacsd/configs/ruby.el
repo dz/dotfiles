@@ -1,6 +1,11 @@
 (require 'rvm)
 (rvm-use-default) ;; use rvm's default ruby for the current Emacs session
 
+(require 'rails)
+(require 'rhtml-mode)
+
+(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . rhtml-mode))
+
 ;; this is for autocomplete mode
 (add-hook 'ruby-mode-hook
           (lambda ()
@@ -89,10 +94,4 @@
 (add-to-list 'completion-ignored-extensions ".rbc")
 
 (setq
- nxhtml-global-minor-mode t
- nxhtml-skip-welcome t
- indent-region-mode t
- rng-nxml-auto-validate-flag nil
- nxml-degraded t)
-
-(add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . eruby-nxhtml-mumamo-mode))
+ indent-region-mode t)
