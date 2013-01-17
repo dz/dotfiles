@@ -4,6 +4,14 @@
 (require 'rails)
 (require 'rhtml-mode)
 
+;; really need brackets in ruby code you guys
+(add-hook 'ruby-mode-hook
+          '(lambda ()
+             (abbrev-mode 1)
+             (electric-pair-mode t)
+             (electric-indent-mode t)
+             (electric-layout-mode t)))
+
 (add-to-list 'auto-mode-alist '("\\.html\\.erb\\'" . rhtml-mode))
 
 ;; this is for autocomplete mode
