@@ -77,7 +77,7 @@
 (setq read-file-name-completion-ignore-case t)
 
 ;; always remove trailing whitespace
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; highlight indentation
 (require 'highlight-indentation)
