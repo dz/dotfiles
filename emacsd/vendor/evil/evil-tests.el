@@ -2,6 +2,9 @@
 
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0-dev
+
 ;;
 ;; This file is NOT part of GNU Emacs.
 
@@ -1107,7 +1110,21 @@ If nil, KEYS is used."
     ("r5")
     "[5]; This buffer is for notes you don't want to save"
     ("3rX")
-    "XX[X]This buffer is for notes you don't want to save"))
+    "XX[X]This buffer is for notes you don't want to save")
+  (ert-info ("Replace digraph")
+    (evil-test-buffer
+      "[;]; This buffer is for notes you don't want to save"
+      ("re'")
+      "[é]; This buffer is for notes you don't want to save"
+      ("3rc*")
+      "ξξ[ξ]This buffer is for notes you don't want to save"))
+  (ert-info ("Replacing \\n should insert only one newline")
+    (evil-test-buffer
+      "(setq var xxx [y]yy zzz)\n"
+      (emacs-lisp-mode)
+      (setq indent-tabs-mode nil)
+      ("2r\n")
+      "(setq var xxx \n      [y] zzz)\n")))
 
 (ert-deftest evil-test-insert-with-count ()
   "Test `evil-insert' with repeat count"
@@ -1149,6 +1166,17 @@ If nil, KEYS is used."
       ("11.")
       "ABCABCABCABCABCABCABCABCABCABABCABCABCABCABCABCABCABCABCABCAB[C]C;; \
 This buffer is for notes")))
+
+(ert-deftest evil-test-repeat-error ()
+  "Test whether repeat returns to normal state in case of an error."
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4"
+    ("ixxx" [down] [down] [home] "yyy" [escape])
+    "xxxline 1\nline 2\nyy[y]line 3\nline 4"
+    (should-error (execute-kbd-macro "j^."))
+    (should (evil-normal-state-p))
+    ("^")
+    "xxxline 1\nline 2\nyyyline 3\n[x]xxline 4"))
 
 (ert-deftest evil-test-insert-vcount ()
   "Test `evil-insert' with vertical repeating"
@@ -1670,6 +1698,33 @@ New Tex[t]
 ;; then enter the text QQQthat file's own buffer.
 ")))
 
+(ert-deftest evil-visual-block-append ()
+  "Test appending in visual block."
+  :tags '(evil visual insert)
+  (ert-info ("Simple append")
+    (evil-test-buffer
+      "l[i]ne 1\nline 2\nline 3\n"
+      ((kbd "C-v") "jjllAXXX" [escape])
+      "lineXX[X] 1\nlineXXX 2\nlineXXX 3\n"))
+  (ert-info ("Append after empty lines")
+    (evil-test-buffer
+      "line 1l[i]ne 1\nline 2\nline 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jjllAXXX" [escape])
+      "line 1lineXX[X] 1\nline 2    XXX\nline 3lineXXX 3\n"))
+  (ert-info ("Append after empty first line")
+    (evil-test-buffer
+      "l[i]ne 1line 1\nline 2\nline 3line 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jj3feAXXX" [escape])
+      "line 1line 1    XX[X]\nline 2          XXX\nline 3line 3lineXXX 3\n"))
+  (ert-info ("Append after end of lines")
+    (evil-test-buffer
+      "line 1l[i]ne 1line 1\nline 2\nline 3line 3\n"
+      (setq indent-tabs-mode nil)
+      ((kbd "C-v") "jj$AXXX" [escape])
+      "line 1line 1line 1XX[X]\nline 2XXX\nline 3line 3XXX\n")))
+
 ;;; Operators
 
 (ert-deftest evil-test-keypress-parser ()
@@ -1701,7 +1756,12 @@ New Tex[t]
     (ert-info ("Treat 0 as a motion")
       (should (equal
                (evil-keypress-parser '(?0))
-               '(evil-digit-argument-or-evil-beginning-of-line nil))))))
+               '(evil-digit-argument-or-evil-beginning-of-line nil))))
+    (ert-info ("Handle keyboard macros")
+      (evil-test-buffer
+        (define-key evil-motion-state-local-map (kbd "W") (kbd "w"))
+        (should (equal (evil-keypress-parser '(?W))
+                       '(evil-forward-word-begin nil)))))))
 
 (ert-deftest evil-test-invert-char ()
   "Test `evil-invert-char'"
@@ -1945,6 +2005,11 @@ New Tex[t]
 ;; then enter the text in that file's own buffer."
       ("2dd")
       "[;]; This buffer is for notes you don't want to save."))
+  (ert-info ("Delete last empty line")
+    (evil-test-buffer
+      "line 1\nline 2\n\n[]"
+      ("dd")
+      "line 1\nline 2\n[]"))
   (ert-info ("Delete rectangle")
     (evil-test-buffer
       "[;]; This buffer is for notes you don't want to save.
@@ -2114,7 +2179,7 @@ AB[C]
 Below some empty line")))
 
 (ert-deftest evil-test-shift ()
-  "Test `evil-shift-right'."
+  "Test `evil-shift-right' and `evil-shift-left'."
   :tags '(evil operator)
   (let ((evil-shift-width 4)
         indent-tabs-mode)
@@ -2134,7 +2199,14 @@ Below some empty line")))
         ("Vj3>")
         "[ ]           line 1\n            line 2\nline 3\n"
         ("Vj2<")
-        "[ ]   line 1\n    line 2\nline 3\n"))))
+        "[ ]   line 1\n    line 2\nline 3\n"))
+    (ert-info ("Shift in insert state")
+      (evil-test-buffer
+        "line 1\nl[i]ne 2\nline 3\n"
+        ("i\C-t\C-t")
+        "line 1\n        l[i]ne 2\nline 3\n"
+        ("\C-d")
+        "line 1\n    l[i]ne 2\nline 3\n"))))
 
 ;;; Paste
 
@@ -2194,17 +2266,17 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
   (ert-info ("Paste lines at end-of-buffer")
     (evil-test-buffer
       ";; [T]his buffer is for notes you don't want to save,
-;; and for Lisp evaluation.\n"
+;; and for Lisp evaluation."
       ("2yyG$")
       ";; This buffer is for notes you don't want to save,
-;; and for Lisp evaluation[.]\n"
+;; and for Lisp evaluation[.]"
       ("2P")
       ";; This buffer is for notes you don't want to save,
 \[;]; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
 ;; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
-;; and for Lisp evaluation.\n"))
+;; and for Lisp evaluation."))
   (ert-info ("Paste block")
     (evil-test-buffer
       "[;]; This buffer is for notes you don't want to save.
@@ -2321,10 +2393,10 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
   (ert-info ("Paste lines at end-of-buffer")
     (evil-test-buffer
       ";; [T]his buffer is for notes you don't want to save,
-;; and for Lisp evaluation.\n"
+;; and for Lisp evaluation."
       ("2yyG$")
       ";; This buffer is for notes you don't want to save,
-;; and for Lisp evaluation[.]\n"
+;; and for Lisp evaluation[.]"
       ("2p")
       ";; This buffer is for notes you don't want to save,
 ;; and for Lisp evaluation.
@@ -2581,23 +2653,41 @@ This bufferThis bufferThis buffe[r];; and for Lisp evaluation."))
 (ert-deftest evil-test-register ()
   "Test yanking and pasting to and from register."
   :tags '(evil yank paste)
-  (evil-test-buffer
-    "[f]oo\n"
-    ("\"aywP")
-    "fo[o]foo\n"
-    ("\"ayyP")
-    "[f]oofoo\nfoofoo\n")
-  (evil-test-buffer
-    "[f]oo\n"
-    ("\"ayw\"Ayw\"aP")
-    "foofo[o]foo\n"
-    ("\"ayy\"Ayy\"aP")
-    "[f]oofoofoo\nfoofoofoo\nfoofoofoo\n")
-  (ert-info ("special register /")
+  (ert-info ("simple lower case register")
     (evil-test-buffer
-      "[f]oo bar\n"
-      ("/bar\n0i\C-r/")
-      "bar[f]oo bar\n"))
+      "[f]oo\n"
+      ("\"ayw\"aP")
+      "fo[o]foo\n"
+      ("\"ayy\"aP")
+      "[f]oofoo\nfoofoo\n"))
+  (ert-info ("upper case register")
+    (evil-test-buffer
+      "[f]oo\n"
+      ("\"ayw\"Ayw\"aP")
+      "foofo[o]foo\n"
+      ("\"ayy\"Ayy\"aP")
+      "[f]oofoofoo\nfoofoofoo\nfoofoofoo\n"))
+  (ert-info ("upper case register and lines")
+    (evil-test-buffer
+      "[l]ine 1\nline 2\nline 3\nline 4\n"
+      ("\"a2Yjj\"A2Y\"aP")
+      "line 1\nline 2\n[l]ine 1\nline 2\nline 3\nline 4\nline 3\nline 4\n"
+      ("8G\"ap")
+      "line 1\nline 2\nline 1\nline 2\nline 3\nline 4\nline 3\nline 4\n[l]ine 1\nline 2\nline 3\nline 4\n"))
+  (ert-info ("yank with count")
+    (evil-test-buffer
+      "[l]ine 1\nline 2\nline 3\n"
+      ("\"a2yw\"aP")
+      "line [1]line 1\nline 2\nline 3\n"
+      ("\"a2yy\"aP")
+      "[l]ine 1line 1\nline 2\nline 1line 1\nline 2\nline 3\n"))
+  (dolist (module '(evil-search isearch))
+    (evil-select-search-module 'evil-search-module module)
+    (ert-info ((format "special register / (module: %s)" module))
+      (evil-test-buffer
+        "[f]oo bar\n"
+        ("/bar" [return] "0i\C-r/")
+        "bar[f]oo bar\n")))
   (ert-info ("special register :")
     (evil-test-buffer
       "[f]oo bar\n"
@@ -4736,7 +4826,7 @@ Below some empty lin[e]"))
     (evil-test-buffer
       "[B]elow some empty line\n\n"
       ("100}")
-      "Below some empty line\n[\n]"
+      "Below some empty line\n\n[]"
       (should-error (execute-kbd-macro "}"))
       (should-error (execute-kbd-macro "42}")))))
 
@@ -5093,7 +5183,17 @@ Below some empty line."))
   (ert-info ("On line without parenthesis")
     (evil-test-buffer
       "[#]include <stdio.h>"
-      (should-error (execute-kbd-macro "%")))))
+      (should-error (execute-kbd-macro "%"))))
+  (ert-info ("Before unmatched opening parenthesies")
+    (evil-test-buffer
+      "x[x]xx ( yyyyy () zzzz"
+      (should-error (execute-kbd-macro "%"))
+      "x[x]xx ( yyyyy () zzzz"))
+  (ert-info ("Before unmatched closing parenthesies")
+    (evil-test-buffer
+      "x[x]xx ) yyyyy () zzzz"
+      (should-error (execute-kbd-macro "%"))
+      "x[x]xx ) yyyyy () zzzz")))
 
 (ert-deftest evil-test-unmatched-paren ()
   "Test `evil-previous-open-paren' and `evil-next-close-paren'"
@@ -6384,62 +6484,80 @@ if no previous selection")
 (ert-deftest evil-test-ex-substitute ()
   "Test `evil-ex-substitute'"
   :tags '(evil ex search)
-  (evil-without-display
-    (ert-info ("Substitute on current line")
-      (evil-test-buffer
-        "ABCABCABC\nABCA[B]CABC\nABCABCABC"
-        (":s/BC/XYZ/" (kbd "RET"))
-        "ABCABCABC\n[A]XYZABCABC\nABCABCABC"))
-    (ert-info ("Substitute on whole current line")
-      (evil-test-buffer
-        "ABCABCABC\nABC[A]BCABC\nABCABCABC"
-        (":s/BC/XYZ/g" (kbd "RET"))
-        "ABCABCABC\n[A]XYZAXYZAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on last line")
-      (evil-test-buffer
-        "ABCABCABC\nABCABCABC\nABCABC[A]BC"
-        (":s/BC/XYZ/" (kbd "RET"))
-        "ABCABCABC\nABCABCABC\n[A]XYZABCABC"))
-    (ert-info ("Substitute on whole last line")
-      (evil-test-buffer
-        "ABCABCABC\nABCABCABC\nABCABC[A]BC"
-        (":s/BC/XYZ/g" (kbd "RET"))
-        "ABCABCABC\nABCABCABC\n[A]XYZAXYZAXYZ"))
-    (ert-info ("Substitute on range")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/" (kbd "RET"))
-        "AXYZABCABC\nQRT\n[A]XYZABCABC\nABCABCABC"))
-    (ert-info ("Substitute whole lines on range")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/g" (kbd "RET"))
-        "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on whole current line confirm")
-      (evil-test-buffer
-        "ABCABCABC\nABC[A]BCABC\nABCABCABC"
-        (":s/BC/XYZ/gc" (kbd "RET") "yny")
-        "ABCABCABC\n[A]XYZABCAXYZ\nABCABCABC"))
-    (ert-info ("Substitute on range confirm")
-      (evil-test-buffer
-        "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
-        (":1,3s/BC/XYZ/c" (kbd "RET") "yn")
-        "[A]XYZABCABC\nQRT\nABCABCABC\nABCABCABC"))
-    (ert-info ("Substitute whole lines on range with other delim")
-      (evil-test-buffer
-        "A/CA/CA/C\nQRT\nA/C[A]/CA/C\nA/CA/CA/C"
-        (":1,3s,/C,XYZ,g" (kbd "RET"))
-        "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nA/CA/CA/C"))
-    (ert-info ("Substitute on whole buffer, smart case")
-      (evil-test-buffer
-        "[A]bcAbcAbc\naBcaBcaBc\nABCABCABC\nabcabcabc"
-        (":%s/bc/xy/g" (kbd "RET"))
-        "AxyAxyAxy\naXyaXyaXy\nAXYAXYAXY\n[a]xyaxyaxy"))
-    (ert-info ("Substitute zero range on whole line")
-      (evil-test-buffer
-        "no 1\nno 2\nno 3\n[y]es 4\nno 5\nno 6\nno 7\n"
-        (":s/^/# /g")
-        "no 1\nno 2\nno 3\n[#] yes 4\nno 5\nno 6\nno 7\n"))))
+  (let (evil-ex-substitute-global)
+    (evil-without-display
+      (ert-info ("Substitute on current line")
+        (evil-test-buffer
+          "ABCABCABC\nABCA[B]CABC\nABCABCABC"
+          (":s/BC/XYZ/" (kbd "RET"))
+          "ABCABCABC\n[A]XYZABCABC\nABCABCABC"))
+      (ert-info ("Substitute on whole current line")
+        (evil-test-buffer
+          "ABCABCABC\nABC[A]BCABC\nABCABCABC"
+          (":s/BC/XYZ/g" (kbd "RET"))
+          "ABCABCABC\n[A]XYZAXYZAXYZ\nABCABCABC"))
+      (ert-info ("Substitute on last line")
+        (evil-test-buffer
+          "ABCABCABC\nABCABCABC\nABCABC[A]BC"
+          (":s/BC/XYZ/" (kbd "RET"))
+          "ABCABCABC\nABCABCABC\n[A]XYZABCABC"))
+      (ert-info ("Substitute on whole last line")
+        (evil-test-buffer
+          "ABCABCABC\nABCABCABC\nABCABC[A]BC"
+          (":s/BC/XYZ/g" (kbd "RET"))
+          "ABCABCABC\nABCABCABC\n[A]XYZAXYZAXYZ"))
+      (ert-info ("Substitute on range")
+        (evil-test-buffer
+          "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
+          (":1,3s/BC/XYZ/" (kbd "RET"))
+          "AXYZABCABC\nQRT\n[A]XYZABCABC\nABCABCABC"))
+      (ert-info ("Substitute whole lines on range")
+        (evil-test-buffer
+          "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
+          (":1,3s/BC/XYZ/g" (kbd "RET"))
+          "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nABCABCABC"))
+      (ert-info ("Substitute on whole current line confirm")
+        (evil-test-buffer
+          "ABCABCABC\nABC[A]BCABC\nABCABCABC"
+          (":s/BC/XYZ/gc" (kbd "RET") "yny")
+          "ABCABCABC\n[A]XYZABCAXYZ\nABCABCABC"))
+      (ert-info ("Substitute on range confirm")
+        (evil-test-buffer
+          "ABCABCABC\nQRT\nABC[A]BCABC\nABCABCABC"
+          (":1,3s/BC/XYZ/c" (kbd "RET") "yn")
+          "[A]XYZABCABC\nQRT\nABCABCABC\nABCABCABC"))
+      (ert-info ("Substitute whole lines on range with other delim")
+        (evil-test-buffer
+          "A/CA/CA/C\nQRT\nA/C[A]/CA/C\nA/CA/CA/C"
+          (":1,3s,/C,XYZ,g" (kbd "RET"))
+          "AXYZAXYZAXYZ\nQRT\n[A]XYZAXYZAXYZ\nA/CA/CA/C"))
+      (ert-info ("Substitute on whole buffer, smart case")
+        (evil-test-buffer
+          "[A]bcAbcAbc\naBcaBcaBc\nABCABCABC\nabcabcabc"
+          (":%s/bc/xy/g" (kbd "RET"))
+          "AxyAxyAxy\naXyaXyaXy\nAXYAXYAXY\n[a]xyaxyaxy"))
+      (ert-info ("Substitute zero range on whole line")
+        (evil-test-buffer
+          "no 1\nno 2\nno 3\n[y]es 4\nno 5\nno 6\nno 7\n"
+          (":s/^/# /g")
+          "no 1\nno 2\nno 3\n[#] yes 4\nno 5\nno 6\nno 7\n"))
+      (ert-info ("Substitute with empty")
+        (evil-test-buffer
+          "[a]bc def abc jkl"
+          (":s/b//g")
+          "[a]c def ac jkl"))))
+  (let ((evil-ex-substitute-global t))
+    (evil-without-display
+      (ert-info ("Substitute on current line with gdefault")
+        (evil-test-buffer
+          "ABCABCABC\nABCA[B]CABC\nABCABCABC"
+          (":s/BC/XYZ/g" (kbd "RET"))
+          "ABCABCABC\n[A]XYZABCABC\nABCABCABC"))
+      (ert-info ("Substitute on whole current line with gdefault")
+        (evil-test-buffer
+          "ABCABCABC\nABC[A]BCABC\nABCABCABC"
+          (":s/BC/XYZ/" (kbd "RET"))
+          "ABCABCABC\n[A]XYZAXYZAXYZ\nABCABCABC")))))
 
 (ert-deftest evil-test-ex-substitute-replacement ()
   "Test `evil-ex-substitute' with special replacements."
@@ -6494,12 +6612,19 @@ if no previous selection")
   "Test `evil-ex-substitute' with repeating of previous substitutions."
   :tags '(evil ex search)
   (ert-info ("Repeat previous pattern")
+    (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar"
       (":s/foo/AAA" [return])
       "[x]xx AAA bar foo bar foo bar"
       (":s//BBB" [return])
-      "[x]xx AAA bar BBB bar foo bar"))
+      "[x]xx AAA bar BBB bar foo bar"
+      ("/bar" [return] ":s//CCC" [return])
+      "[x]xx AAA CCC BBB bar foo bar"
+      (":s/ar/XX" [return])
+      "[x]xx AAA CCC BBB bXX foo bar"
+      (":s//YY" [return])
+      "[x]xx AAA CCC BBB bXX foo bYY"))
   (ert-info ("Repeat previous replacement")
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar"
@@ -6515,12 +6640,15 @@ if no previous selection")
       (":s/bar/BBB/&" [return])
       "[x]xx AAA BBB AAA BBB AAA BBB"))
   (ert-info ("Repeat previous substitute without flags")
+    (evil-select-search-module 'evil-search-module 'evil-search)
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar\nxxx foo bar foo bar foo bar"
       (":s/foo/AAA/g" [return])
       "[x]xx AAA bar AAA bar AAA bar\nxxx foo bar foo bar foo bar"
       ("j:s" [return])
-      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar foo bar foo bar")
+      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar foo bar foo bar"
+      ("/bar" [return] ":s" [return])
+      "xxx AAA bar AAA bar AAA bar\n[x]xx AAA bar AAA bar foo bar")
     (evil-test-buffer
       "[x]xx foo bar foo bar foo bar\nxxx foo bar foo bar foo bar"
       (":s/foo/AAA/g" [return])
@@ -6775,7 +6903,7 @@ if no previous selection")
   "Test search for symbol under point."
   :tags '(evil ex search)
   (evil-without-display
-    (evil-select-search-module 'evil-search-modue 'evil-search)
+    (evil-select-search-module 'evil-search-module 'evil-search)
     (setq evil-ex-search-history nil)
     (evil-test-buffer
       "so[m]e text with a strange word
@@ -6796,7 +6924,51 @@ maybe we need one line more with [s]ome text\n"
 and here some other stuff
 maybe we need one line more with some text\n"
       (ert-info ("Search history with double pattern")
-        (should (equal evil-ex-search-history '("\\_<some\\_>")))))))
+        (should (equal evil-ex-search-history '("\\_<some\\_>")))))
+    (ert-info ("Test unbounded search")
+      (evil-select-search-module 'evil-search-module 'evil-search)
+      (setq evil-ex-search-history nil)
+      (evil-test-buffer
+        "[s]ymbol\n(defun my-symbol-func ())\n(defvar my-symbol-var)\nanother symbol\n"
+        ("*")
+        "symbol\n(defun my-symbol-func ())\n(defvar my-symbol-var)\nanother [s]ymbol\n"
+        ("ggg*")
+        "symbol\n(defun my-[s]ymbol-func ())\n(defvar my-symbol-var)\nanother symbol\n"
+        (should (equal evil-ex-search-history '("symbol" "\\_<symbol\\_>")))
+        ("n")
+        "symbol\n(defun my-symbol-func ())\n(defvar my-[s]ymbol-var)\nanother symbol\n"))))
+
+(ert-deftest evil-test-isearch-symbol ()
+  "Test isearch for symbol under point."
+  :tags '(evil isearch)
+  (evil-without-display
+    (evil-select-search-module 'evil-search-module 'isearch)
+    (evil-test-buffer
+      "so[m]e text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n"
+      ("*")
+      "some text with a strange word
+and here [s]ome other stuff
+maybe we need one line more with some text\n"
+      ("n")
+      "some text with a strange word
+and here some other stuff
+maybe we need one line more with [s]ome text\n"
+      ("*")
+      "[s]ome text with a strange word
+and here some other stuff
+maybe we need one line more with some text\n")
+    (ert-info ("Test unbounded search")
+      (evil-select-search-module 'evil-search-module 'isearch)
+      (evil-test-buffer
+        "[s]ymbol\n(defun my-symbol-func ())\n(defvar my-symbol-var)\nanother symbol\n"
+        ("*")
+        "symbol\n(defun my-symbol-func ())\n(defvar my-symbol-var)\nanother [s]ymbol\n"
+        ("ggg*")
+        "symbol\n(defun my-[s]ymbol-func ())\n(defvar my-symbol-var)\nanother symbol\n"
+        ("n")
+        "symbol\n(defun my-symbol-func ())\n(defvar my-[s]ymbol-var)\nanother symbol\n"))))
 
 (ert-deftest evil-test-read ()
   "Test of `evil-read'"
@@ -6866,7 +7038,20 @@ maybe we need one line more with some text\n"
     (evil-test-buffer
       "[n]o 1\nno 2\nno 3\nyes 4\nno 5\nno 6\nno 7\n"
       (":g/no/s/[3-6]/x" [return])
-      "no 1\nno 2\nno x\nyes 4\nno x\nno x\n[n]o 7\n")))
+      "no 1\nno 2\nno x\nyes 4\nno x\nno x\n[n]o 7\n"
+      ("u")
+      "no 1\nno 2\nno [3]\nyes 4\nno 5\nno 6\nno 7\n")))
+
+(ert-deftest evil-test-normal ()
+  "Test `evil-ex-normal'."
+  (evil-test-buffer
+    "[l]ine 1\nline 2\nline 3\nline 4\nline 5\n"
+    (":normal lxIABC" [escape] "AXYZ" [return])
+    "ABClne 1XY[Z]\nline 2\nline 3\nline 4\nline 5\n"
+    (":3,4normal lxIABC" [escape] "AXYZ" [return])
+    "ABClne 1XYZ\nline 2\nABClne 3XYZ\nABClne 4XY[Z]\nline 5\n"
+    ("u")
+    "ABClne 1XYZ\nline 2\nl[i]ne 3\nline 4\nline 5\n"))
 
 ;;; Utilities
 
@@ -7306,6 +7491,24 @@ maybe we need one line more with some text\n"
 
 (when (or evil-tests-profiler evil-tests-run)
   (evil-tests-initialize))
+
+(ert-deftest evil-test-black-hole-register ()
+  :tags '(evil)
+  (ert-info ("Test \"_ on delete word")
+    (evil-test-buffer
+      "[E]vil evil is awesome."
+      ("dw\"_dwP")
+      "Evil[ ]is awesome."))
+  (ert-info ("Test \"_ on delete line")
+    (evil-test-buffer
+      "[T]his line is a keeper!\nThis line is not."
+      ("dd\"_ddP")
+      "[T]his line is a keeper!"))
+  (ert-info ("Test \"_ on delete region")
+    (evil-test-buffer
+      "<This region is a keeper>!\nThis line is not."
+      ("d\gg\"_dGP")
+      "This region is a keepe[r]")))
 
 (provide 'evil-tests)
 

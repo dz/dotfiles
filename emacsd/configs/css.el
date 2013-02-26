@@ -8,7 +8,6 @@
 (add-to-list 'auto-mode-alist '("\\.css$" . rainbow-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . rainbow-mode))
 (add-to-list 'auto-mode-alist '("\\.coffee$" . rainbow-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . rainbow-mode))
 
 ;; less support
 (require 'less-css-mode)

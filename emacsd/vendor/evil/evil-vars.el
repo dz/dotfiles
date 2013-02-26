@@ -2,6 +2,9 @@
 
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0-dev
+
 ;;
 ;; This file is NOT part of GNU Emacs.
 
@@ -188,6 +191,20 @@ moves the cursor."
   :type 'boolean
   :group 'evil)
 
+(defcustom evil-kbd-macro-suppress-motion-error nil
+  "Whether left/right motions signal errors during keyboard-macro definition.
+If this variable is set to non-nil, then the function
+`evil-forward-char' and `evil-backward-char' do not signal
+`end-of-line' or `beginning-of-line' errors when a keyboard macro
+is being defined and/or it is being executed. This may be desired
+because such an error would cause the macro definition/execution
+being terminated."
+  :type '(radio (const :tag "No" :value nil)
+                (const :tag "Record" :value record)
+                (const :tag "Replay" :value replay)
+                (const :tag "Both" :value t))
+  :group 'evil)
+
 (defcustom evil-track-eol t
   "If non-nil line moves after a call to `evil-end-of-line' stay at eol.
 This is analogous to `track-eol' but deals with the end-of-line
@@ -197,17 +214,32 @@ interpretation of evil."
 
 (defcustom evil-mode-line-format 'before
   "The position of the mode line tag.
-`before' means before the mode list, `after' means after it,
-and nil means no mode line tag."
-  :type 'symbol
+Either a symbol or a cons-cell. If it is a symbol it should be
+one of 'before, 'after or 'nil. 'before mean the the tag is
+placed before the mode-list, 'after means it is placed after the
+mode-list, and 'nil means no mode line tag. If it is a cons cell
+it should have the form (WHERE . WHICH) where WHERE is either
+'before or 'after and WHICH is a symbol in
+`mode-line-format'. The tag is then placed right before or after
+that symbol."
+  :type '(radio :value 'before
+                (const before)
+                (const after)
+                (cons :tag "Next to symbol"
+                      (choice :value after
+                              (const before)
+                              (const after))
+                      symbol))
   :group 'evil)
 
-(defcustom evil-word "[:word:]_"
-  "The characters to be considered as a word.
-This should be a regexp set without the enclosing []."
-  :type 'string
+(defcustom evil-mouse-word 'evil-move-word
+  "The (movement) function to be used for double click selection.
+The double-click starts visual state in a special word selection
+mode. This function is used to determine the words to be
+selected. Possible values are 'evil-move-word or
+'evil-move-WORD."
+  :type 'symbol
   :group 'evil)
-(make-variable-buffer-local 'evil-word)
 
 (defcustom evil-bigword "^ \t\r\n"
   "The characters to be considered as a big word.
@@ -426,6 +458,7 @@ If STATE is nil, Evil is disabled in the buffer."
     dvc-status-mode
     dvc-tips-mode
     ediff-mode
+    ediff-meta-mode
     efs-mode
     Electric-buffer-menu-mode
     emms-browser-mode
@@ -794,6 +827,17 @@ list of categories."
   :group 'evil)
 
 ;; Searching
+(defcustom evil-magic t
+  "Meaning which characters in a pattern are magic.
+The meaning of those values is the same as in Vim. Note that it
+only has influence if the evil search module is chosen in
+`evil-search-module'."
+  :group 'evil
+  :type '(radio (const :tag "Very magic." :value very-magic)
+                (const :tag "Magic" :value t)
+                (const :tag "Nomagic" :value nil)
+                (const :tag "Very nomagic" :value very-nomagic)))
+
 (defcustom evil-ex-search-vim-style-regexp nil
   "If non-nil Vim-style backslash codes are supported in search patterns.
 See `evil-transform-vim-style-regexp' for the supported backslash
@@ -852,6 +896,17 @@ highlighted."
   "If t and substitute patterns are highlighted,
 the replacement is shown interactively."
   :type 'boolean
+  :group 'evil)
+
+(defcustom evil-ex-substitute-global nil
+  "If non-nil substitute patterns a global by default.
+Usually (if this variable is nil) a substitution works only on
+the first match of a pattern in a line unless the 'g' flag is
+given, in which case the substitution happens on all matches in a
+line. If this option is non-nil, this behaviour is reversed: the
+substitution works on all matches unless the 'g' pattern is
+specified, then is works only on the first match."
+  :type  'boolean
   :group 'evil)
 
 (defface evil-ex-search '((t :inherit isearch))
@@ -1129,14 +1184,10 @@ BEG end END are the region of the inserted text.")
 This should be a pair (OBJ . CONS) where OBJ is the entry as an
 object, and CONS is a copy of the entry.")
 
-(evil-define-local-var evil-last-insertion-command nil
-  "The last command which inserted text in the buffer.")
-
-(evil-define-local-var evil-current-insertions nil
+(evil-define-local-var evil-current-insertion nil
   "Information about the latest insertion in insert state.
-This should be a pair (TEXT . INSERTIONS) where TEXT is a
-inserted text and INSERTIONS is a list of ranges, of which buffer
-string of the disjoint union is identical to TEXT.")
+This should be a pair (BEG . END) that describes the
+buffer-region of the newly inserted text.")
 
 (defvar evil-last-insertion nil
   "The last piece of inserted text.")
@@ -1155,6 +1206,9 @@ instead of `buffer-undo-list'.")
 
 (evil-define-local-var evil-undo-list-pointer nil
   "Everything up to this mark is united in the undo-list.")
+
+(defvar evil-in-single-undo nil
+  "Set to non-nil if the current undo steps are connected.")
 
 (defvar evil-flash-timer nil
   "Timer for flashing search results.")
@@ -1240,8 +1294,6 @@ Key sequences bound in this map are immediately executed.")
 
 (defvar evil-ex-completion-map (make-sparse-keymap)
   "Completion keymap for Ex.")
-(set-keymap-parent evil-ex-completion-map minibuffer-local-completion-map)
-(define-key evil-ex-completion-map (kbd "SPC") #'self-insert-command)
 
 (defvar evil-ex-shell-argument-initialized nil
   "This variable is set to t if shell command completion has been initialized.
@@ -1326,6 +1378,10 @@ See `evil-ex-init-shell-argument-completion'.")
 (defvar evil-ex-substitute-current-replacement nil
   "The actual replacement.")
 
+(defvar evil-ex-last-was-search nil
+  "Non-nil if the previous was a search.
+Otherwise the previous command is assumed as substitute.")
+
 ;; The lazy-highlighting framework.
 (evil-define-local-var evil-ex-active-highlights-alist nil
   "An alist of currently active highlights.")
@@ -1337,7 +1393,7 @@ See `evil-ex-init-shell-argument-completion'.")
   "Keymap used in ex-search-mode.")
 (set-keymap-parent evil-ex-search-keymap minibuffer-local-map)
 
-(defconst evil-version "0.1"
+(defconst evil-version "1.0-dev"
   "The current version of Evil")
 
 (defun evil-version ()

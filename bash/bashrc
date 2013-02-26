@@ -79,7 +79,6 @@ export LIBTOOLIZE=glibtoolize
 
 # python
 export PYTHONDONTWRITEBYTECODE=1
-export PYTHONSTARTUP="$HOME/.pythonrc.py"
 
 # Enable bash history
 export HISTCONTROL=erasedups
@@ -140,3 +139,6 @@ alias bun="bundle"
 
 # node and npm shit
 export NODE_PATH="/usr/local/lib/node:/usr/local/lib/jsctags"
+export PYTHONPATH="/usr/local/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:~/Library/Application Support/Titanium:$PYTHONPATH"
+export TITANIUM_SDK_VERSION="3.0.0.GA"
+export TITANIUM_SDK=$HOME/Library/Application\ Support/Titanium/mobilesdk/osx/$TITANIUM_SDK_VERSION

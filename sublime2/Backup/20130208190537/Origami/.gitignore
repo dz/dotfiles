@@ -1,0 +1,8 @@
+*.pyc
+*.cache
+*.sublime-project
+*.hgignore
+*.hgtags
+*.DS_Store
+*.tmTheme
+package-metadata.json

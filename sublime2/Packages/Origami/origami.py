@@ -1,6 +1,6 @@
 import sublime, sublime_plugin
 
-XMIN, YMIN, XMAX, YMAX = range(4)
+XMIN, YMIN, XMAX, YMAX = list(range(4))
 
 def increment_if_greater_or_equal(x, threshold):
 	if x >= threshold:
@@ -48,29 +48,60 @@ class PaneCommand(sublime_plugin.WindowCommand):
 	
 	def get_layout(self):
 		layout = self.window.get_layout()
-		print layout
+		print(layout)
 		cells = layout["cells"]
 		rows = layout["rows"]
 		cols = layout["cols"]	
 		return rows, cols, cells
 	
+	def get_cells(self):
+		return self.get_layout()[2]
+	
+	def adjacent_cells(self, direction):
+		cells = self.get_cells()
+		current_group = self.window.active_group()
+		return cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
+	
+	def duplicated_views(self, original_group, duplicating_group):
+		original_views = self.window.views_in_group(original_group)
+		original_buffers = [v.buffer_id() for v in original_views]
+		potential_dupe_views = self.window.views_in_group(duplicating_group)
+		dupe_views = []
+		for pd in potential_dupe_views:
+			if pd.buffer_id() in original_buffers:
+				dupe_views.append(pd)
+		return dupe_views
+	
 	def travel_to_pane(self, direction):
-		window = self.window
-		rows, cols, cells = self.get_layout()
-		current_group = window.active_group()
-		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, cells[current_group], direction)
+		adjacent_cells = self.adjacent_cells(direction)
 		if len(adjacent_cells) > 0:
-			new_view_index = cells.index(adjacent_cells[0])
-			window.focus_group(new_view_index)
+			cells = self.get_cells()
+			new_group_index = cells.index(adjacent_cells[0])
+			self.window.focus_group(new_group_index)
 	
 	def carry_file_to_pane(self, direction):
 		view = self.window.active_view()
+		if not view:
+			# If we're in an empty group, there's no active view
+			return
 		window = self.window
 		group = self.travel_to_pane(direction)
 		window.set_view_index(view, window.active_group(), 0)
 	
 	def clone_file_to_pane(self, direction):
-		self.window.run_command("clone_file")
+		window = self.window
+		view = window.active_view()
+		if not view:
+			# If we're in an empty group, there's no active view
+			return
+		group, original_index = window.get_view_index(view)
+		window.run_command("clone_file")
+		
+		# If we move the cloned file's tab to the left of the original's,
+		# then when we remove it from the group, focus will fall to the
+		# original view.
+		new_view = window.active_view()
+		window.set_view_index(new_view, group, original_index)
 		self.carry_file_to_pane(direction)
 	
 	def create_pane_with_file(self,direction):
@@ -107,7 +138,7 @@ class PaneCommand(sublime_plugin.WindowCommand):
 			cells.insert(current_group, focused_cell)
 			cells.append(unfocused_cell)
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print layout
+			print(layout)
 			window.set_layout(layout)
 	
 	def destroy_pane(self, direction):
@@ -119,11 +150,20 @@ class PaneCommand(sublime_plugin.WindowCommand):
 		current_cell = cells[current_group]
 		
 		adjacent_cells = cells_adjacent_to_cell_in_direction(cells, current_cell, direction)
-		print "number adjacent: ", len(adjacent_cells)
+		print("number adjacent: ", len(adjacent_cells))
 		if len(adjacent_cells) == 1:
 			cell_to_remove = adjacent_cells[0]
 		
 		if cell_to_remove:
+			active_view = window.active_view()
+			group_to_remove = cells.index(cell_to_remove)
+			dupe_views = self.duplicated_views(current_group, group_to_remove)
+			for d in dupe_views:
+				window.focus_view(d)
+				window.run_command('close')
+			if active_view:
+				window.focus_view(active_view)
+			
 			cells.remove(cell_to_remove)
 			if direction == "up":
 				rows.pop(cell_to_remove[YMAX])
@@ -149,8 +189,9 @@ class PaneCommand(sublime_plugin.WindowCommand):
 				for cell in adjacent_cells:
 					cells[cells.index(cell)][XMIN] = cell_to_remove[XMIN]
 				cells = pull_left_cells_after(cells, cell_to_remove[XMAX])
+			
 			layout = {"cols": cols, "rows": rows, "cells": cells}
-			print layout
+			print(layout)
 			window.set_layout(layout)
 
 
@@ -176,7 +217,7 @@ class CreatePaneWithFileCommand(PaneCommand):
 
 class CreatePaneCommand(PaneCommand):
 	def run(self, direction):
-		print "creating"
+		print("creating")
 		self.create_pane(direction)
 
 

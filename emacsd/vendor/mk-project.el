@@ -85,7 +85,7 @@ is set -- or in grepping when `mk-proj-grep-find-cmd' is set.")
 not one relative to basedir. Value is expanded with expand-file-name.")
 
 (defvar mk-proj-compile-cmd nil
-  "Command to build the entire project. Can be either a string specifying 
+  "Command to build the entire project. Can be either a string specifying
 a shell command or the name of a function. Optional. Example: make -k.")
 
 (defvar mk-proj-startup-hook nil
@@ -287,7 +287,7 @@ load time. See also `project-menu-remove'."
 
 (defun mk-proj-load-vars (proj-name proj-alist)
   "Set project variables from proj-alist"
-  (labels ((config-val (key)
+  (cl-labels ((config-val (key)
             (if (assoc key proj-alist)
                 (car (cdr (assoc key proj-alist)))
               nil))
@@ -526,7 +526,7 @@ load time. See also `project-menu-remove'."
 ;; ---------------------------------------------------------------------
 
 (defun project-grep (&optional phrase from-current-dir)
-  "Run find-grep on the project's basedir, excluding files in 
+  "Run find-grep on the project's basedir, excluding files in
 mk-proj-ignore-patterns, tag files, etc.
 
 If the phrase argument is not included, it will prompt for a
@@ -771,7 +771,7 @@ selection of the file. See also: `project-index',
 (defun project-multi-occur (regex)
   "Search all open project files for 'regex' using `multi-occur'"
   (interactive "sRegex: ")
-  (multi-occur (mk-proj-filter (lambda (b) (if (buffer-file-name b) b nil)) 
+  (multi-occur (mk-proj-filter (lambda (b) (if (buffer-file-name b) b nil))
                                (mk-proj-buffers))
                regex))
 
@@ -819,7 +819,7 @@ project is not loaded."
   (interactive)
   (global-unset-key [menu-bar mkproject]))
 
-(when mk-proj-menu-on 
+(when mk-proj-menu-on
   (project-menu))
 
 (provide 'mk-project)

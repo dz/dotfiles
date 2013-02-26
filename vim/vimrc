@@ -10,7 +10,13 @@ let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
 let g:neobundle#log_filename = '' " don't spit out to logfile
 call neobundle#rc(expand('~/.vim/installed/')) " gitignore is on for /installed, so use that instead of default bundle dir
 " required!
-NeoBundle 'Shougo/neobundle.vim'
+" let neobundle manage neobundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Recommended to install
+" After install, turn shell ~/.vim/bundle/vimproc, (n,g)make -f your_machines_makefile
+NeoBundle 'Shougo/vimproc'
+
 
 " BUNDLES
 NeoBundle 'vim-scripts/L9.git'
@@ -35,10 +41,10 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'int3/vim-extradite'
 
 " HTML/CSS
-NeoBundle 'tudorprodan/html_annoyance.vim'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'groenewege/vim-less'
 NeoBundle 'tpope/vim-haml'
+NeoBundle 'tudorprodan/html_annoyance.vim'
 
 " Javascript
 NeoBundle 'pangloss/vim-javascript'
@@ -47,6 +53,8 @@ NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'tpope/vim-rails.git'
 NeoBundle 'tpope/vim-endwise'
 NeoBundle 'tpope/vim-rvm'
+
+
 " Now that vundle has finished its thing
 " turn filetype back on
 filetype plugin indent on
@@ -121,8 +129,12 @@ set hidden
 nnoremap ' `
 nnoremap ` '
 
+" Remap control-g to esc
+map <C-g> <esc>
+noremap <C-g> <esc>
+
 "scrolling offset
-set scrolloff=3
+set scrolloff=5
 set shortmess=atI
 
 "turn off middleclicking
@@ -136,6 +148,10 @@ set autoread
 
 " sudo write
 map w! w !sudo tee % >/dev/null
+
+" if i indent in visual mode, i want to remain in visual mode
+vnoremap < <gv
+vnoremap > >gv
 
 "map control/command arrows for moving between windows
 map <C-up> <C-W><up>
@@ -198,8 +214,10 @@ set guioptions-=r
 nmap + <c-w>=
 
 "tab key in normal mode autoindents
-
 nmap <tab> ==
+"if we rebind tab though, we need to also rebind <C-i> to something else
+"so we can still use the jumplist
+nnoremap <C-p> <C-i>
 
 "fast file switching
 map <C-q> <esc>:b#<esc>
@@ -231,6 +249,10 @@ nmap <D-o> :LustyFilesystemExplorer<cr>
 let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
 
+" Fugitive options
+" if a fugitive buffer is hidden, just go ahead and delete it
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
 "CommandT options
 let g:CommandTMaxFiles=10000
 let g:CommandTMaxHeight=10
@@ -243,7 +265,7 @@ let g:ctrlp_working_path_mode = 'ra'
 let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn$'
 let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
 let g:ctrlp_mruf_max = 2000
-let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*' " MacOSX/Linux
+let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*|/var/folders' " MacOSX/Linux
 let g:ctrlp_dont_split = 'Help'
 let g:ctrlp_extensions = ['tag', 'quickfix', 'undo']
 " press control-v instead of enter to open buffer in existing window

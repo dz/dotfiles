@@ -2,6 +2,9 @@
 
 ;; Author: Frank Fischer <frank fischer at mathematik.tu-chemnitz.de>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0-dev
+
 ;;
 ;; This file is NOT part of GNU Emacs.
 
@@ -137,7 +140,7 @@ of the syntax.")
         evil-ex-argument-handler evil-ex-info-string result)
     (add-hook 'minibuffer-setup-hook #'evil-ex-setup)
     (setq result (read-from-minibuffer
-                  (if (stringp (this-command-keys)) (this-command-keys) ":")
+                  ":"
                   (or initial-input
                       (and evil-ex-previous-command
                            (format "(default: %s) "
@@ -602,7 +605,6 @@ This function calls `evil-ex-update' explicitly when
   "Execute the given command COMMAND."
   (let* ((count (when (numberp range) range))
          (range (when (evil-range-p range) range))
-         (visual (and range (not (evil-visual-state-p))))
          (bang (and (string-match ".!$" command) t))
          (evil-ex-range
           (or range (and count (evil-ex-range count count))))
@@ -615,16 +617,25 @@ This function calls `evil-ex-update' explicitly when
     (when (stringp evil-ex-argument)
       (set-text-properties
        0 (length evil-ex-argument) nil evil-ex-argument))
-    (when visual
-      (evil-visual-select (evil-range-beginning evil-ex-range)
-                          (evil-range-end evil-ex-range)
-                          (evil-type evil-ex-range 'line) -1))
-    (when (evil-visual-state-p)
-      (evil-visual-pre-command evil-ex-command))
-    (unwind-protect
-        (call-interactively evil-ex-command)
-      (when visual
-        (evil-exit-visual-state)))))
+    (let ((buf (current-buffer)))
+      (unwind-protect
+          (if (not evil-ex-range)
+              (call-interactively evil-ex-command)
+            ;; set visual selection to match the region if an explicit
+            ;; range has been specified
+            (let ((ex-range (evil-copy-range evil-ex-range))
+                  beg end)
+              (evil-expand-range ex-range)
+              (setq beg (evil-range-beginning ex-range)
+                    end (evil-range-end ex-range))
+              (evil-sort beg end)
+              (set-mark end)
+              (goto-char beg)
+              (activate-mark)
+              (call-interactively evil-ex-command)))
+        (when (buffer-live-p buf)
+          (with-current-buffer buf
+            (deactivate-mark)))))))
 
 (defun evil-ex-line (base &optional offset)
   "Return the line number of BASE plus OFFSET."
@@ -652,7 +663,8 @@ This function calls `evil-ex-update' explicitly when
   (evil-range
    (evil-line-position beg-line)
    (evil-line-position (or end-line beg-line) -1)
-   'line))
+   'line
+   :expanded t))
 
 (defun evil-ex-full-range ()
   "Return a range encompassing the whole buffer."
@@ -671,20 +683,28 @@ Signal an error if MARKER is in a different buffer."
 (defun evil-ex-re-fwd (pattern)
   "Search forward for PATTERN.
 Returns the line number of the match."
-  (save-excursion
-    (set-text-properties 0 (length pattern) nil pattern)
-    (evil-move-end-of-line)
-    (and (re-search-forward pattern)
-         (line-number-at-pos (1- (match-end 0))))))
+  (condition-case err
+      (save-excursion
+        (set-text-properties 0 (length pattern) nil pattern)
+        (evil-move-end-of-line)
+        (and (re-search-forward pattern nil t)
+             (line-number-at-pos (1- (match-end 0)))))
+    (invalid-regexp
+     (evil-ex-echo (cadr err))
+     nil)))
 
 (defun evil-ex-re-bwd (pattern)
   "Search backward for PATTERN.
 Returns the line number of the match."
-  (save-excursion
-    (set-text-properties 0 (length pattern) nil pattern)
-    (evil-move-beginning-of-line)
-    (and (re-search-backward pattern)
-         (line-number-at-pos (match-beginning 0)))))
+  (condition-case err
+      (save-excursion
+        (set-text-properties 0 (length pattern) nil pattern)
+        (evil-move-beginning-of-line)
+        (and (re-search-backward pattern nil t)
+             (line-number-at-pos (match-beginning 0))))
+    (invalid-regexp
+     (evil-ex-echo (cadr err))
+     nil)))
 
 (defun evil-ex-prev-search ()
   (error "Previous search not yet implemented"))

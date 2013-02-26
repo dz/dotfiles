@@ -2,6 +2,9 @@
 
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
+
+;; Version: 1.0-dev
+
 ;;
 ;; This file is NOT part of GNU Emacs.
 
@@ -53,7 +56,13 @@ If the region is activated, enter Visual state."
             evil-this-motion-count nil
             evil-inhibit-operator nil
             evil-inhibit-operator-value nil)
-      (unless (eq command #'evil-use-register)
+      (unless (memq command '(evil-use-register
+                              digit-argument
+                              negative-argument
+                              universal-argument
+                              universal-argument-minus
+                              universal-argument-more
+                              universal-argument-other-key))
         (setq evil-this-register nil))
       (evil-adjust-cursor))))
 (put 'evil-normal-post-command 'permanent-local-hook t)
@@ -71,12 +80,10 @@ If the region is activated, enter Visual state."
   (cond
    ((evil-insert-state-p)
     (add-hook 'pre-command-hook #'evil-insert-repeat-hook)
-    (add-hook 'post-command-hook #'evil-insert-post-command nil t)
     (unless evil-want-fine-undo
       (evil-start-undo-step t)))
    (t
     (remove-hook 'pre-command-hook #'evil-insert-repeat-hook)
-    (remove-hook 'post-command-hook #'evil-insert-post-command t)
     (setq evil-insert-repeat-info evil-repeat-info)
     (evil-set-marker ?^ nil t)
     (unless evil-want-fine-undo
@@ -91,16 +98,6 @@ If the region is activated, enter Visual state."
   (setq evil-insert-repeat-info (last evil-repeat-info))
   (remove-hook 'pre-command-hook #'evil-insert-repeat-hook))
 (put 'evil-insert-repeat-hook 'permanent-local-hook t)
-
-(defun evil-insert-post-command ()
-  "Adjust cursor after each command."
-  (when (and (eobp) (bolp))
-    (evil-with-restriction
-        (field-beginning nil nil (line-beginning-position -1)) nil
-      (forward-line -1)
-      (back-to-indentation)
-      (setq temporary-goal-column (current-column)))))
-(put 'evil-insert-post-command 'permanent-local-hook t)
 
 (defun evil-cleanup-insert-state ()
   "Called when Insert state is about to be exited.
@@ -575,22 +572,25 @@ Reuse overlays where possible to prevent flicker."
                        (1+ (min (round temporary-goal-column)
                                 (1- most-positive-fixnum)))))
          beg-col end-col new nlines overlay window-beg window-end)
-    ;; calculate the rectangular region represented by BEG and END,
-    ;; but put BEG in the upper-left corner and END in the lower-right
-    ;; if not already there
     (save-excursion
+      ;; calculate the rectangular region represented by BEG and END,
+      ;; but put BEG in the upper-left corner and END in the
+      ;; lower-right if not already there
       (setq beg-col (evil-column beg)
             end-col (evil-column end))
       (when (>= beg-col end-col)
         (if (= beg-col end-col)
             (setq end-col (1+ end-col))
           (evil-sort beg-col end-col))
-        (setq beg (save-excursion (goto-char beg)
-                                  (evil-move-to-column beg-col)
-                                  (point))
-              end (save-excursion (goto-char end)
-                                  (evil-move-to-column end-col 1)
-                                  (point))))
+        (setq beg (save-excursion
+                    (goto-char beg)
+                    (evil-move-to-column beg-col))
+              end (save-excursion
+                    (goto-char end)
+                    (evil-move-to-column end-col 1))))
+      ;; update end column with eol-col (extension to eol).
+      (when (and eol-col (> eol-col end-col))
+        (setq end-col eol-col))
       ;; force a redisplay so we can do reliable window
       ;; BEG/END calculations
       (sit-for 0)
@@ -617,8 +617,8 @@ Reuse overlays where possible to prevent flicker."
                        'default))))
           (setq row-beg (point))
           ;; end of row
-          (evil-move-to-column (or eol-col end-col))
-          (when (and (not eol-col)
+          (evil-move-to-column end-col)
+          (when (and (not (eolp))
                      (< (current-column) end-col))
             ;; append overlay with virtual spaces if unable to
             ;; move directly to the last column
