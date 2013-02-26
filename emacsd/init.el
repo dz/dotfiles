@@ -50,13 +50,14 @@
                   "git"
                   "mumamo"
                   ;; languages
-                  "web"
                   "python"
                   "javascript"
                   "ruby"
                   "yaml"
                   "html"
                   "css"
+                  ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
+                  "web"
                   ))
 
 (setq custom-file "~/.emacs.d/configs/custom.el")
