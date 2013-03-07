@@ -24,3 +24,6 @@
 (setq css-indent-offset 2)
 
 (add-hook 'css-mode-hook 'highlight-indentation-mode)
+
+;; still use scss mode for normal css files
+(add-to-list 'auto-mode-alist '("\\.css$" . scss-mode))

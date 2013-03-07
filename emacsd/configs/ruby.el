@@ -15,6 +15,7 @@
 (add-hook 'ruby-mode-hook
           (lambda ()
             (make-local-variable 'ac-ignores)
+            (setq ruby-insert-encoding-magic-comment nil)
             (add-to-list 'ac-ignores "end")))
 
 (eval-after-load 'ruby-mode
@@ -23,10 +24,14 @@
      (ignore-errors (require 'ruby-compilation))
      (setq ruby-deep-indent-paren nil)
      (setq ruby-use-encoding-map nil)
+     (setq ruby-insert-encoding-magic-comment nil)
      (add-hook 'ruby-mode-hook 'inf-ruby-keys)
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)))
 
 (add-hook 'ruby-mode-hook 'highlight-indentation-mode)
+
+(setq ruby-insert-encoding-magic-comment nil)
+
 
 ;; This allows indentation like:
 ;; object.method(
@@ -100,3 +105,4 @@
 
 (setq
  indent-region-mode t)
+(setq ruby-insert-encoding-magic-comment nil)
