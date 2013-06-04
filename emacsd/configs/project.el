@@ -61,12 +61,15 @@
 (defun hermano-startup ()
   (rvm-activate-corresponding-ruby))
 
-
-(project-def "peacecorps"
-      '((basedir          "/Users/dzhou/Documents/Code/peacecorps/")
-        (src-patterns     ("*.html" "*.py" "*.js" "*.css" "*.tmpl" "*.txt" "*.sh"))
+(project-def "beacon"
+      '((basedir          "/Users/dzhou/Vox/beacon")
+        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
         (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
-        (file-list-cache  "/Users/dzhou/.emacs.d/projects/peacecorps/file-list-cache")
-        (open-files-cache "/Users/dzhou/.emacs.d/projects/peacecorps/open-files-cache")
+        (file-list-cache  "/Users/dzhou/.emacs.d/projects/beacon/file-list-cache")
+        ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+        (startup-hook     beacon-startup)
         (vcs              git)
         (shutdown-hook    nil)))
+
+(defun beacon-startup ()
+  (rvm-activate-corresponding-ruby))

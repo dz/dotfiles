@@ -46,9 +46,10 @@
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
-                  "autocomplete"
+                  ;; "autocomplete"
                   "git"
                   "mumamo"
+                  "killring"
                   ;; languages
                   "python"
                   "javascript"
