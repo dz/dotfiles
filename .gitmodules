@@ -1,3 +1,6 @@
 [submodule "vim/bundle/neobundle"]
 	path = vim/bundle/neobundle
 	url = git://github.com/Shougo/neobundle.vim.git
+[submodule "sublime3/Packages/Package Control"]
+	path = sublime3/Packages/Package Control
+	url = https://github.com/wbond/sublime_package_control.git
