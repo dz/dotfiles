@@ -8,7 +8,7 @@
 		"/Users/dzhou/Documents/Vox/banana_stand",
 		"/Users/dzhou/Documents/Vox/hermano/app"
 	],
-	"last_window_id": 42,
+	"last_window_id": 43,
 	"settings":
 	{
 		"new_window_height": 884.0,
@@ -289,6 +289,280 @@
 	},
 	"windows":
 	[
+		{
+			"auto_complete":
+			{
+				"selected_items":
+				[
+				]
+			},
+			"build_system": "",
+			"command_palette":
+			{
+				"height": 71.0,
+				"selected_items":
+				[
+					[
+						"diffcurr",
+						"Git: Diff Current File"
+					],
+					[
+						"packageinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"gitstatus",
+						"Git: Status"
+					],
+					[
+						"gitpull",
+						"Git: Pull"
+					],
+					[
+						"packinsta",
+						"Package Control: Install Package"
+					],
+					[
+						"packagelist",
+						"Package Control: List Packages"
+					],
+					[
+						"packinstall",
+						"Package Control: Install Package"
+					],
+					[
+						"packli",
+						"Package Control: List Packages"
+					],
+					[
+						"package",
+						"Package Control: Discover Packages"
+					],
+					[
+						"pack",
+						"Package Control: Remove Package"
+					],
+					[
+						"Package Control: ",
+						"Package Control: List Packages"
+					],
+					[
+						"packin",
+						"Package Control: Install Package"
+					],
+					[
+						":w",
+						":w - Save"
+					]
+				],
+				"width": 588.0
+			},
+			"console":
+			{
+				"height": 162.0
+			},
+			"distraction_free":
+			{
+				"menu_visible": true,
+				"show_minimap": false,
+				"show_open_files": false,
+				"show_tabs": false,
+				"side_bar_visible": false,
+				"status_bar_visible": false
+			},
+			"file_history":
+			[
+				"/Users/dzhou/Documents/Vox/sbn/public/javascripts/chorus/lib/moment.js",
+				"/Users/dzhou/Documents/Vox/sbn/db/schema.rb",
+				"/Users/dzhou/Documents/Vox/sbn/app_polygon/controllers/polygon_user_profiles_controller.rb",
+				"/Users/dzhou/Documents/Vox/sbn/app/cells/notifications_cell.rb",
+				"/Users/dzhou/Documents/Vox/sbn/config/routes/polygon/main.rb",
+				"/Users/dzhou/Documents/Vox/sbn/app_polygon/controllers/polygon_chorus_page_controller.rb",
+				"/Users/dzhou/Documents/Vox/polyphone/PolyPhone/build/iphone/build-manifest.json",
+				"/Volumes/Narshe/Downloads/Web/3730719.json",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt",
+				"/Users/dzhou/Documents/Vox/hermano/Gemfile.lock",
+				"/Users/dzhou/Documents/Vox/hermano/config.ru",
+				"/Users/dzhou/Documents/Vox/banana_stand/app/controllers/campfire_controller.rb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/BracketHighlighter.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/AutoFileName/autofilename.sublime-settings",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/GotoRecent/goto_recent.py",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Default (OSX).sublime-keymap",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/User/Preferences.sublime-settings",
+				"/Users/dzhou/Documents/Vox/hermano/tmp/cache/assets/DBC/AA0/sprockets%2Fa0b0445a27bf8df1c813f7ab3abce671",
+				"/Users/dzhou/Documents/Vox/hermano/app/controllers/blueprints_controller.rb",
+				"/Users/dzhou/Documents/Vox/hermano/lib/search/builder.rb",
+				"/Users/dzhou/Documents/Vox/hermano/app/views/fields/association/_builder.html.erb",
+				"/Users/dzhou/Documents/Code/dotfiles/sublime2/Packages/Default/Preferences.sublime-settings"
+			],
+			"find":
+			{
+				"height": 38.0
+			},
+			"find_in_files":
+			{
+				"height": 0.0,
+				"where_history":
+				[
+					""
+				]
+			},
+			"find_state":
+			{
+				"case_sensitive": false,
+				"find_history":
+				[
+					"\"hidden\":1",
+					"hidden",
+					"keys",
+					"\n    ",
+					"quick_add_next",
+					"keys",
+					"super+d",
+					"d",
+					"ad",
+					"s",
+					" ",
+					"    {",
+					"keys",
+					"},",
+					"alt",
+					"},\n",
+					"      ",
+					"will_paginate",
+					"total_pages",
+					"vintage"
+				],
+				"highlight": true,
+				"in_selection": false,
+				"preserve_case": false,
+				"regex": false,
+				"replace_history":
+				[
+				],
+				"reverse": false,
+				"show_context": true,
+				"use_buffer2": true,
+				"whole_word": false,
+				"wrap": true
+			},
+			"incremental_find":
+			{
+				"height": 38.0
+			},
+			"input":
+			{
+				"height": 0.0
+			},
+			"layout":
+			{
+				"cells":
+				[
+					[
+						0,
+						0,
+						1,
+						1
+					]
+				],
+				"cols":
+				[
+					0.0,
+					1.0
+				],
+				"rows":
+				[
+					0.0,
+					1.0
+				]
+			},
+			"menu_visible": true,
+			"output.git":
+			{
+				"height": 132.0
+			},
+			"position": "477 235 1605 906 0 0 2560 1418 ",
+			"replace":
+			{
+				"height": 68.0
+			},
+			"save_all_on_build": true,
+			"select_file":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+					[
+						"fieldsp",
+						"app/models/field_spec.rb"
+					],
+					[
+						"recordrb",
+						"app/models/record.rb"
+					],
+					[
+						"poly",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
+						"record.rb",
+						"app/models/record.rb"
+					],
+					[
+						"polygon.rb",
+						"app/models/denormalize/polygon.rb"
+					],
+					[
+						"game/index.r",
+						"app/modules/polygon/game/index_cell.rb"
+					],
+					[
+						"campfirecon",
+						"app/controllers/campfire_controller.rb"
+					],
+					[
+						"records.rb",
+						"db/migrate/20120618182244_create_records.rb"
+					],
+					[
+						"recordindex",
+						"app/views/records/index.html.erb"
+					],
+					[
+						"recordcon",
+						"app/controllers/records_controller.rb"
+					],
+					[
+						"blueprinton",
+						"app/controllers/blueprints_controller.rb"
+					],
+					[
+						"builder",
+						"lib/search/builder.rb"
+					],
+					[
+						"builder.rb",
+						"views/fields/association/_builder.html.erb"
+					]
+				],
+				"width": 0.0
+			},
+			"select_project":
+			{
+				"height": 0.0,
+				"selected_items":
+				[
+				],
+				"width": 0.0
+			},
+			"show_minimap": false,
+			"show_open_files": false,
+			"show_tabs": true,
+			"side_bar_visible": true,
+			"side_bar_width": 361.0,
+			"status_bar_visible": true,
+			"window_id": 43
+		}
 	],
 	"workspaces":
 	{
