@@ -1,7 +1,9 @@
 {
 	"installed_packages":
 	[
+		"Origami",
 		"Package Control",
+		"Sublime Files",
 		"Theme - Soda"
 	]
 }

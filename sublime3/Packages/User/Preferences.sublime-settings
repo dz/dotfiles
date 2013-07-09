@@ -39,6 +39,7 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
+    "Vintage"
 	],
 	"indent_to_bracket": false,
 	"match_brackets": false,

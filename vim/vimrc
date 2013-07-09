@@ -285,6 +285,7 @@ noremap! <D-d> <esc>:TagbarToggle<cr>
 set tags=tags,.git/tags,TAGS
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
+let g:tagbar_autoclose = 1
 let g:tagbar_type_coffee = {
   \ 'kinds' : [
   \   'f:functions',
@@ -454,5 +455,7 @@ autocmd BufRead *.py set smartindent cinwords=if,elif,else,for,while,with,try,ex
 
 "Javascript
 " Use Node.js for JavaScript interpretation
-let $JS_CMD='node'
+let g:html_indent_inctags = "html,body,head,tbody"
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
 
