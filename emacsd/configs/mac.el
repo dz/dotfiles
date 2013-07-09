@@ -46,13 +46,13 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\C-a" 'smart-beginning-of-line)
 
 ;; allow command-c to copy as normal
-(global-set-key "\M-c" 'clipboard-kill-ring-save)
+(global-set-key "\M-c" 'simpleclip-copy)
 
 ;; allow command-C to cut as normal
-(global-set-key "\M-C" 'clipboard-kill-region)
+(global-set-key "\M-C" 'simpleclip-cut)
 
 ;; set command-v to paste
-(global-set-key "\M-v" 'clipboard-yank)
+(global-set-key "\M-v" 'simpleclip-paste)
 
 ;; use comamnd-1, command-2, etc instead of c-x number
 (global-set-key "\M-1" 'delete-other-windows)
