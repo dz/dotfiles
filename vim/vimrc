@@ -20,7 +20,7 @@ NeoBundle 'Shougo/vimproc'
 
 " BUNDLES
 NeoBundle 'vim-scripts/L9.git'
-NeoBundle 'Lokaltog/vim-powerline'
+NeoBundle 'bling/vim-airline'
 NeoBundle 'mileszs/ack.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'tpope/vim-surround'
@@ -39,6 +39,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 " GIT SHIT
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'int3/vim-extradite'
+NeoBundle 'mattn/gist-vim'
 
 " HTML/CSS
 NeoBundle 'kchmck/vim-coffee-script'
@@ -73,6 +74,7 @@ set shm=atI "disable intro screen
 set ttyfast " Improves redrawing for newer computers
 set mouse=a
 scriptencoding utf-8
+set encoding=utf-8
 set virtualedit=onemore
 set history=1000
 set nofoldenable " disable code folding
@@ -244,6 +246,17 @@ noremap! <D-r> <esc>:CtrlPMRU<cr>
 nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
 nmap <leader>. :LustyFilesystemExplorer<cr>
 nmap <D-o> :LustyFilesystemExplorer<cr>
+
+"vim-airline options
+" let g:airline_left_sep=''
+" let g:airline_right_sep=''
+let g:airline_enable_branch=1
+let g:airline_branch_empty_message=''
+let g:airline_enable_tagbar=1
+let g:airline_detect_modified=1
+let g:airline_inactive_collapse=1
+let g:airline_theme='molokai'
+let g:airline_powerline_fonts=1
 
 " NerdTree options
 let NERDTreeMinimalUI=1

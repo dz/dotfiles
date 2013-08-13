@@ -24,7 +24,11 @@
 		".DS_Store",
 		"*.class",
 		"*.psd",
-		"*.db"
+		"*.db",
+    "*.gif",
+    "*.jpg",
+    "*.png",
+    "*.bmp"
 	],
 	"folder_exclude_patterns":
 	[
@@ -39,7 +43,7 @@
 	"hot_exit": false,
 	"ignored_packages":
 	[
-    "Vintage"
+		"Vintage"
 	],
 	"indent_to_bracket": false,
 	"match_brackets": false,

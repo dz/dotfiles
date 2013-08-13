@@ -1,4 +1,4 @@
-set guifont=Inconsolata-dz:h15
+set guifont=Inconsolata-dz\ for\ Powerline:h15
 set gcr=a:blinkon0
 set lines=34
 set columns=134
