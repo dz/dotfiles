@@ -36,6 +36,7 @@ NeoBundle 'majutsushi/tagbar'
 NeoBundle 'sjl/gundo.vim'
 NeoBundle 'vim-scripts/YankRing.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Valloric/YouCompleteMe'
 " GIT SHIT
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'int3/vim-extradite'
@@ -53,7 +54,7 @@ NeoBundle 'pangloss/vim-javascript'
 " Ruby/Rails
 NeoBundle 'tpope/vim-rails.git'
 NeoBundle 'tpope/vim-endwise'
-NeoBundle 'tpope/vim-rvm'
+"NeoBundle 'tpope/vim-rvm'
 
 
 " Now that vundle has finished its thing
@@ -229,6 +230,7 @@ noremap! <C-q> <esc>:b#<cr>
 
 map <Leader>t :NERDTreeToggle<cr>
 map <Leader>m :NERDTreeToggle<cr>
+map <leader>n :NERDTreeFind<cr>
 
 nmap <silent> <Leader>, :CtrlP<cr>
 nmap <silent> <Leader>r :CtrlPClearCache<cr>
