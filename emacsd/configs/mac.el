@@ -62,15 +62,19 @@ If point was already at that position, move point to beginning of line."
 
 (global-set-key "\M--" (kbd "C-u - 1 6 C-x {"))
 (global-set-key "\M-+" (kbd "C-u - 1 6 C-x }"))
-(global-set-key "\M-[" (kbd "C-u - 1 6 C-x {"))
-(global-set-key "\M-]" (kbd "C-u - 1 6 C-x }"))
 (global-set-key "\M-=" 'balance-windows)
+
+;; bind for winner-mode
+(global-set-key "\M-[" 'winner-undo)
+(global-set-key "\M-]" 'winner-redo)
 
 ;; allow command-h to hide emacs
 (global-set-key "\M-h" 'ns-do-hide-emacs)
 
 ;; allow command-a to select all
 (global-set-key "\M-a" 'mark-whole-buffer)
+
+(setq ns-use-native-fullscreen nil)
 
 ;; allow command-return to trigger fulscreen
 (defun mac-toggle-max-window ()

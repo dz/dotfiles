@@ -79,6 +79,9 @@
 ;; always remove trailing whitespace
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; use winner-mode to remember window states
+(winner-mode 1)
+
 ;; highlight indentation
 (require 'highlight-indentation)
 (setq highlight-indentation-offset 2)
@@ -308,3 +311,11 @@
 
 (require 'simpleclip)
 (simpleclip-mode 1)
+
+;; use smex for a better M-x experience
+(require 'smex)
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+;; This is your old M-x.
+(global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)

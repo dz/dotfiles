@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0-dev
+;; Version: 1.0.8
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -38,10 +38,10 @@ search module is used."
   (let ((search-functions
          '(forward
            backward
-           symbol-forward
-           symbol-backward
-           unbounded-symbol-forward
-           unbounded-symbol-backward
+           word-forward
+           word-backward
+           unbounded-word-forward
+           unbounded-word-backward
            next
            previous)))
     (dolist (fun search-functions)
@@ -127,8 +127,8 @@ to display in the echo area."
                   evil-search-forward
                   evil-search-next
                   evil-search-previous
-                  evil-search-symbol-backward
-                  evil-search-symbol-forward))
+                  evil-search-word-backward
+                  evil-search-word-forward))
     (isearch-clean-overlays)))
 (put 'evil-clean-isearch-overlays 'permanent-local-hook t)
 
@@ -143,8 +143,8 @@ Disable anyway if FORCE is t."
                          evil-search-forward
                          evil-search-next
                          evil-search-previous
-                         evil-search-symbol-backward
-                         evil-search-symbol-forward))))
+                         evil-search-word-backward
+                         evil-search-word-forward))))
     (evil-echo-area-restore)
     (isearch-dehighlight)
     (setq isearch-lazy-highlight-last-string nil)
@@ -220,9 +220,12 @@ one more than the current position."
       (setq isearch-string string)
       (isearch-update-ring string regexp-p)
       ;; handle opening and closing of invisible area
-      (when (boundp 'isearch-filter-predicate)
-        (funcall isearch-filter-predicate
-                 (match-beginning 0) (match-end 0)))
+      (cond
+       ((boundp 'isearch-filter-predicates)
+        (dolist (pred isearch-filter-predicates)
+          (funcall pred (match-beginning 0) (match-end 0))))
+       ((boundp 'isearch-filter-predicate)
+        (funcall isearch-filter-predicate (match-beginning 0) (match-end 0))))
       ;; always position point at the beginning of the match
       (goto-char (match-beginning 0))
       ;; determine message for echo area
@@ -235,49 +238,66 @@ one more than the current position."
         (setq string (evil-search-message string forward))))
       (evil-flash-search-pattern string t))))
 
-(defun evil-search-symbol (forward &optional unbounded)
-  "Search for symbol near point.
-If FORWARD is nil, search backward, otherwise forward."
+(defun evil-search-word (forward unbounded symbol)
+  "Search for word near point.
+If FORWARD is nil, search backward, otherwise forward. If SYMBOL
+is non-nil then the functions searches for the symbol at point,
+otherwise for the word at point."
   (let ((string (car-safe regexp-search-ring))
         (move (if forward #'forward-char #'backward-char))
         (end (if forward #'eobp #'bobp)))
     (setq isearch-forward forward)
     (cond
      ((and (memq last-command
-                 '(evil-search-symbol-forward
-                   evil-search-symbol-backward))
+                 '(evil-search-word-forward
+                   evil-search-word-backward))
            (stringp string)
            (not (string= string "")))
       (evil-search string forward t))
      (t
-      (setq string (evil-find-symbol forward))
+      (setq string (evil-find-thing forward (if symbol 'symbol 'word)))
       (cond
        ((null string)
-        (error "No symbol under point"))
+        (error "No word under point"))
        (unbounded
         (setq string (regexp-quote string)))
        (t
-        (setq string (format "\\_<%s\\_>" (regexp-quote string)))))
+        (setq string
+              (format (if symbol "\\_<%s\\_>" "\\<%s\\>")
+                      (regexp-quote string)))))
       (evil-search string forward t)))))
 
-(defun evil-find-symbol (forward)
-  "Return symbol near point as a string.
-If FORWARD is nil, search backward, otherwise forward.
-Returns nil if nothing is found."
+(defun evil-find-thing (forward thing)
+  "Return THING near point as a string.
+THING should be a symbol understood by `thing-at-point',
+e.g. 'symbol or 'word.  If FORWARD is nil, search backward,
+otherwise forward.  Returns nil if nothing is found."
   (let ((move (if forward #'forward-char #'backward-char))
         (end (if forward #'eobp #'bobp))
         string)
     (save-excursion
-      (setq string (thing-at-point 'symbol))
+      (setq string (thing-at-point thing))
       ;; if there's nothing under point, go forwards
       ;; (or backwards) to find it
       (while (and (null string) (not (funcall end)))
         (funcall move)
-        (setq string (thing-at-point 'symbol)))
+        (setq string (thing-at-point thing)))
       (when (stringp string)
         (set-text-properties 0 (length string) nil string))
       (when (> (length string) 0)
         string))))
+
+(defun evil-find-word (forward)
+  "Return word near point as a string.
+If FORWARD is nil, search backward, otherwise forward.  Returns
+nil if nothing is found."
+  (evil-find-thing forward 'word))
+
+(defun evil-find-symbol (forward)
+  "Return word near point as a string.
+If FORWARD is nil, search backward, otherwise forward.  Returns
+nil if nothing is found."
+  (evil-find-thing forward 'symbol))
 
 (defun evil-search-prompt (forward)
   "Return the search prompt for the given direction."
@@ -310,39 +330,6 @@ Returns nil if nothing is found."
 
 ;;; Ex search
 
-;; a pattern
-(defun evil-ex-make-pattern (regexp casefold whole-line)
-  "Create a new search pattern.
-REGEXP is the regular expression to be searched for.
-CASEFOLD is the case-fold property of the search,
-which can be either `sensitive', `insensitive' or `smart'.
-Here `smart' means the pattern is case sensitive if and only if
-it contains a capital character. If WHOLE-LINE is non-nil,
-all occurrences of the pattern on a line will be highlighted,
-otherwise only the first one."
-  (let ((re (evil-ex-regex-without-case regexp)))
-    (when evil-ex-search-vim-style-regexp
-      (setq re (evil-transform-vim-style-regexp re)))
-    (setq re (evil-transform-regexp re
-                                    '((?t . "\t")
-                                      (?n . "\n")
-                                      (?r . "\r"))))
-    (list re
-          (evil-ex-regex-case regexp casefold)
-          whole-line)))
-
-(defun evil-ex-pattern-regex (pattern)
-  "Return the regular expression of a search PATTERN."
-  (car pattern))
-
-(defun evil-ex-pattern-case-fold (pattern)
-  "Return the case-fold property of a search PATTERN."
-  (cadr pattern))
-
-(defun evil-ex-pattern-whole-line (pattern)
-  "Return the whole-line property of a search PATTERN."
-  (nth 2 pattern))
-
 (defun evil-ex-regex-without-case (re)
   "Return the regular expression without all occurrences of \\c and \\C."
   (evil-transform-regexp re '((?c . "") (?C . ""))))
@@ -366,6 +353,69 @@ letter, otherwise it will be case-insensitive."
       'sensitive))
    (t default-case)))
 
+;; a pattern
+(defun evil-ex-make-substitute-pattern (regexp flags)
+  "Creates a PATTERN for substitution with FLAGS.
+This function respects the values of `evil-ex-substitute-case'
+and `evil-ex-substitute-global'."
+  (evil-ex-make-pattern regexp
+                        (cond
+                         ((memq ?i flags) 'insensitive)
+                         ((memq ?I flags) 'sensitive)
+                         ((not evil-ex-substitute-case)
+                          evil-ex-search-case)
+                         (t evil-ex-substitute-case))
+                        (or (and evil-ex-substitute-global
+                                 (not (memq ?g flags)))
+                            (and (not evil-ex-substitute-global)
+                                 (memq ?g flags)))))
+
+(defun evil-ex-make-search-pattern (regexp)
+  "Creates a PATTERN for search.
+This function respects the values of `evil-ex-search-case'."
+  (evil-ex-make-pattern regexp evil-ex-search-case t))
+
+(defun evil-ex-make-pattern (regexp case whole-line)
+  "Create a new search pattern.
+REGEXP is the regular expression to be searched for. CASE should
+be either 'sensitive, 'insensitive for case-sensitive and
+case-insensitive search, respectively, or anything else.  In the
+latter case the pattern is smart-case, i.e. it is automatically
+sensitive of the pattern contains one upper case letter,
+otherwise it is insensitive.  The input REGEXP is considered a
+Vim-style regular expression if `evil-ex-search-vim-style-regexp'
+is non-nil, in which case it is transformed to an Emacs style
+regular expression (i.e. certain backslash-codes are
+transformed. Otherwise REGEXP must be an Emacs style regular
+expression and is not transformed."
+  (let ((re (evil-ex-regex-without-case regexp))
+        (ignore-case (eq (evil-ex-regex-case regexp case) 'insensitive)))
+    ;; possibly transform regular expression from vim-style to
+    ;; Emacs-style.
+    (if evil-ex-search-vim-style-regexp
+        (setq re (evil-transform-vim-style-regexp re))
+      ;; Even for Emacs regular expressions we translate certain
+      ;; whitespace sequences
+      (setq re (evil-transform-regexp re
+                                      '((?t . "\t")
+                                        (?n . "\n")
+                                        (?r . "\r")))))
+    (list re ignore-case whole-line)))
+
+(defun evil-ex-pattern-regex (pattern)
+  "Return the regular expression of a search PATTERN."
+  (nth 0 pattern))
+
+(defun evil-ex-pattern-ignore-case (pattern)
+  "Return t if and only if PATTERN should ignore case."
+  (nth 1 pattern))
+
+(defun evil-ex-pattern-whole-line (pattern)
+  "Return t if and only if PATTERN should match all occurences of a line.
+Otherwise PATTERN matches only the first occurence."
+  (nth 2 pattern))
+
+;; Highlight
 (defun evil-ex-make-hl (name &rest args)
   "Create a new highlight object with name NAME and properties ARGS.
 The following properties are supported:
@@ -513,12 +563,14 @@ The following properties are supported:
 (defun evil-ex-hl-update-highlights ()
   "Update the overlays of all active highlights."
   (dolist (hl (mapcar #'cdr evil-ex-active-highlights-alist))
-    (let ((old-ovs (evil-ex-hl-overlays hl))
-          new-ovs
-          (pattern (evil-ex-hl-pattern hl))
-          (face (evil-ex-hl-face hl))
-          (match-hook (evil-ex-hl-match-hook hl))
-          result)
+    (let* ((old-ovs (evil-ex-hl-overlays hl))
+           new-ovs
+           (pattern (evil-ex-hl-pattern hl))
+           (case-fold-search (evil-ex-pattern-ignore-case pattern))
+           (case-replace case-fold-search)
+           (face (evil-ex-hl-face hl))
+           (match-hook (evil-ex-hl-match-hook hl))
+           result)
       (if pattern
           ;; collect all visible ranges
           (let (ranges sranges)
@@ -610,8 +662,7 @@ The following properties are supported:
   "Look for the next occurrence of PATTERN in a certain DIRECTION.
 Note that this function ignores the whole-line property of PATTERN."
   (setq direction (or direction 'forward))
-  (let ((case-fold-search (eq (evil-ex-pattern-case-fold pattern)
-                              'insensitive)))
+  (let ((case-fold-search (evil-ex-pattern-ignore-case pattern)))
     (cond
      ((eq direction 'forward)
       (re-search-forward (evil-ex-pattern-regex pattern) nil t))
@@ -633,8 +684,9 @@ Note that this function ignores the whole-line property of PATTERN."
 
 (defun evil-ex-hl-do-update-highlight (&optional buffer)
   "Timer function for updating the highlights."
-  (with-current-buffer buffer
-    (evil-ex-hl-update-highlights))
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (evil-ex-hl-update-highlights)))
   (setq evil-ex-hl-update-timer nil))
 
 (defun evil-ex-hl-update-highlights-scroll (win beg)
@@ -673,7 +725,7 @@ only searches invisible text if `search-invisible' is t. If
 PATTERN is not specified the current global pattern
 `evil-ex-search-pattern' and if DIRECTION is not specified the
 current global direction `evil-ex-search-direction' is used.
-This function return t if the search was successful, nil if it
+This function returns t if the search was successful, nil if it
 was unsuccessful and 'wrapped if the search was successful but
 has been wrapped at the buffer boundaries."
   (setq pattern (or pattern evil-ex-search-pattern)
@@ -811,9 +863,7 @@ any error conditions."
              (next-pat (pop res)))
         ;; use last pattern of no new pattern has been specified
         (if (not (zerop (length pat)))
-            (setq pat (evil-ex-make-pattern pat
-                                            evil-ex-search-case
-                                            t))
+            (setq pat (evil-ex-make-search-pattern pat))
           (setq pat evil-ex-search-pattern
                 offset (or offset evil-ex-search-offset)))
         (when (zerop (length pat))
@@ -849,36 +899,37 @@ any error conditions."
 
 (defun evil-ex-search-update-pattern (beg end range)
   "Update the current search pattern."
-  (let ((pattern-string (minibuffer-contents)))
-    (with-current-buffer evil-ex-current-buffer
-      (with-selected-window (minibuffer-selected-window)
-        (goto-char (1+ evil-ex-search-start-point))
-        (condition-case err
-            (let* ((result (evil-ex-search-full-pattern pattern-string
-                                                        (or evil-ex-search-count 1)
-                                                        evil-ex-search-direction))
-                   (success (pop result))
-                   (pattern (pop result))
-                   (offset (pop result)))
-              (cond
-               ((eq success 'wrap)
-                (evil-ex-search-update pattern offset
-                                       (match-beginning 0) (match-end 0)
-                                       "Wrapped"))
-               ((eq success 'empty-pattern)
-                (evil-ex-search-update nil nil nil nil nil))
-               (success
-                (evil-ex-search-update pattern offset
-                                       (match-beginning 0) (match-end 0)
-                                       nil))
-               (t
-                (evil-ex-search-update nil nil
-                                       nil nil
-                                       "search failed"))))
-          (invalid-regexp
-           (evil-ex-search-update nil nil nil nil (cadr err)))
-          (error
-           (evil-ex-search-update nil nil nil nil (format "%s" err))))))))
+  (save-match-data
+    (let ((pattern-string (minibuffer-contents)))
+      (with-current-buffer evil-ex-current-buffer
+        (with-selected-window (minibuffer-selected-window)
+          (goto-char (1+ evil-ex-search-start-point))
+          (condition-case err
+              (let* ((result (evil-ex-search-full-pattern pattern-string
+                                                          (or evil-ex-search-count 1)
+                                                          evil-ex-search-direction))
+                     (success (pop result))
+                     (pattern (pop result))
+                     (offset (pop result)))
+                (cond
+                 ((eq success 'wrap)
+                  (evil-ex-search-update pattern offset
+                                         (match-beginning 0) (match-end 0)
+                                         "Wrapped"))
+                 ((eq success 'empty-pattern)
+                  (evil-ex-search-update nil nil nil nil nil))
+                 (success
+                  (evil-ex-search-update pattern offset
+                                         (match-beginning 0) (match-end 0)
+                                         nil))
+                 (t
+                  (evil-ex-search-update nil nil
+                                         nil nil
+                                         "search failed"))))
+            (invalid-regexp
+             (evil-ex-search-update nil nil nil nil (cadr err)))
+            (error
+             (evil-ex-search-update nil nil nil nil (format "%s" err)))))))))
 (put 'evil-ex-search-update-pattern 'permanent-local-hook t)
 
 (defun evil-ex-search-exit ()
@@ -969,23 +1020,27 @@ current search result."
             (evil-ex-delete-hl 'evil-ex-search)
             (signal 'search-failed (list search-string)))))))))
 
-(defun evil-ex-start-symbol-search (unbounded direction count)
+(defun evil-ex-start-word-search (unbounded direction count &optional symbol)
   "Search for the symbol under point.
-The search matches the COUNT-th occurrence of the word.
-If the UNBOUNDED argument is nil, the search matches only
-at symbol boundaries, otherwise it matches anywhere.
-The DIRECTION argument should be either `forward' or
-`backward', determining the search direction."
-  (let ((string (evil-find-symbol (eq direction 'forward))))
+The search matches the COUNT-th occurrence of the word.  If the
+UNBOUNDED argument is nil, the search matches only at symbol
+boundaries, otherwise it matches anywhere.  The DIRECTION
+argument should be either `forward' or `backward', determining
+the search direction. If SYMBOL is non-nil then the functions
+searches for the symbol at point, otherwise for the word at
+point."
+  (let ((string (evil-find-thing (eq direction 'forward)
+                                 (if symbol 'symbol 'word))))
     (if (null string)
-        (error "No symbol under point")
+        (error "No word under point")
       (let ((regex (if unbounded
-                       (regexp-quote (match-string 0))
-                     (format "\\_<%s\\_>" (regexp-quote (match-string 0))))))
+                       (regexp-quote string)
+                     (format (if symbol "\\_<%s\\_>" "\\<%s\\>")
+                             (regexp-quote string)))))
         (setq evil-ex-search-count count
               evil-ex-search-direction direction
               evil-ex-search-pattern
-              (evil-ex-make-pattern regex evil-ex-search-case t)
+              (evil-ex-make-search-pattern regex)
               evil-ex-search-offset nil
               evil-ex-last-was-search t)
         ;; update search history unless this pattern equals the
@@ -1118,17 +1173,7 @@ a :substitute command with arguments."
             flags (remq ?r flags)))
     ;; generate pattern
     (when pattern
-      (setq pattern
-            (evil-ex-make-pattern
-             pattern
-             (or (and (memq ?i flags) 'insensitive)
-                 (and (memq ?I flags) 'sensitive)
-                 evil-ex-substitute-case
-                 evil-ex-search-case)
-             (or (and (not evil-ex-substitute-global)
-                      (memq ?g flags))
-                 (and evil-ex-substitute-global
-                      (not (memq ?g flags)))))))
+      (setq pattern (evil-ex-make-substitute-pattern pattern flags)))
     (list pattern replacement flags)))
 
 (defun evil-ex-nohighlight ()

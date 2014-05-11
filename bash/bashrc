@@ -3,10 +3,6 @@
 # Inspired greatly by Armin Ronacher's bashrc
 # https://github.com/mitsuhiko/dotfiles/blob/master/bash/bashrc
 
-# setup gcc
-export CC=/usr/bin/gcc-4.2
-export CXX=/usr/bin/g++-4.2
-
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -24,15 +20,15 @@ else
 fi
 
 VCPROMPT_EXECUTABLE=/usr/bin/vcprompt
-RVMPROMPT_EXECUTABLE=~/.rvm/bin/rvm-prompt
 
-function vcprompt() {
-  $VCPROMPT_EXECUTABLE -f $' (\033[31;1m%[unknown]b\033[32;1m%m%u\033[37;1m)'
+function vcprompt_branch() {
+  $VCPROMPT_EXECUTABLE -f $'%b'
 }
 
-function rvmprompt() {
-  $RVMPROMPT_EXECUTABLE u v g
+function vcprompt_changed() {
+  $VCPROMPT_EXECUTABLE -f $'%m%u'
 }
+
 
 function lastcommandfailed() {
   code=$?
@@ -57,7 +53,7 @@ function backgroundjobs() {
   '
 }
 
-export BASEPROMPT='\[\e${GREEN_COLOR}\]\w \[\e${GRAY_COLOR}(\e${CYAN_COLOR}\]$(rvmprompt)\[\e${GRAY_COLOR})\e${GRAY_COLOR}\]$(vcprompt)\[\e${GRAY_COLOR} \e${USER_COLOR}\]\u\[\e${DEFAULT_COLOR}\]'
+export BASEPROMPT='\[\e${GREEN_COLOR}\]\w \[\e${GRAY_COLOR}\]\[\e${GRAY_COLOR}\](\[\e${RED_COLOR}\]$(vcprompt_branch)\[\e${GREEN_COLOR}\]$(vcprompt_changed)\[\e${DEFAULT_COLOR}\])\[\e${GRAY_COLOR}\] \[\e${USER_COLOR}\]\u\[\e${DEFAULT_COLOR}\]'
 
 export PROMPT="${BASEPROMPT}$ "
 export PS1=$PROMPT
@@ -87,11 +83,18 @@ shopt -s histappend
 
 export FALLBACK_DYLD_LIBRARY_PATH=/usr/local/lib
 
-PATH=/usr/local/share/python:/usr/local/bin:/usr/local/sbin:${PATH}
-
 # These set up/down to do the history searching
 bind '"\e[A"':history-search-backward
 bind '"\e[B"':history-search-forward
+
+export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
+export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+export SSL_CERT_FILE=/usr/local/etc/openssl/certs/cert.pem
+export GOPATH=/Users/dzhou/go_code
+export PATH="$PATH:$GOPATH/bin"
+export SOLR_HOME=/usr/local/solr14
+export PATH=".bundle/bin:$PATH"
+eval "$(rbenv init -)"
 
 alias c="clear"
 alias l="ls"
@@ -120,17 +123,6 @@ export EDITOR='vim'
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
 
-PATH=$PATH:$HOME/.rvm/bin # Add RVM to PATH for scripting
-
-PATH="/usr/local/share/npm/bin:/usr/local/bin:${PATH}"
-export PATH
-
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
-
-# mysql path
-export PATH="/usr/local/mysql/bin:$PATH"
-
 # solr setup
 export SOLR_HOME=~/Documents/Vox/solr14
 
@@ -142,3 +134,9 @@ export NODE_PATH="/usr/local/lib/node:/usr/local/lib/jsctags"
 export PYTHONPATH="/usr/local/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:~/Library/Application Support/Titanium:$PYTHONPATH"
 export TITANIUM_SDK_VERSION="3.0.0.GA"
 export TITANIUM_SDK=$HOME/Library/Application\ Support/Titanium/mobilesdk/osx/$TITANIUM_SDK_VERSION
+
+export PROJECTS_PATH="/Users/dzhou/Vox"
+
+alias gg="git g"
+
+alias be="bundle exec"

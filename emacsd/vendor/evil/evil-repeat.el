@@ -3,7 +3,7 @@
 ;; Author: Frank Fischer <frank.fischer at mathematik.tu-chemnitz.de>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0-dev
+;; Version: 1.0.8
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -134,6 +134,14 @@
 (declare-function evil-visual-char "evil-visual")
 (declare-function evil-visual-line "evil-visual")
 (declare-function evil-visual-block "evil-visual")
+
+(defmacro evil-without-repeat (&rest body)
+  (declare (indent defun)
+           (debug t))
+  `(let ((pre-command-hook (remq 'evil-repeat-pre-hook pre-command-hook))
+         (post-command-hook (remq 'evil-repeat-post-hook post-command-hook)))
+     ,@body
+     (evil-repeat-abort)))
 
 (defsubst evil-repeat-recording-p ()
   "Returns non-nil iff a recording is in progress."

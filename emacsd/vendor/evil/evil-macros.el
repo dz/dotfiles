@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0-dev
+;; Version: 1.0.8
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -132,7 +132,8 @@ The return value is a list (BEG END TYPE)."
        ;; refresh echo area in Eldoc mode
        (when ',motion
          (eval-after-load 'eldoc
-           '(eldoc-add-command ',motion)))
+           '(and (fboundp 'eldoc-add-command)
+                 (eldoc-add-command ',motion))))
        (evil-define-command ,motion (,@args)
          ,@(when doc `(,doc))          ; avoid nil before `interactive'
          ,@keys
@@ -503,7 +504,7 @@ if COUNT is positive, and to the left of it if negative.
 The return value is a list (BEG END), or (BEG END TYPE) if
 RETURN-TYPE is non-nil."
   (let ((motion (or evil-operator-range-motion
-                    (when (evil-ex-p) #'evil-line)))
+                    (when (evil-ex-p) 'evil-line)))
         (type evil-operator-range-type)
         (range (evil-range (point) (point)))
         command count modifier)

@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0-dev
+;; Version: 1.0.8
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -276,7 +276,10 @@ directly."
 
 (evil-define-interactive-code "<C>"
   "Character read through `evil-read-key'."
-  (list (evil-read-key)))
+  (list
+   (if (evil-operator-state-p)
+       (evil-without-restriction (evil-read-key))
+     (evil-read-key))))
 
 (evil-define-interactive-code "<r>"
   "Untyped motion range (BEG END)."
@@ -334,6 +337,17 @@ If visual state is inactive then those values are nil."
   :ex-arg sym
   (list (when (and (evil-ex-p) evil-ex-argument)
           (intern evil-ex-argument))))
+
+(evil-define-interactive-code "<addr>"
+  "Ex line number."
+  (list
+   (and (evil-ex-p)
+        (let ((expr (evil-ex-parse  evil-ex-argument)))
+          (if (eq (car expr) 'evil-goto-line)
+              (save-excursion
+                (goto-char evil-ex-point)
+                (eval (cadr expr)))
+            (error "Invalid address"))))))
 
 (evil-define-interactive-code "<!>"
   "Ex bang argument."

@@ -3,7 +3,7 @@
 ;; Author: Vegard Øye <vegard_oye at hotmail.com>
 ;; Maintainer: Vegard Øye <vegard_oye at hotmail.com>
 
-;; Version: 1.0-dev
+;; Version: 1.0.8
 
 ;;
 ;; This file is NOT part of GNU Emacs.
@@ -268,7 +268,10 @@ the selection is enabled.
 Expand the region to the selection unless COMMAND is a motion."
   (when (evil-visual-state-p)
     (setq command (or command this-command))
+    (when evil-visual-x-select-timer
+      (cancel-timer evil-visual-x-select-timer))
     (unless (evil-get-command-property command :keep-visual)
+      (evil-visual-update-x-selection)
       (evil-visual-expand-region
        ;; exclude final newline from linewise selection
        ;; unless the command has real need of it
@@ -283,8 +286,6 @@ If COMMAND is a motion, refresh the selection;
 otherwise exit Visual state."
   (when (evil-visual-state-p)
     (setq command (or command this-command))
-    (when evil-visual-x-select-timer
-      (cancel-timer evil-visual-x-select-timer))
     (if (or quit-flag
             (eq command #'keyboard-quit)
             ;; Is `mark-active' nil for an unexpanded region?
@@ -307,15 +308,17 @@ otherwise exit Visual state."
 
 (defun evil-visual-update-x-selection (&optional buffer)
   "Update the X selection with the current visual region."
-  (with-current-buffer (or buffer (current-buffer))
-    (when (and (evil-visual-state-p)
-               (fboundp 'x-select-text)
-               (or (not (boundp 'ns-initialized))
-                   (with-no-warnings ns-initialized))
-               (not (eq evil-visual-selection 'block)))
-      (x-select-text (buffer-substring-no-properties
-                      evil-visual-beginning
-                      evil-visual-end)))))
+  (let ((buf (or buffer (current-buffer))))
+    (when (buffer-live-p buf)
+      (with-current-buffer buf
+        (when (and (evil-visual-state-p)
+                   (fboundp 'x-select-text)
+                   (or (not (boundp 'ns-initialized))
+                       (with-no-warnings ns-initialized))
+                   (not (eq evil-visual-selection 'block)))
+          (x-select-text (buffer-substring-no-properties
+                          evil-visual-beginning
+                          evil-visual-end)))))))
 
 (defun evil-visual-activate-hook (&optional command)
   "Enable Visual state if the region is activated."
@@ -357,7 +360,6 @@ If LATER is non-nil, exit after the current command."
   :repeat abort
   (with-current-buffer (or buffer (current-buffer))
     (when (evil-visual-state-p)
-      (evil-visual-update-x-selection)
       (if later
           (setq deactivate-mark t)
         (when evil-visual-region-expanded
@@ -814,10 +816,14 @@ CORNER defaults to `upper-left'."
   (cond
    ((evil-replace-state-p)
     (overwrite-mode 1)
-    (add-hook 'pre-command-hook #'evil-replace-pre-command nil t))
+    (add-hook 'pre-command-hook #'evil-replace-pre-command nil t)
+    (unless evil-want-fine-undo
+      (evil-start-undo-step t)))
    (t
     (overwrite-mode -1)
     (remove-hook 'pre-command-hook #'evil-replace-pre-command t)
+    (unless evil-want-fine-undo
+      (evil-end-undo-step t))
     (when evil-move-cursor-back
       (evil-move-cursor-back))))
   (setq evil-replace-alist nil))

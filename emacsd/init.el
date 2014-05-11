@@ -27,7 +27,6 @@
 
 ;; autoload config files in the config folder
 (defconst emacs-config-dir "~/.emacs.d/configs/" "")
-(setq load-path (cons "~/.emacs.d" load-path))
 (defun load-cfg-files (filelist)
   (dolist (file filelist)
     (load (expand-file-name
@@ -46,8 +45,10 @@
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
+                  "ag"
                   ;; "autocomplete"
-                  "git"
+                  ;; "git"
+                  "github"
                   "mumamo"
                   "killring"
                   ;; languages
