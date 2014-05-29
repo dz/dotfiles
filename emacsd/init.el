@@ -39,6 +39,7 @@
 
 (load-cfg-files '(
                   "main"
+                  "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
                   "project" ;; project definitions
