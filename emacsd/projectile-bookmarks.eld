@@ -1,0 +1,1 @@
+("~/Documents/Vox/sbn/" "~/Documents/Vox/Polygon-e3-2014/" "~/Documents/Code/dotfiles/")

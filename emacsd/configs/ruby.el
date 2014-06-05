@@ -11,13 +11,6 @@
              (electric-indent-mode t)
              (electric-layout-mode t)))
 
-;; this is for autocomplete mode
-(add-hook 'ruby-mode-hook
-          (lambda ()
-            (make-local-variable 'ac-ignores)
-            (setq ruby-insert-encoding-magic-comment nil)
-            (add-to-list 'ac-ignores "end")))
-
 (eval-after-load 'ruby-mode
   '(progn
      ;; work around possible elpa bug
@@ -25,7 +18,6 @@
      (setq ruby-deep-indent-paren nil)
      (setq ruby-use-encoding-map nil)
      (setq ruby-insert-encoding-magic-comment nil)
-     (add-hook 'ruby-mode-hook 'inf-ruby-keys)
      (define-key ruby-mode-map (kbd "RET") 'reindent-then-newline-and-indent)))
 
 (add-hook 'ruby-mode-hook 'highlight-indentation-mode)

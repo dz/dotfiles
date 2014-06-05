@@ -1,10 +1,11 @@
 ;; settings for ido
 (require 'ido)
 (require 'ido-ubiquitous)
-(require 'ido-hacks)
-(ido-mode t)
+(require 'ido-vertical-mode)
+(ido-mode 1)
 (ido-everywhere)
 (ido-ubiquitous)
+(ido-vertical-mode 1)
 
 (setq ido-create-new-buffer (quote never))
 (setq ido-enable-flex-matching t)
@@ -13,15 +14,11 @@
 
 ;; override ido flex wth improved flx matching
 ;; https://github.com/lewang/flx
-(require 'flx-ido)
-(flx-ido-mode 1)
-;; disable ido faces to see flx highlights.
-(setq ido-use-faces nil)
-
-;; show choices vertically
-(setq ido-decorations (quote ("\n> " "" "\n   " "\n   ..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
-(defun ido-disable-line-truncation () (set (make-local-variable 'truncate-lines) nil))
-(add-hook 'ido-minibuffer-setup-hook 'ido-disable-line-truncation)
+;; (require 'flx-ido)
+;; (flx-ido-mode 1)
+;; ;; disable ido faces to see flx highlights.
+;; (setq ido-use-faces nil)
+;; (setq flx-ido-threshhold 500)
 
 (defun xsteve-ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"

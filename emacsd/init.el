@@ -42,7 +42,7 @@
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
-                  "project" ;; project definitions
+                  "projectile" ;; projectile definitions
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
