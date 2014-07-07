@@ -37,6 +37,8 @@
 ;; load nxhtml mode
 ;; (load "~/.emacs.d/vendor/nxhtml/autostart.el")
 
+(require 'e-sink)
+
 (load-cfg-files '(
                   "main"
                   "ido" ;; ido changes and enhancements

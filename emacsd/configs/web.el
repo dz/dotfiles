@@ -5,7 +5,11 @@
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
-  (local-set-key (kbd "RET") 'newline-and-indent)
+  (setq web-mode-style-padding 2)
+  (setq web-mode-script-padding 2)
+  (setq web-mode-block-padding 2)
+  (setq web-mode-enable-auto-pairing t)
+  (setq web-mode-enable-css-colorization nil)
   )
 (add-hook 'web-mode-hook  'web-mode-hook)
 

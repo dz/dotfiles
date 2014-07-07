@@ -39,6 +39,7 @@ NeoBundle 'vim-scripts/YankRing.vim'
 NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'mattdbridges/bufkill.vim'
+NeoBundle 'scrooloose/syntastic'
 
 " GIT SHIT
 NeoBundle 'tpope/vim-fugitive'
@@ -232,6 +233,7 @@ noremap! <C-q> <esc>:b#<cr>
 
 map <Leader>t :NERDTreeToggle<cr>
 map <Leader>m :NERDTreeToggle<cr>
+map <Leader><Leader> :NERDTreeToggle
 " open nerdtree focused on the existing file
 map <Leader>n :NERDTreeFind<cr>
 noremap <D-O> :NERDTreeToggle<CR>
@@ -260,8 +262,6 @@ nmap <leader>. :LustyFilesystemExplorer<cr>
 nmap <D-o> :LustyFilesystemExplorer<cr>
 
 "vim-airline options
-" let g:airline_left_sep=''
-" let g:airline_right_sep=''
 let g:airline_enable_branch=1
 let g:airline_branch_empty_message=''
 let g:airline_enable_tagbar=1
@@ -308,6 +308,15 @@ set tags=tags,.git/tags,TAGS
 let g:tagbar_compact = 1
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autoclose = 1
+
+" Syntastic options
+let g:syntastic_check_on_open=1
+
+" YouCompleteMe options
+
+let g:ycm_add_preview_to_completeopt=0
+let g:ycm_confirm_extra_conf=0
+set completeopt-=preview
 
 "vim indent guide options
 let g:indent_guides_enable_on_vim_startup = 1
