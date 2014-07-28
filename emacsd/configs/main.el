@@ -72,6 +72,8 @@
 (setq search-highlight t
       query-replace-highlight t)
 
+(define-key isearch-mode-map [remap isearch-delete-char] 'isearch-del-char)
+
 ;; ignore case when completing
 (setq read-buffer-completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)

@@ -33,7 +33,6 @@
       ('index (concat "find " mk-proj-basedir " " ignore-clause " -o -print")))))
 
 ;; project definitions
-
 (project-def "sbn"
       '((basedir          "/Users/dzhou/Vox/sbn")
         (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
