@@ -8,4 +8,17 @@
 ;; Default settings
 (define-key ac-menu-map "\C-n" 'ac-next)
 (define-key ac-menu-map "\C-p" 'ac-previous)
+;; Navigation in autocomplete menues gets hijacked by evil
+(define-key ac-completing-map (kbd "C-n") 'ac-next)
+(define-key ac-completing-map (kbd "C-p") 'ac-previous)
+
+;; Let me stop autocompleting the emacs/evil way
+(define-key ac-completing-map (kbd "C-g") 'ac-stop)
+(define-key ac-completing-map (kbd "ESC") 'evil-normal-state)
+(evil-make-intercept-map ac-completing-map)
+
 (setq ac-ignore-case t)
+
+(setq global-auto-complete-mode t
+      ac-show-menu-timer 0.1
+      ac-auto-show-menu t)

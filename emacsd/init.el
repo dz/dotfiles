@@ -37,22 +37,20 @@
 ;; load nxhtml mode
 ;; (load "~/.emacs.d/vendor/nxhtml/autostart.el")
 
-(require 'e-sink)
-
 (load-cfg-files '(
                   "main"
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
-                  "projectile" ;; projectile definitions
+                  "project" ;; project definitions
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
                   "ag"
-                  ;; "autocomplete"
+                  ;;"autocomplete"
                   ;; "git"
                   "github"
-                  "mumamo"
+                  ;;"mumamo"
                   "killring"
                   ;; languages
                   "python"

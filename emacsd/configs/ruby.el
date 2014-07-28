@@ -1,6 +1,3 @@
-(require 'rvm)
-(rvm-use-default) ;; use rvm's default ruby for the current Emacs session
-
 (require 'rails)
 
 ;; really need brackets in ruby code you guys
