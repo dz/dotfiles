@@ -18,12 +18,50 @@
 ;; some packages use mapcan which was removed in emacs 24
 (require 'cl)
 
+;; ELPA/MELPA/Marlade package stuff
+(load "package")
+(package-initialize)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archive-enable-alist '(("melpa")))
+
+(defvar dz/packages '(deft
+                       exec-path-from-shell
+                       flycheck
+                       coffee-mode
+                       go-mode
+                       markdown-mode
+                       php-mode
+                       yaml-mode)
+  "Default packages")
+
+(defun dz/packages-installed-p ()
+  (loop for pkg in dz/packages
+        when (not (package-installed-p pkg)) do (return nil)
+        finally (return t)))
+
+(unless (dz/packages-installed-p)
+  (message "%s" "Refreshing package database...")
+  (package-refresh-contents)
+  (dolist (pkg dz/packages)
+    (when (not (package-installed-p pkg))
+      (package-install pkg))))
+
 ;; recursively add subdirs in vendor to load path
+;; this might override things intalled via ELPA/MELPA/Marmalade
+;; but that is what we want
 (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
     (let* ((my-lisp-dir "~/.emacs.d/vendor")
            (default-directory my-lisp-dir))
       (setq load-path (cons my-lisp-dir load-path))
       (normal-top-level-add-subdirs-to-load-path)))
+
+;; os x fix for executng things that depend
+;; on shell path
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
 
 ;; autoload config files in the config folder
 (defconst emacs-config-dir "~/.emacs.d/configs/" "")
@@ -47,6 +85,7 @@
                   "grep"
                   "ack"
                   "ag"
+                  "flycheck"
                   ;;"autocomplete"
                   ;; "git"
                   "github"

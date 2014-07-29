@@ -1,7 +1,8 @@
 ;; javascript items
-(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
 
-(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(defun custom-js-mode-hook ()
+  (flycheck-mode)
+  (setq js-indent-level 2))
 
-;; set javascript to 2 spaces
-(setq js-indent-level 2)
+(add-hook 'js-mode-hook 'custom-js-mode-hook)

@@ -37,6 +37,7 @@
       '((basedir          "/Users/dzhou/Vox/sbn")
         (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
         (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+        (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
         (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
         ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/vox/open-files-cache")
         (startup-hook     nil)
