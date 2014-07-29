@@ -1,0 +1,29 @@
+[alias]
+  s = status
+  d = diff --color --color-words
+	g = grep --break --heading --line-number
+[github]
+	user = dz
+[user]
+	email = david@nodnod.net
+	name = dz
+[core]
+	excludesfile = /Users/dzhou/.gitignore
+        whitespace = tab-in-indent,trailing-space,space-before-tab
+[color]
+  ui = always
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
+[push]
+	default = tracking
+[help]
+	autocorrect = -1
+[branch]
+	autosetuprebase = always
+[web]
+	browser = open
+[grep]
+	extendRegexp = true
+	lineNumber = true

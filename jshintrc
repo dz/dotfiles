@@ -1,0 +1,15 @@
+{
+  // ENVIRONMENTS
+  "browser": true,
+  "node": true,
+  // others (e.g. yui, mootools, rhino, worker, etc.)
+  "globals": {
+    "$":false,
+    "jquery":false,
+    "angular":false,
+    "SBN": false,
+    "Vox": false,
+    "Chorus": false
+    // other explicit global names to exclude
+  }
+}
