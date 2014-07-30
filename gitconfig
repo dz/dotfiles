@@ -19,7 +19,7 @@
 [push]
 	default = tracking
 [help]
-	autocorrect = -1
+	autocorrect = 1
 [branch]
 	autosetuprebase = always
 [web]

@@ -27,14 +27,21 @@
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (setq package-archive-enable-alist '(("melpa")))
 
-(defvar dz/packages '(deft
-                       exec-path-from-shell
-                       flycheck
-                       coffee-mode
-                       go-mode
-                       markdown-mode
-                       php-mode
-                       yaml-mode)
+(defvar dz/packages '(
+                      coffee-mode
+                      deft
+                      exec-path-from-shell
+                      flycheck
+                      go-mode
+                      helm
+                      helm-ag
+                      helm-flycheck
+                      helm-git-grep
+                      helm-ls-git
+                      helm-swoop
+                      markdown-mode
+                      php-mode
+                      yaml-mode)
   "Default packages")
 
 (defun dz/packages-installed-p ()
@@ -77,6 +84,7 @@
 
 (load-cfg-files '(
                   "main"
+                  "helm"
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
