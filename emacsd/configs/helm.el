@@ -11,6 +11,7 @@
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-b") 'helm-mini)
+(global-set-key (kbd "M-r") 'helm-mini)
 (global-set-key "\M-o" 'helm-find-files)
 
 

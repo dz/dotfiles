@@ -91,11 +91,6 @@ If point was already at that position, move point to beginning of line."
 ;; kill the buffer *and* delete the file
 (global-set-key "\M-K" 'delete-current-buffer-file)
 
-;; allow command-r to open a recently opened file
-;; (global-set-key "\M-r" 'recentf-ido-find-file)
-;; (global-set-key "\M-r" 'recentf-interactive-complete)
-(global-set-key "\M-r" 'xsteve-ido-choose-from-recentf)
-
 ;; command-R to refresh all open buffers
 (global-set-key "\M-R" 'revert-all-buffers)
 
