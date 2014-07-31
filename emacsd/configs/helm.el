@@ -40,7 +40,7 @@
  helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
  helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
 
- helm-split-window-default-side 'other ;; open helm buffer in another window
+ helm-split-window-default-side 'below ;; open helm buffer below
  helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
  helm-buffers-favorite-modes (append helm-buffers-favorite-modes
                                      '(picture-mode artist-mode))

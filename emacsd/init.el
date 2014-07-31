@@ -41,6 +41,7 @@
                       helm-swoop
                       markdown-mode
                       php-mode
+                      popwin
                       yaml-mode)
   "Default packages")
 
@@ -85,6 +86,7 @@
 (load-cfg-files '(
                   "main"
                   "helm"
+                  "popwin"
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
