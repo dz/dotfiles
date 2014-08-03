@@ -12,9 +12,6 @@
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-b") 'helm-mini)
 (global-set-key (kbd "M-r") 'helm-mini)
-(global-set-key "\M-o" 'helm-find-files)
-
-
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
@@ -29,8 +26,12 @@
 (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
 (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
 
-;; set control-w inside of helm find file to go up one level
+;; set control-w inside of helm to properly kill word
 (define-key helm-map (kbd "C-w") 'backward-kill-word)
+(define-key helm-map (kbd "C-a") 'beginning-of-line)
+;; control-h and control-l in helm should go forward or backwards
+(define-key helm-map (kbd "C-h") 'backward-char)
+(define-key helm-map (kbd "C-l") 'forward-char)
 
 (setq
  helm-google-suggest-use-curl-p t

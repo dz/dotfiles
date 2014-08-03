@@ -137,6 +137,8 @@
 
 ;; set control-w to backwards kill word
 (global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-h" 'backward-char)
+(global-set-key "\C-l" 'forward-char)
 
 (global-set-key (kbd "RET") 'newline-and-indent)
 
