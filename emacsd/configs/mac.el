@@ -49,6 +49,8 @@ If point was already at that position, move point to beginning of line."
 ;; allow command-o to open file
 (global-set-key "\M-o" 'find-file)
 
+(global-set-key "\M-r" 'xsteve-ido-choose-from-recentf)
+
 ;; allow command-c to copy as normal
 (global-set-key "\M-c" 'simpleclip-copy)
 
@@ -97,6 +99,9 @@ If point was already at that position, move point to beginning of line."
 
 ;; command-R to refresh all open buffers
 (global-set-key "\M-R" 'revert-all-buffers)
+
+;; allow command-b to switch between buffers
+(global-set-key "\M-b" 'ido-switch-buffer)
 
 ;; set command-shift-b to open ibuffer
 (global-set-key "\M-B" 'ibuffer)
