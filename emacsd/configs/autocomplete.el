@@ -1,6 +1,3 @@
-(add-to-list 'load-path "~/.emacs.d/vendor/autocomplete/")
-(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/vendor/autocomplete//ac-dict")
 (ac-config-default)
 (global-set-key "\M-/" 'auto-complete)
 (define-key ac-mode-map (kbd "M-/") 'auto-complete)
@@ -11,11 +8,9 @@
 ;; Navigation in autocomplete menues gets hijacked by evil
 (define-key ac-completing-map (kbd "C-n") 'ac-next)
 (define-key ac-completing-map (kbd "C-p") 'ac-previous)
-
 ;; Let me stop autocompleting the emacs/evil way
 (define-key ac-completing-map (kbd "C-g") 'ac-stop)
 (define-key ac-completing-map (kbd "ESC") 'evil-normal-state)
-(evil-make-intercept-map ac-completing-map)
 
 (setq ac-ignore-case t)
 

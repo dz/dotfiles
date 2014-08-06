@@ -22,14 +22,13 @@
 (load "package")
 (package-initialize)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(setq package-archive-enable-alist '(("melpa")))
 
 (defvar dz/packages '(
+                      auto-complete
                       coffee-mode
                       deft
+                      expand-region
                       exec-path-from-shell
                       flycheck
                       go-mode
@@ -42,6 +41,9 @@
                       markdown-mode
                       php-mode
                       popwin
+                      scss-mode
+                      visual-regexp
+                      visual-regexp-steroids
                       yaml-mode)
   "Default packages")
 
@@ -85,6 +87,7 @@
 
 (load-cfg-files '(
                   "main"
+                  "autocomplete"
                   "helm"
                   "popwin"
                   "ido" ;; ido changes and enhancements
@@ -96,6 +99,9 @@
                   "ack"
                   "ag"
                   "flycheck"
+                  "regexp"
+                  "zone"
+                  "expandregion"
                   ;;"autocomplete"
                   ;; "git"
                   "github"
