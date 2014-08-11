@@ -1,6 +1,6 @@
 (require 'zone)
 ;; start zone after 2 minutes of idling
-(zone-when-idle 120)
+;; (zone-when-idle 120)
 
 (defun zone-choose (pgm)
   "Choose a PGM to run for `zone'."

@@ -27,6 +27,7 @@
 (defvar dz/packages '(
                       auto-complete
                       coffee-mode
+                      color-identifiers-mode
                       deft
                       expand-region
                       exec-path-from-shell
@@ -102,12 +103,11 @@
                   "regexp"
                   "zone"
                   "expandregion"
-                  ;;"autocomplete"
                   ;; "git"
                   "github"
-                  ;;"mumamo"
                   "killring"
                   ;; languages
+                  "color_identifiers"
                   "python"
                   "javascript"
                   "ruby"
