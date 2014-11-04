@@ -3,6 +3,7 @@
 ;; really need brackets in ruby code you guys
 (add-hook 'ruby-mode-hook
           '(lambda ()
+             (flycheck-mode)
              (abbrev-mode 1)
              (electric-pair-mode t)
              (electric-indent-mode t)

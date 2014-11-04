@@ -62,10 +62,12 @@
       (*normal*             "#F6F3E8")
       (*number*             "#FF73FD")
       (*operators*          "#FFFFB6")
+      (*cyan*               "#96CBFE")
       (*red*                "#FF6C60")
+      (*yellow*             "#99cc99")
       (*red-light*          "#FFB6B0")
-      (*regexp*             "#E9C")
-      (*regexp-alternate*   "#FF0")
+      (*regexp*                "#E9C")
+      (*regexp-alternate*      "#FF0")
       (*regexp-alternate-2* "#B18A3D")
       (*search-selection*   "#2F2F00")
       (*string*             "#A8FF60")
@@ -157,8 +159,17 @@
    `(org-checkbox ((t (:foreground, *keywords* :background, *background-color* :bold t))))
    `(org-clock-overlay ((t (:foreground, *mode-line-bg* :background, *string*))))
 
+   ;; flycheck
+   `(flycheck-error
+     ((t (:underline (:style wave :color, *red*) :inherit unspecified))))
+   `(flycheck-warning
+     ((t (:underline (:style wave :color, *red*) :inherit unspecified))))
+   `(flycheck-info
+     ((t (:underline (:style wave :color, *red*) :inherit unspecified))))
+
    ;; starter kit
-   `(esk-paren-face ((t (:foreground, *string-inner*))))))
+   `(esk-paren-face ((t (:foreground, *string-inner*))))
+   ))
 
 ;;;###autoload
 (when (and (boundp 'custom-theme-load-path) load-file-name)
