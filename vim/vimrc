@@ -40,6 +40,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'mattdbridges/bufkill.vim'
 NeoBundle 'scrooloose/syntastic'
+NeoBundle 'tpope/vim-eunuch.git'
 
 " GIT SHIT
 NeoBundle 'tpope/vim-fugitive'
@@ -371,17 +372,6 @@ function! QFDo(command)
         " Save if necessary
         update
     endfor
-endfunction
-
-command! RenameFile call RenameFile()
-function! RenameFile()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    exec ':saveas ' . new_name
-    exec ':silent !rm ' . old_name
-    redraw!
-  endif
 endfunction
 
 command! -nargs=0 -bar Qargs execute 'args ' . QuickfixFilenames()
