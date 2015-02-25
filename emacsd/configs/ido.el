@@ -18,7 +18,7 @@
 ;; (flx-ido-mode 1)
 ;; ;; disable ido faces to see flx highlights.
 ;; (setq ido-use-faces nil)
-;; (setq flx-ido-threshhold 500)
+;; (setq flx-ido-threshhold 1000)
 
 (defun xsteve-ido-choose-from-recentf ()
   "Use ido to select a recently opened file from the `recentf-list'"

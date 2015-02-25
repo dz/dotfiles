@@ -49,8 +49,6 @@ If point was already at that position, move point to beginning of line."
 ;; allow command-o to open file
 (global-set-key "\M-o" 'find-file)
 
-(global-set-key "\M-r" 'xsteve-ido-choose-from-recentf)
-
 ;; allow command-c to copy as normal
 (global-set-key "\M-c" 'simpleclip-copy)
 
@@ -103,6 +101,8 @@ If point was already at that position, move point to beginning of line."
 ;; allow command-b to switch between buffers
 (global-set-key "\M-b" 'ido-switch-buffer)
 
+(global-set-key "\M-r" 'xsteve-ido-choose-from-recentf)
+
 ;; set command-shift-b to open ibuffer
 (global-set-key "\M-B" 'ibuffer)
 
@@ -111,8 +111,12 @@ If point was already at that position, move point to beginning of line."
 ;; repeat search with command-g
 (global-set-key "\M-g" 'isearch-repeat-forward)
 
-;; allow comamnd-n to create a new frame
-(global-set-key "\M-n" 'make-frame-command)
+;; allow comamnd-shift-n to create a new frame
+(global-set-key "\M-N" 'make-frame-command)
+
+;; allow command-n be easy way to create new
+;; empty buffer
+(global-set-key "\M-n" 'xah-new-empty-buffer)
 
 ;; allow command-` to switch between frames
 (global-set-key "\M-`" 'other-frame)

@@ -1,3 +1,5 @@
+(setq web-mode-enable-current-element-highlight t)
+
 (require 'web-mode)
 
 (defun web-mode-hook ()
@@ -8,6 +10,7 @@
   (setq web-mode-style-padding 2)
   (setq web-mode-script-padding 2)
   (setq web-mode-block-padding 2)
+  (setq web-mode-attr-indent-offset t)
   (setq web-mode-enable-auto-pairing t)
   (setq web-mode-enable-css-colorization nil)
   )
@@ -23,3 +26,4 @@
 (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
