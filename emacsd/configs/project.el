@@ -60,3 +60,13 @@
         (startup-hook     nil)
         (vcs              git)
         (shutdown-hook    nil)))
+
+(project-def "vox-dfp"
+      '((basedir          "/Users/dzhou/Vox/vox-dfp")
+        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+        (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+        (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox-dfp/file-list-cache")
+        ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+        (startup-hook     nil)
+        (vcs              git)
+        (shutdown-hook    nil)))
