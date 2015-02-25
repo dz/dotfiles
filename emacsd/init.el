@@ -45,6 +45,7 @@
                       scss-mode
                       visual-regexp
                       visual-regexp-steroids
+                      web-mode
                       yaml-mode)
   "Default packages")
 

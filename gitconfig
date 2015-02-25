@@ -27,3 +27,5 @@
 [grep]
 	extendRegexp = true
 	lineNumber = true
+[credential]
+	helper = osxkeychain

@@ -99,6 +99,7 @@ eval "$(rbenv init -)"
 alias c="clear"
 alias l="ls"
 alias less="less -R"
+alias tree="tree -CAh"
 alias gitlg="git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen%cn%Creset %Cblue%cr%Creset' --abbrev-commit --date=relative"
 alias gits="git status"
 alias gs="git status"
@@ -144,3 +145,6 @@ export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Ho
 alias gg="git g"
 
 alias be="bundle exec"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
