@@ -70,3 +70,14 @@
         (startup-hook     nil)
         (vcs              git)
         (shutdown-hook    nil)))
+
+
+(project-def "insights"
+      '((basedir          "/Users/dzhou/Vox/chorus-insights-platform")
+        (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+        (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+        (file-list-cache  "/Users/dzhou/.emacs.d/projects/chorus-insights-platform/file-list-cache")
+        ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+        (startup-hook     nil)
+        (vcs              git)
+        (shutdown-hook    nil)))

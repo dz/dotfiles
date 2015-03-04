@@ -2,6 +2,7 @@
   // ENVIRONMENTS
   "browser": true,
   "node": true,
+  "esnext": true,
   // others (e.g. yui, mootools, rhino, worker, etc.)
   "globals": {
     "$":false,
