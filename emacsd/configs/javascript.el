@@ -1,5 +1,6 @@
 ;; javascript items
 (add-to-list 'auto-mode-alist '("\\.js$" . js-mode))
+(add-to-list 'auto-mode-alist '("\\.es6\\'" . js-mode))
 
 (defun custom-js-mode-hook ()
   (flycheck-mode)
