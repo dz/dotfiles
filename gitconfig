@@ -2,6 +2,7 @@
   s = status
   d = diff --color --color-words
 	g = grep --break --heading --line-number
+	sorry = "!git log --format=%s | while read line; do echo \"I am SO sorry but $line\"; done"
 [github]
 	user = dz
 [user]

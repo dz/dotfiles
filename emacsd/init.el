@@ -44,6 +44,7 @@
                       helm-git-grep
                       helm-ls-git
                       helm-swoop
+                      js2-mode
                       markdown-mode
                       php-mode
                       popwin
