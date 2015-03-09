@@ -11,7 +11,9 @@
 (setq inhibit-startup-message t)
 
 ;;turn on server mode
-(server-start)
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -111,6 +113,7 @@
                   "regexp"
                   "zone"
                   "expandregion"
+                  "shell"
                   ;; "git"
                   "github"
                   "killring"
