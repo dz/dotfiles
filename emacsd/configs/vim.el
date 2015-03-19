@@ -1,5 +1,6 @@
 (setq evil-shift-width 2)
 (require 'evil)
+(require 'evil-surround)
 
 (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
                               (nrepl-mode . insert)
@@ -67,3 +68,4 @@
                 (set-face-foreground 'mode-line (cdr color))))))
 
 (evil-mode 1)
+(global-evil-surround-mode 1)

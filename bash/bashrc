@@ -149,3 +149,6 @@ alias be="bundle exec"
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+alias npm-exec='PATH=$(npm bin):$PATH'
+alias ne='PATH=$(npm bin):$PATH'

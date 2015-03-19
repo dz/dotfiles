@@ -53,6 +53,7 @@
                       scss-mode
                       visual-regexp
                       visual-regexp-steroids
+                      evil-surround
                       web-mode
                       yaml-mode)
   "Default packages")
