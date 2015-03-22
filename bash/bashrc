@@ -53,6 +53,11 @@ function backgroundjobs() {
   '
 }
 
+function searchreplace() {
+  git grep -l "$1" | xargs sed -i "" "s/$1/$2/g"
+}
+export -f searchreplace
+
 export BASEPROMPT='\[\e${GREEN_COLOR}\]\w \[\e${GRAY_COLOR}\]\[\e${GRAY_COLOR}\](\[\e${RED_COLOR}\]$(vcprompt_branch)\[\e${GREEN_COLOR}\]$(vcprompt_changed)\[\e${DEFAULT_COLOR}\])\[\e${GRAY_COLOR}\] \[\e${USER_COLOR}\]\u\[\e${DEFAULT_COLOR}\]'
 
 export PROMPT="${BASEPROMPT}$ "
@@ -152,3 +157,5 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias ne='PATH=$(npm bin):$PATH'
+
+alias fstart="bundle exec foreman start -c all=1,web=0"
