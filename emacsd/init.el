@@ -36,6 +36,7 @@
                       coffee-mode
                       color-identifiers-mode
                       deft
+                      dockerfile-mode
                       expand-region
                       exec-path-from-shell
                       flycheck
@@ -126,6 +127,7 @@
                   "yaml"
                   "html"
                   "css"
+                  "docker"
                   ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
                   "web"
                   ))

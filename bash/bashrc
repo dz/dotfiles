@@ -159,3 +159,5 @@ alias npm-exec='PATH=$(npm bin):$PATH'
 alias ne='PATH=$(npm bin):$PATH'
 
 alias fstart="bundle exec foreman start -c all=1,web=0"
+
+$(boot2docker shellinit)
