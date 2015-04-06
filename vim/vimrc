@@ -40,6 +40,7 @@ NeoBundle 'nathanaelkane/vim-indent-guides'
 NeoBundle 'mattdbridges/bufkill.vim'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'tpope/vim-eunuch.git'
+NeoBundle 'jaxbot/semantic-highlight.vim'
 
 " GIT SHIT
 NeoBundle 'tpope/vim-fugitive'
