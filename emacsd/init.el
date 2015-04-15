@@ -33,28 +33,28 @@
 (defvar dz/packages '(
                       popup
                       auto-complete
-                      coffee-mode
-                      color-identifiers-mode
                       deft
-                      dockerfile-mode
                       expand-region
                       exec-path-from-shell
                       flycheck
-                      go-mode
                       helm
                       helm-ag
                       helm-flycheck
                       helm-git-grep
                       helm-ls-git
                       helm-swoop
-                      js2-mode
-                      markdown-mode
-                      php-mode
                       popwin
-                      scss-mode
                       visual-regexp
                       visual-regexp-steroids
                       evil-surround
+                      lusty-explorer
+                      ;; lagnauge modes
+                      color-identifiers-mode
+                      dockerfile-mode
+                      go-mode
+                      coffee-mode
+                      coffee-mode
+                      scss-mode
                       web-mode
                       yaml-mode)
   "Default packages")

@@ -160,4 +160,10 @@ alias ne='PATH=$(npm bin):$PATH'
 
 alias fstart="bundle exec foreman start -c all=1,web=0"
 
+alias dok="docker"
+alias di="docker images"
+alias dps="docker ps"
+alias docker-clean='docker rmi $(docker images -f "dangling=true" -q)'
+
 $(boot2docker shellinit)
+

@@ -1,4 +1,0 @@
-[
-	{ "keys": ["ctrl+shift+a"], "command": "alignment" },
-	{ "keys": ["ctrl+alt+a"], "command": "alignment" }
-]
