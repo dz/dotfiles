@@ -130,8 +130,11 @@
                   "css"
                   "docker"
                   "toml"
+                  "markdown"
                   ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
                   "web"
+                  ;; keybindings to override everything
+                  "keybindings"
                   ))
 
 (setq custom-file "~/.emacs.d/configs/custom.el")
