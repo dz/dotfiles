@@ -56,6 +56,7 @@
                       coffee-mode
                       scss-mode
                       web-mode
+                      toml-mode
                       yaml-mode)
   "Default packages")
 
@@ -128,6 +129,7 @@
                   "html"
                   "css"
                   "docker"
+                  "toml"
                   ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
                   "web"
                   ))
