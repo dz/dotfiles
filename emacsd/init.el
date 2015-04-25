@@ -129,8 +129,8 @@
                   "html"
                   "css"
                   "docker"
-                  "toml"
                   "markdown"
+                  "toml"
                   ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
                   "web"
                   ;; keybindings to override everything

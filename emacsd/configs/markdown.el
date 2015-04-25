@@ -1,6 +1,7 @@
 (setq auto-mode-alist (cons '("\\.markdown" . markdown-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("\\.md" . markdown-mode) auto-mode-alist))
 
+;; unset keys in markdown to make window + fullscreen work
 (add-hook 'markdown-mode-hook
           (lambda ()
             (local-unset-key (kbd "M-<return>"))
