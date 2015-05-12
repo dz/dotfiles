@@ -111,7 +111,6 @@ set ruler
 set number
 set nuw=4
 set vb "set visual bell
-set binary noeol
 set backspace=indent,eol,start
 set laststatus=2
 set showmatch
