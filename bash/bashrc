@@ -165,5 +165,10 @@ alias di="docker images"
 alias dps="docker ps"
 alias docker-clean='docker rmi $(docker images -f "dangling=true" -q)'
 
+alias npm-exec='PATH=$(npm bin):$PATH'
+alias ne='PATH=$(npm bin):$PATH'
+alias n='PATH=$(npm bin):$PATH'
+
 $(boot2docker shellinit)
 
+source ~/.amazon_secrets

@@ -16,7 +16,7 @@
                               (bc-menu-mode . emacs)
                               (magit-branch-manager-mode . emacs)
                               (rdictcc-buffer-mode . emacs)
-                              (dired-mode . emacs)
+                              (dired-mode . normal)
                               (wdired-mode . normal))
       do (evil-set-initial-state mode state))
 
@@ -59,10 +59,12 @@
 ;; dired mode things
 (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)
-(evil-define-key 'normal dired-mode-map "o" 'dired-sort-toggle-or-edit)
+(evil-define-key 'normal dired-mode-map "O" 'dired-sort-toggle-or-edit)
+(evil-define-key 'normal dired-mode-map "o" 'dired-find-file-other-window)
 (evil-define-key 'normal dired-mode-map "v" 'dired-toggle-marks)
 (evil-define-key 'normal dired-mode-map "m" 'dired-mark)
 (evil-define-key 'normal dired-mode-map "u" 'dired-unmark)
+(evil-define-key 'normal dired-mode-map "R" 'dired-do-rename-regexp)
 (evil-define-key 'normal dired-mode-map "U" 'dired-unmark-all-marks)
 (evil-define-key 'normal dired-mode-map "c" 'dired-create-directory)
 (evil-define-key 'normal dired-mode-map "n" 'evil-search-next)
