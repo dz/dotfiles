@@ -1,3 +1,5 @@
+(require 'xterm-color)
+
 (defvar th-shell-popup-buffer nil)
 
 (defun th-shell-popup ()

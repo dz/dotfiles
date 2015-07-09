@@ -48,6 +48,7 @@
                       visual-regexp-steroids
                       evil-surround
                       lusty-explorer
+                      xterm-color
                       ;; lagnauge modes
                       color-identifiers-mode
                       dockerfile-mode
@@ -117,6 +118,7 @@
                   "zone"
                   "expandregion"
                   "shell"
+                  "dired"
                   ;; "git"
                   "github"
                   "killring"

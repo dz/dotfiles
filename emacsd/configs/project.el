@@ -14,7 +14,6 @@
 (global-set-key (kbd "C-c p t") 'project-tags)
 
 ;; mac keys
-(global-set-key "\M-t" 'project-find-file-ido)
 (global-set-key "\M-O" 'project-load)
 
 ;; project global config
@@ -30,13 +29,22 @@
       ('index (concat "find " mk-proj-basedir " " ignore-clause " -o -print")))))
 
 ;; project definitions
+(project-def "emacs"
+             '((basedir          "/Users/dzhou/.emacs.d")
+               (src-patterns     ("*.el"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/elpa/*" "*/vendor/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/emacs/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
 (project-def "sbn"
              '((basedir          "/Users/dzhou/Vox/sbn")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
                (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/vox/open-files-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
@@ -46,7 +54,6 @@
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/hermano/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
@@ -56,7 +63,6 @@
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/beacon/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
@@ -66,7 +72,6 @@
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox-dfp/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
@@ -77,7 +82,15 @@
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/chorus-insights-platform/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "tools"
+             '((basedir          "/Users/dzhou/Vox/voxmedia-editorial-tools")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/tools/file-list-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
@@ -87,7 +100,34 @@
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/extant/file-list-cache")
-               ;; (open-files-cache "/Users/dzhou/.emacs.d/projects/hermano/open-files-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "legato"
+             '((basedir          "/Users/dzhou/Vox/legato")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/legato/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+
+(project-def "pr-notifier"
+             '((basedir          "/Users/dzhou/Vox/pr_notifier")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/pr_notifier/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "notebot"
+             '((basedir          "/Users/dzhou/Vox/notebot")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/notebot/file-list-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))

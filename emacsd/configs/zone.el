@@ -1,4 +1,11 @@
 (require 'zone)
+(require 'zone-matrix)
+
+(defun zone-matrix-settings ()
+  "Settings for `zone-matrix'."
+  (setq zmx-unicode-mode t)
+  )
+
 ;; start zone after 2 minutes of idling
 ;; (zone-when-idle 120)
 
