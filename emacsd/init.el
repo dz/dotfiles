@@ -49,6 +49,7 @@
                       evil-surround
                       lusty-explorer
                       xterm-color
+                      magit
                       ;; lagnauge modes
                       color-identifiers-mode
                       dockerfile-mode
@@ -119,7 +120,7 @@
                   "expandregion"
                   "shell"
                   "dired"
-                  ;; "git"
+                  "git"
                   "github"
                   "killring"
                   ;; languages

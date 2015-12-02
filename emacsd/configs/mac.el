@@ -106,6 +106,9 @@ If point was already at that position, move point to beginning of line."
 ;; set command-shift-b to open ibuffer
 (global-set-key "\M-B" 'ibuffer)
 
+;; set command-shift-g to open magit status
+(global-set-key "\M-G" 'magit-status)
+
 ;; allow command-f to search in file
 (global-set-key "\M-f" 'isearch-forward)
 ;; repeat search with command-g

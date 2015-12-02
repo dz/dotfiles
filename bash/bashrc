@@ -95,7 +95,7 @@ bind '"\e[B"':history-search-forward
 export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export SSL_CERT_FILE=/usr/local/etc/openssl/certs/cert.pem
-export GOPATH=/Users/dzhou/go_code
+export GOPATH=/Users/dzhou/Code/go
 export PATH="$PATH:$GOPATH/bin"
 export SOLR_HOME=/usr/local/solr14
 export PATH=".bundle/bin:$PATH"
@@ -110,13 +110,6 @@ alias gits="git status"
 alias gs="git status"
 alias gd="git diff"
 export GREP_OPTIONS='--color=auto -i'
-
-#emacs aliases
-alias emacs="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -c -a /Applications/Emacs.app/Contents/MacOS/Emacs"
-alias emacst="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a /Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-alias et="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -t -a /Applications/Emacs.app/Contents/MacOS/Emacs -nw"
-alias em="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a /Applications/Emacs.app/Contents/MacOS/Emacs"
-alias e="/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n -a /Applications/Emacs.app/Contents/MacOS/Emacs"
 
 #sublime text aliases
 alias slt='open -a "Sublime Text 2"'

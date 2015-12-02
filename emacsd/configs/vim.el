@@ -7,17 +7,22 @@
                               (pylookup-mode . emacs)
                               (comint-mode . normal)
                               (shell-mode . insert)
-                              (git-commit-mode . insert)
                               (git-rebase-mode . emacs)
                               (term-mode . emacs)
                               (help-mode . emacs)
                               (helm-grep-mode . emacs)
                               (grep-mode . emacs)
                               (bc-menu-mode . emacs)
-                              (magit-branch-manager-mode . emacs)
                               (rdictcc-buffer-mode . emacs)
                               (dired-mode . normal)
-                              (wdired-mode . normal))
+                              (magit-mode . normal)
+                              (magit-diff-mode . normal)
+                              (magit-status-mode . normal)
+                              (magit-popup-mode . normal)
+                              (wdired-mode . normal)
+                              (magit-log-edit-mode . insert)
+                              (magit-popup-mode . emacs)
+                              (git-commit-mode . insert))
       do (evil-set-initial-state mode state))
 
 (evil-define-motion evil-little-word (count)
@@ -70,6 +75,30 @@
 (evil-define-key 'normal dired-mode-map "n" 'evil-search-next)
 (evil-define-key 'normal dired-mode-map "N" 'evil-search-previous)
 (evil-define-key 'normal dired-mode-map "q" 'kill-this-buffer)
+
+;; magit things
+(with-eval-after-load 'magit
+  (dolist (magitmap (list
+                     magit-diff-mode-map
+                     magit-status-mode-map
+                     magit-mode-map
+                     magit-file-section-map
+                     magit-hunk-section-map
+                     magit-unstaged-section-map
+                     magit-staged-section-map
+                     magit-stash-section-map
+                     magit-stashes-section-map
+                     magit-untracked-section-map
+                     magit-branch-section-map
+                     magit-remote-section-map
+                     magit-tag-section-map
+                     ))
+    (define-key magitmap "c" 'magit-commit-popup)
+    (define-key magitmap (kbd "TAB") 'magit-section-toggle)
+    (define-key magitmap (kbd "<tab>") 'magit-section-toggle)
+    (define-key magitmap "j" 'evil-next-line)
+    (define-key magitmap "k" 'evil-previous-line)
+    (define-key magitmap "K" 'magit-discard)))
 
 ;; change mode-line color by evil state
 (lexical-let ((default-color (cons (face-background 'mode-line)

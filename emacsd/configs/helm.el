@@ -71,3 +71,7 @@
 
 (require 'helm-git-grep)
 (global-set-key (kbd "M-F") 'helm-git-grep)
+
+;; helm git grep key bindings
+(define-key helm-git-grep-map (kbd "C-s") 'helm-git-grep-run-save-buffer)
+(define-key helm-git-grep-map (kbd "M-s") 'helm-git-grep-run-save-buffer)
