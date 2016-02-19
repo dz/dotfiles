@@ -61,6 +61,14 @@
 (define-key evil-normal-state-map (kbd "TAB") 'evil-indent-line)
 (define-key evil-visual-state-map (kbd "TAB") 'evil-indent-line)
 
+;; grep/compilation mode thigns
+(add-hook 'compilation-mode-hook '(lambda ()
+                                    (local-unset-key "g")
+                                    (local-unset-key "h")))
+(define-key helm-git-grep-map "g" nil)
+(evil-define-key 'normal helm-git-grep-map "g" nil)
+(evil-define-key 'normal helm-git-grep-map "gg" 'evil-beginning-of-buffer)
+
 ;; dired mode things
 (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)
 (evil-define-key 'normal dired-mode-map "l" 'dired-find-alternate-file)

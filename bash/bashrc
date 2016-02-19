@@ -162,6 +162,8 @@ alias npm-exec='PATH=$(npm bin):$PATH'
 alias ne='PATH=$(npm bin):$PATH'
 alias n='PATH=$(npm bin):$PATH'
 
+alias g='git'
+
 $(boot2docker shellinit)
 
 source ~/.amazon_secrets
