@@ -14,15 +14,34 @@ call dein#add('Shougo/vimproc.vim', {'build': 'make'})
 call dein#add('vim-airline/vim-airline')
 call dein#add('vim-airline/vim-airline-themes')
 call dein#add('vim-scripts/L9.git')
-" Features
+call dein#add('qpkorr/vim-bufkill')
 call dein#add('Shougo/unite.vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('tpope/vim-surround')
 call dein#add('tpope/vim-unimpaired')
 call dein#add('Raimondi/delimitMate')
+call dein#add('henrik/vim-indexed-search')
+call dein#add('vim-scripts/matchit.zip')
+call dein#add('sjl/gundo.vim')
+call dein#add('vim-scripts/YankRing.vim')
+call dein#add('majutsushi/tagbar')
+call dein#add('nathanaelkane/vim-indent-guides')
+call dein#add('tpope/vim-eunuch')
+call dein#add('jaxbot/semantic-highlight.vim')
+
 " Javascript
 call dein#add('othree/yajs.vim')
+
+" HTML/CSS
+call dein#add('kchmck/vim-coffee-script')
+call dein#add('groenewege/vim-less')
+call dein#add('tpope/vim-haml')
+call dein#add('tudorprodan/html_annoyance.vim')
+
+" Ruby/Rails
+call dein#add('tpope/vim-rails.git')
+call dein#add('tpope/vim-endwise')
 
 " finish
 call dein#end()
@@ -31,47 +50,6 @@ if dein#check_install()
 endif
 
 filetype plugin indent on
-
-
-" NeoBundle 'vim-scripts/IndexedSearch'
-" NeoBundle 'vim-scripts/matchit.zip'
-" NeoBundle 'majutsushi/tagbar'
-" NeoBundle 'sjl/gundo.vim'
-" NeoBundle 'vim-scripts/YankRing.vim'
-" NeoBundle 'nathanaelkane/vim-indent-guides'
-" NeoBundle 'mattdbridges/bufkill.vim'
-" NeoBundle 'scrooloose/syntastic'
-" NeoBundle 'tpope/vim-eunuch.git'
-" NeoBundle 'jaxbot/semantic-highlight.vim'
-
-" GIT SHIT
-" NeoBundle 'tpope/vim-fugitive'
-" NeoBundle 'int3/vim-extradite'
-" NeoBundle 'mattn/gist-vim'
-"
-" HTML/CSS
-" NeoBundle 'kchmck/vim-coffee-script'
-" NeoBundle 'groenewege/vim-less'
-" NeoBundle 'tpope/vim-haml'
-" NeoBundle 'tudorprodan/html_annoyance.vim'
-"
-" Javascript
-" NeoBundle 'pangloss/vim-javascript'
-"
-" Ruby/Rails
-" NeoBundle 'tpope/vim-rails.git'
-" NeoBundle 'tpope/vim-endwise'
-
-
-" Now that vundle has finished its thing
-" turn filetype back on
-
-" if neobundle#exists_not_installed_bundles()
-"   echomsg 'Not installed bundles : ' .
-"         \ string(neobundle#get_not_installed_bundle_names())
-"   echomsg 'Please execute ":NeoBundleInstall" command.'
-"   "finish
-" endif
 
 set background=dark
 color ir_black
@@ -86,9 +64,6 @@ set history=1000
 set nofoldenable " disable code folding
 set display=lastline,uhex
 set switchbuf=useopen
-
-" fzf
-set rtp+=/usr/local/opt/fzf
 
 set backup
 set backupdir=$HOME/.vimbackup//
@@ -265,6 +240,10 @@ nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
 nmap <leader>. :LustyFilesystemExplorer<cr>
 nmap <D-o> :LustyFilesystemExplorer<cr>
 
+" Quickly open/reload vim
+nnoremap <leader>ev :split $MYVIMRC<CR>
+nnoremap <leader>sv :source $MYVIMRC<CR>
+
 "vim-airline options
 let g:airline_enable_branch=1
 let g:airline_branch_empty_message=''
@@ -317,7 +296,6 @@ let g:tagbar_autoclose = 1
 let g:syntastic_check_on_open=1
 
 " YouCompleteMe options
-
 let g:ycm_add_preview_to_completeopt=0
 let g:ycm_confirm_extra_conf=0
 set completeopt-=preview
