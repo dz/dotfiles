@@ -101,6 +101,7 @@ export SOLR_HOME=/usr/local/solr14
 export PATH=".bundle/bin:$PATH"
 eval "$(rbenv init -)"
 
+alias tm="tmux attach-session -t dz || tmux new-session -s dz"
 alias c="clear"
 alias l="ls"
 alias less="less -R"
@@ -164,6 +165,6 @@ alias n='PATH=$(npm bin):$PATH'
 
 alias g='git'
 
-$(boot2docker shellinit)
-
 source ~/.amazon_secrets
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
