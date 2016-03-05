@@ -29,6 +29,8 @@
 (package-initialize)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "http://marmalade-repo.org/packages/") t)
 
 (defvar dz/packages '(
                       popup
@@ -50,10 +52,13 @@
                       lusty-explorer
                       xterm-color
                       magit
+                      env-var-import
                       ;; lagnauge modes
                       color-identifiers-mode
                       dockerfile-mode
                       go-mode
+                      go-autocomplete
+                      go-eldoc
                       coffee-mode
                       coffee-mode
                       scss-mode
@@ -74,6 +79,17 @@
     (when (not (package-installed-p pkg))
       (package-install pkg))))
 
+(defun package-list-unaccounted-packages ()
+  "Like `package-list-packages', but shows only the packages that
+  are installed and are not in `dz/packages'.  Useful for
+  cleaning out unwanted packages."
+  (interactive)
+  (package-show-package-list
+   (remove-if-not (lambda (x) (and (not (memq x dz/packages))
+                                   (not (package-built-in-p x))
+                                   (package-installed-p x)))
+                  (mapcar 'car package-archive-contents))))
+
 ;; recursively add subdirs in vendor to load path
 ;; this might override things intalled via ELPA/MELPA/Marmalade
 ;; but that is what we want
@@ -87,6 +103,9 @@
 ;; on shell path
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
+;; set up environment vars
+(require 'env-var-import)
 
 ;; autoload config files in the config folder
 (defconst emacs-config-dir "~/.emacs.d/configs/" "")
@@ -126,6 +145,7 @@
                   ;; languages
                   "color_identifiers"
                   "python"
+                  "go"
                   "javascript"
                   "ruby"
                   "yaml"

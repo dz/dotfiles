@@ -5,6 +5,7 @@ set nocompatible
 filetype on "os x needs this sometimes. don't ask. its a mystery
 filetype off "required for neobundle
 let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
+set runtimepath+=/usr/local/bin
 set runtimepath+=~/.vim/repos/github.com/Shougo/dein.vim
 call dein#begin(expand('~/.vim/installed')) " gitignore is on for /installed, so use that instead of default bundle dir
 
@@ -16,6 +17,8 @@ call dein#add('vim-airline/vim-airline-themes')
 call dein#add('vim-scripts/L9.git')
 call dein#add('qpkorr/vim-bufkill')
 call dein#add('Shougo/unite.vim')
+call dein#add('Shougo/unite-outline')
+call dein#add('Shougo/neomru.vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add('Lokaltog/vim-easymotion')
 call dein#add('tpope/vim-surround')
@@ -25,7 +28,6 @@ call dein#add('henrik/vim-indexed-search')
 call dein#add('vim-scripts/matchit.zip')
 call dein#add('sjl/gundo.vim')
 call dein#add('vim-scripts/YankRing.vim')
-call dein#add('majutsushi/tagbar')
 call dein#add('nathanaelkane/vim-indent-guides')
 call dein#add('tpope/vim-eunuch')
 call dein#add('jaxbot/semantic-highlight.vim')
@@ -45,6 +47,7 @@ call dein#add('tpope/vim-endwise')
 
 " finish
 call dein#end()
+
 if dein#check_install()
   call dein#install()
 endif
@@ -224,30 +227,44 @@ noremap! <D-N> <esc>:NERDTreeFind<cr>
 noremap <D-A> :NERDTreeFind<CR>
 noremap! <D-A> <esc>:NERDTreeFind<cr>
 
-
-noremap <D-e> :CtrlP<cr>
-noremap! <D-e> <esc>:CtrlP<cr>
-noremap <D-E> :CtrlPClearCache<cr>
-noremap! <D-E> <esc>:CtrlPClearCache<cr>
-
-noremap <D-b> :CtrlPBuffer<cr>
-noremap! <D-b> <esc>:CtrlPBuffer<cr>
-
-noremap <D-r> :CtrlPMRU<cr>
-noremap! <D-r> <esc>:CtrlPMRU<cr>
-
-nmap <Leader>/ :LustyFilesystemExplorerFromHere<cr>
-nmap <leader>. :LustyFilesystemExplorer<cr>
-nmap <D-o> :LustyFilesystemExplorer<cr>
-
 " Quickly open/reload vim
-nnoremap <leader>ev :split $MYVIMRC<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>sv :source $MYVIMRC<CR>
+
+"Unite options
+let g:unite_source_history_yank_enable = 1
+call unite#filters#matcher_default#use(['matcher_glob'])
+nnoremap <D-b> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=buffer  -start-insert file_mru buffer<cr>
+nnoremap <D-r> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=mru     -start-insert file_mru<cr>
+nnoremap <D-e> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+nnoremap <D-t> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=files   -start-insert file_rec/async:!<cr>
+nnoremap <D-d> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=outline -start-insert outline<cr>
+nnoremap <D-y> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=yank    history/yank<cr>
+nnoremap <D-F> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=search  -start-insert grep:.<cr>
+nnoremap <D-l> :<C-u>Unite -no-cursor-line -no-empty -no-split -buffer-name=line -start-insert line<cr>
+nnoremap <D-f> :<C-u>Unite -no-cursor-line -no-empty -quick-match buffer<cr>
+
+if executable('ag')
+	let g:unite_source_grep_command='ag'
+	let g:unite_source_grep_default_opts='--nocolor --line-numbers --nogroup -S -C4'
+	let g:unite_source_grep_recursive_opt=''
+  let g:unite_source_rec_async_command = [ 'ag', '-l', '-g', '', '--nocolor' ]
+elseif executable('ack')
+	let g:unite_source_grep_command='ack'
+	let g:unite_source_grep_default_opts='--no-heading --no-color -C4'
+	let g:unite_source_grep_recursive_opt=''
+endif
+
+function! s:unite_settings()
+  nmap <buffer> Q <plug>(unite_exit)
+  nmap <buffer> <esc> <plug>(unite_exit)
+  imap <buffer> <esc> <plug>(unite_exit)
+endfunction
+autocmd FileType unite call s:unite_settings()
 
 "vim-airline options
 let g:airline_enable_branch=1
 let g:airline_branch_empty_message=''
-let g:airline_enable_tagbar=1
 let g:airline_detect_modified=1
 let g:airline_inactive_collapse=1
 let g:airline_theme='molokai'
@@ -262,35 +279,6 @@ let NERDTreeQuitOnOpen=1
 " Fugitive options
 " if a fugitive buffer is hidden, just go ahead and delete it
 autocmd BufReadPost fugitive://* set bufhidden=delete
-
-"CtrlP options
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_mruf_case_sensitive = 0
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_custom_ignore = '\.git$\|\.hg$\|\.svn|\.bundle$'
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_mruf_max = 2000
-let g:ctrlp_mruf_exclude = '/tmp/.*\|/temp/.*|/var/folders' " MacOSX/Linux
-let g:ctrlp_dont_split = 'Help'
-let g:ctrlp_extensions = ['tag', 'quickfix', 'undo']
-" press control-v instead of enter to open buffer in existing window
-let g:ctrlp_switch_buffer = 'v'
-let g:ctrlp_prompt_mappings = {
-    \ 'PrtSelectMove("j")':   ['<c-j>', '<c-n>'],
-    \ 'PrtSelectMove("k")':   ['<c-k>', '<c-p>'],
-    \ 'PrtHistory(-1)':       ['<down>'],
-    \ 'PrtHistory(1)':        ['<up>'],
-    \ 'PrtClearCache()':      ['<F5>', '<c-r>'],
-    \ }
-
-" Tagbar options
-noremap <leader>o :TagbarToggle<CR>
-noremap <D-d> :TagbarToggle<CR>
-noremap! <D-d> <esc>:TagbarToggle<cr>
-set tags=tags,.git/tags,TAGS
-let g:tagbar_compact = 1
-let g:tagbar_autoshowtag = 1
-let g:tagbar_autoclose = 1
 
 " Syntastic options
 let g:syntastic_check_on_open=1

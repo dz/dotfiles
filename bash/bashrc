@@ -96,6 +96,7 @@ export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export SSL_CERT_FILE=/usr/local/etc/openssl/certs/cert.pem
 export GOPATH=/Users/dzhou/Code/go
+export GOROOT=/usr/local/go
 export PATH="$PATH:$GOPATH/bin"
 export SOLR_HOME=/usr/local/solr14
 export PATH=".bundle/bin:$PATH"

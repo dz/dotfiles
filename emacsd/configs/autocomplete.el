@@ -1,3 +1,6 @@
+(require 'auto-complete-config)
+(require 'go-autocomplete)
+
 (ac-config-default)
 (global-set-key "\M-/" 'auto-complete)
 (define-key ac-mode-map (kbd "M-/") 'auto-complete)
