@@ -105,8 +105,8 @@ set bs=2
 set wrap linebreak textwidth=0
 
 "set mapleader
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
 
 " allow buffers to be fully squashed
 set winminheight=0
@@ -144,21 +144,20 @@ map <C-up> <C-W><up>
 map <C-down> <C-W><down>
 map <C-left> <C-W><left>
 map <C-right> <C-W><right>
-"these should ideally be in gvimrc; duplicated there
-noremap <D-up> <C-W><up>
-noremap <D-down> <C-W><down>
-noremap <D-left> <C-W><left>
-noremap <D-right> <C-W><right>
+nnoremap <Leader><up> <C-W><up>
+nnoremap <Leader><down> <C-W><down>
+nnoremap <Leader><left> <C-W><left>
+nnoremap <Leader><right> <C-W><right>
+nnoremap <Leader>k <C-W><up>
+nnoremap <Leader>j <C-W><down>
+nnoremap <Leader>h <C-W><left>
+nnoremap <Leader>l <C-W><right>
 
 "map window manipulation to match emacs
-noremap <D-1> :only<cr>
-noremap <D-0> :close<cr>
-noremap <D-2> :sp<cr>
-noremap <D-3> :vsp<cr>
-noremap! <D-1> <esc>:only<cr>
-noremap! <D-0> <esc>:close<cr>
-noremap! <D-2> <esc>:sp<cr>
-noremap! <D-3> <esc>:vsp<cr>
+nnoremap <Leader>1 :only<cr>
+nnoremap <Leader>0 :close<cr>
+nnoremap <Leader>2 :sp<cr>
+nnoremap <Leader>3 :vsp<cr>
 
 command! SmartHomeKey call SmartHomeKey()
 function! SmartHomeKey()
@@ -213,7 +212,6 @@ noremap! <C-q> <esc>:b#<cr>
 
 map <Leader>t :NERDTreeToggle<cr>
 map <Leader>m :NERDTreeToggle<cr>
-map <Leader><Leader> :NERDTreeToggle
 " open nerdtree focused on the existing file
 map <Leader>n :NERDTreeFind<cr>
 
@@ -249,8 +247,8 @@ nnoremap <leader>u :GundoToggle<CR>
 let g:BufKillActionWhenBufferDisplayedInAnotherWindow = "kill"
 let g:BufKillActionWhenModifiedFileToBeKilled = "fail"
 let g:BufKillCreateMappings = 0
-noremap <D-k> :BD<CR>
-noremap! <D-k> <esc>:BD<cr>
+noremap <C-k> :BD<CR>
+noremap! <C-k> <esc>:BD<cr>
 
 " strip whitespace
 fun! <SID>StripTrailingWhitespaces()
@@ -265,19 +263,19 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :set expandtab
 
 "fzf options
-let g:fzf_launcher = "in_a_new_term_function %s"
-" This is the default extra key bindings
+let g:fzf_nvim_statusline = 0
 let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-x': 'split',
   \ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
 let g:fzf_layout = { 'down': '~40%' }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
+" fzf keybindings
+nnoremap <silent> <leader><space> :Files<CR>
+nnoremap <silent> <leader><e> :Files<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
 
 " LANGUAGE OPTIONS
 "

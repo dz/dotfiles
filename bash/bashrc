@@ -117,10 +117,11 @@ export GREP_OPTIONS='--color=auto -i'
 alias slt='open -a "Sublime Text 2"'
 
 #vim aliases
-alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
+alias v='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
+alias vim='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
 
 # set editor to vim
-export EDITOR='/Applications/MacVim.app/Contents/MacOS/Vim'
+export EDITOR='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
 
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
