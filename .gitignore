@@ -5,6 +5,7 @@ sublime3/Cache
 sublime3/Local
 ac-comphist.dat
 vim/installed
+neovim/config/nvim/installed
 installed/
 .netrwhist
 configs/custom.el
