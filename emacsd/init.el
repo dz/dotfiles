@@ -51,6 +51,7 @@
                       evil-surround
                       lusty-explorer
                       xterm-color
+                      ido-completing-read+
                       magit
                       env-var-import
                       ;; lagnauge modes

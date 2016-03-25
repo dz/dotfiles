@@ -120,7 +120,7 @@ alias slt='open -a "Sublime Text 2"'
 alias vim="/Applications/MacVim.app/Contents/MacOS/Vim"
 
 # set editor to vim
-export EDITOR='vim'
+export EDITOR='/Applications/MacVim.app/Contents/MacOS/Vim'
 
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
@@ -168,4 +168,12 @@ alias g='git'
 
 source ~/.amazon_secrets
 
+source ~/.git-completion.bash
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
+fi
+
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+source ~/.bash_profile
