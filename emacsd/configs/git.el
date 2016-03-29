@@ -1,6 +1,9 @@
 (require 'magit)
 (require 'magit-blame)
 
+;; this makes opening files faster i dunno why it just works
+(remove-hook 'find-file-hooks 'vc-find-file-hook)
+
 ;; i'm using a weird version of emacs maybe so this workaround
 ;; is needed
 (eval-after-load 'magit

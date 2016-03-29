@@ -1,0 +1,49 @@
+'.platform-darwin, .platform-darwin .command-palette atom-text-editor':
+  'cmd-x': 'command-palette:toggle'
+
+'body, atom-text-editor, .platform-darwin atom-text-editor':
+  'cmd-left': 'window:focus-pane-on-left',
+  'cmd-right': 'window:focus-pane-on-right',
+  'cmd-up': 'window:focus-pane-above',
+  'cmd-down': 'window:focus-pane-below',
+  'ctrl-0': 'pane:close',
+  'ctrl-1': 'dz:close-other-panes',
+  'ctrl-2': 'pane:split-down',
+  'ctrl-3': 'pane:split-right',
+  'cmd-o': 'file-explorer:toggle-current-directory',
+  'cmd-shift-O': 'file-explorer:toggle-home-directory'
+
+'.platform-darwin atom-text-editor':
+  'cmd-e': 'fuzzy-finder:toggle-file-finder'
+
+'atom-text-editor.vim-mode.insert-mode, atom-text-editor.vim-mode.command-mode':
+  'ctrl-a': 'editor:move-to-first-character-of-line',
+  'ctrl-e': 'editor:move-to-end-of-screen-line'
+
+# this makes control-g behave similarly to escape
+# like emacs
+'body, atom-text-editor':
+  'ctrl-g': 'core:cancel'
+'.atom-panel.left, .atom-panel.right':
+  'ctrl-g': 'tool-panel:unfocus'
+'atom-text-editor.vim-mode':
+  'ctrl-g': 'vim-mode:reset-command-mode'
+'atom-text-editor.vim-mode:not(.command-mode)':
+  'ctrl-g': 'vim-mode:activate-command-mode'
+'.go-to-line':
+  'ctrl-g': 'core:cancel'
+'.tree-view-dialog':
+  'ctrl-g': 'core:cancel'
+
+# this makes tab always try to indent
+# just like emacs
+'atom-text-editor:not([mini])':
+  'tab': 'dz:indent-selection',
+  'shift-tab': 'dz:indent-selection'
+
+# git grep
+'atom-workspace':
+  'cmd-shift-F': 'fuzzy-grep:toggle'
+# remap project find
+'.platform-darwin':
+  'shift-cmd-E': 'project-find:show'

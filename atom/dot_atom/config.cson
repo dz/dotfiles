@@ -1,0 +1,66 @@
+"*":
+  "atom-fuzzy-grep":
+    grepCommandString: "git grep -i --no-color -n -E"
+    preserveLastSearch: true
+    showFullPath: true
+  "atom-material-ui":
+    colors:
+      abaseColor:
+        alpha: 1
+        blue: 243
+        green: 150
+        red: 33
+      predefinedColor: "Blue"
+    compactTreeView: true
+    depth: true
+    disableAnimations: true
+    fonts: {}
+    slimScrollbar: true
+    tabs:
+      compactTabs: true
+      tintedTabBar: true
+    treeView:
+      compactList: true
+    ui:
+      animations: false
+      panelContrast: true
+      panelShadows: true
+  autocomplete:
+    includeCompletionsFromAllBuffers: true
+  core:
+    audioBeep: false
+    destroyEmptyPanes: true
+    disabledPackages: [
+      "wrap-guide"
+      "tabs"
+    ]
+    projectHome: "/Users/dzhou"
+    themes: [
+      "one-dark-ui"
+      "an-old-hope-syntax"
+    ]
+  editor:
+    invisibles: {}
+    scrollPastEnd: true
+    showIndentGuide: true
+  "exception-reporting":
+    userId: "399ab71d-7d0c-e89a-fb37-b1b1b11c1127"
+  "file-explorer": {}
+  "find-and-replace":
+    openProjectFindResultsInRightPane: true
+  "fuzzy-finder": {}
+  "git-diff":
+    showIconsInEditorGutter: true
+  metrics:
+    userId: "fc92e185a493ef0730180d6c83cfcfc790f05629"
+  "one-dark-ui":
+    layoutMode: "Compact"
+  "status-bar": {}
+  "symbols-tree-view":
+    scrollAnimation: false
+  tabs:
+    alwaysShowTabBar: false
+    showIcons: false
+  "vim-mode": {}
+  welcome:
+    showOnStartup: false

@@ -56,10 +56,9 @@ set background=dark
 color ir_black
 syntax on
 set shm=atI "disable intro screen
-set ttyfast " Improves redrawing for newer computers
+set ttyfast lazyredraw
+set cursorline
 set mouse=a
-scriptencoding utf-8
-set encoding=utf-8
 set virtualedit=onemore
 set history=1000
 set nofoldenable " disable code folding
@@ -114,6 +113,9 @@ set hidden
 
 nnoremap ' `
 nnoremap ` '
+
+" clear the annoying search highlights
+nnoremap \\ :noh<return>
 
 " Remap control-g to esc
 map <C-g> <esc>
@@ -249,6 +251,7 @@ let g:BufKillActionWhenModifiedFileToBeKilled = "fail"
 let g:BufKillCreateMappings = 0
 noremap <C-k> :BD<CR>
 noremap! <C-k> <esc>:BD<cr>
+noremap <Leader>k :BD<CR>
 
 " strip whitespace
 fun! <SID>StripTrailingWhitespaces()
@@ -263,19 +266,66 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :set expandtab
 
 "fzf options
-let g:fzf_nvim_statusline = 0
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-let g:fzf_layout = { 'down': '~40%' }
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+let g:fzf_layout = { 'window': 'enew', 'down': '~40%' }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 " fzf keybindings
-nnoremap <silent> <leader><space> :Files<CR>
-nnoremap <silent> <leader><e> :Files<CR>
+nnoremap <silent> <leader><leader> :GitFiles<CR>
+nnoremap <silent> <leader>e :GitFiles<CR>
+nnoremap <silent> <leader>o :GitFiles<CR>
+nnoremap <silent> <leader>/ :GitFiles<CR>
+nnoremap <silent> <leader>E :Files<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>r :History<CR>
+set ttimeout
+set ttimeoutlen=0
+
+function! s:ag_to_qf(line)
+  let parts = split(a:line, ':')
+  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+        \ 'text': join(parts[3:], ':')}
+endfunction
+
+function! s:ag_handler(lines)
+  if len(a:lines) < 2 | return | endif
+
+  let cmd = get({'ctrl-x': 'split',
+               \ 'ctrl-v': 'vertical split',
+               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+  let first = list[0]
+  execute cmd escape(first.filename, ' %#\')
+  execute first.lnum
+  execute 'normal!' first.col.'|zz'
+
+  if len(list) > 1
+    call setqflist(list)
+    copen
+    wincmd p
+  endif
+endfunction
+
+command! -nargs=* Ag call fzf#run({
+\ 'source':  printf('ag --nogroup --column --color "%s"',
+\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+\ 'sink*':    function('<sid>ag_handler'),
+\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+\            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
+\            '--color hl:68,hl+:110',
+\ 'down':    '50%'
+\ })
+
+
 
 " LANGUAGE OPTIONS
 "
