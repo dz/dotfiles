@@ -47,7 +47,7 @@ If point was already at that position, move point to beginning of line."
 (define-key minibuffer-local-map (kbd "C-a") 'beginning-of-line)
 
 ;; allow command-o to open file
-(global-set-key "\M-o" 'find-file)
+;; (global-set-key "\M-o" 'find-file)
 
 ;; allow command-c to copy as normal
 (global-set-key "\M-c" 'simpleclip-copy)
@@ -105,7 +105,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\M-B" 'ibuffer)
 
 ;; set command-shift-g to open magit status
-(global-set-key "\M-G" 'magit-status)
+;; (global-set-key "\M-G" 'magit-status)
 
 ;; allow command-f to search in file
 (global-set-key "\M-f" 'isearch-forward)

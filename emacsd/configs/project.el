@@ -16,9 +16,6 @@
 ;; mac keys
 (global-set-key "\M-O" 'project-load)
 
-;; project global config
-(setq mk-proj-use-ido-selection t)
-
 ;; helper functions
 (defun sbn-find-cmd (context)
   (let* ((ignore-clause  (concat "\\( -path " mk-proj-basedir ".?* -prune \\)"))

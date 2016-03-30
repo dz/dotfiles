@@ -1,5 +1,7 @@
 ;;; ir-black-theme.el --- Port of ir-black theme
 
+;; MODIFIED by David Zhou (C) 2016
+
 ;; Copyright (C) 2012  Jon-Michael Deldin
 
 ;; Author: Jon-Michael Deldin <dev@jmdeldin.com>
@@ -150,6 +152,13 @@
    `(magit-item-highlight ((t (:background "#1f1f1f"))))
    `(magit-diff-add ((t (:foreground, *string*))))
    `(magit-diff-del ((t (:foreground, *red*))))
+
+   ;; ivy mode / counsel
+   `(ivy-current-match ((t (:background "#003366"))))
+   `(ivy-minibuffer-match-face-1 ((t ())))
+   `(ivy-minibuffer-match-face-2 ((t (:foreground "#FF6C60"))))
+   `(ivy-minibuffer-match-face-3 ((t (:foreground "#FF6C60"))))
+   `(ivy-minibuffer-match-face-4 ((t (:foreground "#FF6C60"))))
 
    ;; org-mode
    `(org-date ((t (:foreground, *light-purple*))))

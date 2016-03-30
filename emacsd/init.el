@@ -52,7 +52,7 @@
                       evil-surround
                       lusty-explorer
                       xterm-color
-                      ido-completing-read+
+                      ;; ido-completing-read+
                       magit
                       env-var-import
                       ;; lagnauge modes
@@ -127,7 +127,7 @@
                   ;; "helm"
                   "popwin"
                   "buffer"
-                  "ido" ;; ido changes and enhancements
+                  ;; "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
                   "project" ;; project definitions
