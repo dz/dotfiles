@@ -10,7 +10,7 @@
                               (git-rebase-mode . emacs)
                               (term-mode . emacs)
                               (help-mode . emacs)
-                              (helm-grep-mode . emacs)
+                              ;; (helm-grep-mode . emacs)
                               (grep-mode . emacs)
                               (bc-menu-mode . emacs)
                               (rdictcc-buffer-mode . emacs)
@@ -65,9 +65,9 @@
 (add-hook 'compilation-mode-hook '(lambda ()
                                     (local-unset-key "g")
                                     (local-unset-key "h")))
-(define-key helm-git-grep-map "g" nil)
-(evil-define-key 'normal helm-git-grep-map "g" nil)
-(evil-define-key 'normal helm-git-grep-map "gg" 'evil-beginning-of-buffer)
+;; (define-key helm-git-grep-map "g" nil)
+;; (evil-define-key 'normal helm-git-grep-map "g" nil)
+;; (evil-define-key 'normal helm-git-grep-map "gg" 'evil-beginning-of-buffer)
 
 ;; dired mode things
 (evil-define-key 'normal dired-mode-map "h" 'dired-up-directory)

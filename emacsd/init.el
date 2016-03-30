@@ -39,12 +39,13 @@
                       expand-region
                       exec-path-from-shell
                       flycheck
-                      helm
-                      helm-ag
-                      helm-flycheck
-                      helm-git-grep
-                      helm-ls-git
-                      helm-swoop
+                      counsel
+                      ;; helm
+                      ;; helm-ag
+                      ;; helm-flycheck
+                      ;; helm-git-grep
+                      ;; helm-ls-git
+                      ;; helm-swoop
                       popwin
                       visual-regexp
                       visual-regexp-steroids
@@ -123,7 +124,7 @@
 (load-cfg-files '(
                   "main"
                   "autocomplete"
-                  "helm"
+                  ;; "helm"
                   "popwin"
                   "buffer"
                   "ido" ;; ido changes and enhancements
@@ -143,6 +144,7 @@
                   "git"
                   "github"
                   "killring"
+                  "counsel"
                   ;; languages
                   "color_identifiers"
                   "python"

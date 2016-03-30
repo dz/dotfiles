@@ -1,0 +1,12 @@
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-height 10)
+(setq ivy-count-format "(%d/%d) ")
+(setq ivy-display-style 'fancy)
+
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "M-e") 'counsel-git)
+;; (global-set-key (kbd "M-F") 'counsel-git-grep)
+(global-set-key (kbd "M-F") 'counsel-ag)
+(global-set-key (kbd "M-r") 'ivy-resume)
+(global-set-key (kbd "M-b") 'ivy-switch-buffer)

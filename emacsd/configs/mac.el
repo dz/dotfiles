@@ -99,9 +99,7 @@ If point was already at that position, move point to beginning of line."
 (global-set-key "\M-R" 'revert-all-buffers)
 
 ;; allow command-b to switch between buffers
-(global-set-key "\M-b" 'ido-switch-buffer)
-
-(global-set-key "\M-r" 'xsteve-ido-choose-from-recentf)
+;; (global-set-key "\M-b" 'ido-switch-buffer)
 
 ;; set command-shift-b to open ibuffer
 (global-set-key "\M-B" 'ibuffer)
