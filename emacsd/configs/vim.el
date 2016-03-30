@@ -22,6 +22,8 @@
                               (wdired-mode . normal)
                               (magit-log-edit-mode . insert)
                               (magit-popup-mode . emacs)
+                              (ivy-occur-mode . emacs)
+                              (ivy-occur-grep-mode . emacs)
                               (git-commit-mode . insert))
       do (evil-set-initial-state mode state))
 
