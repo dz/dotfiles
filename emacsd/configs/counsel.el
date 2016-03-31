@@ -1,6 +1,7 @@
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 (setq ivy-height 12)
+(setq ivy-wrap t)
 (setq ivy-count-format "(%d/%d) ")
 
 (setq ivy-display-style 'fancy)
@@ -66,3 +67,9 @@ INITIAL-INPUT can be given as the initial minibuffer input."
 
 ;; save results as occur lists
 (define-key ivy-minibuffer-map (kbd "C-s") 'ivy-occur)
+;; tab key should never open a file, just complete
+(define-key ivy-minibuffer-map (kbd "TAB") 'ivy-partial)
+;; return key completes partials or opens files
+(define-key ivy-minibuffer-map (kbd "<return>") 'ivy-alt-done)
+;; make this behave as normal
+(define-key ivy-minibuffer-map (kbd "C-w") 'backward-kill-word)
