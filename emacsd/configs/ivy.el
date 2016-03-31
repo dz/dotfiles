@@ -54,7 +54,31 @@ INITIAL-INPUT can be given as the initial minibuffer input."
                       (swiper--cleanup))
             :caller 'counsel-ag))
 
+(defun ivy-imenu-get-candidates-from (alist  &optional prefix)
+  (cl-loop for elm in alist
+           nconc (if (imenu--subalist-p elm)
+                     (ivy-imenu-get-candidates-from
+                      (cl-loop for (e . v) in (cdr elm) collect
+                               (cons e (if (integerp v) (copy-marker v) v)))
+                      (concat prefix (if prefix ".") (car elm)))
+                   (and (cdr elm) ; bug in imenu, should not be needed.
+                        (setcdr elm (copy-marker (cdr elm))) ; Same as [1].
+                        (list (cons (concat prefix (if prefix ".") (car elm))
+                                    (copy-marker (cdr elm))))))))
+
+(defun ivy-imenu-goto ()
+  "Go to buffer position"
+  (interactive)
+  (let ((imenu-auto-rescan t) items)
+    (unless (featurep 'imenu)
+      (require 'imenu nil t))
+    (setq items (imenu--make-index-alist t))
+    (ivy-read "imenu items:"
+              (ivy-imenu-get-candidates-from (delete (assoc "*Rescan*" items) items))
+              :action (lambda (k) (goto-char k)))))
+
 (global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "M-d") 'ivy-imenu-goto)
 (global-set-key (kbd "M-e") 'counsel-git)
 (global-set-key (kbd "M-E") 'counsel-git)
 (global-set-key (kbd "M-o") 'counsel-find-file)
@@ -65,6 +89,7 @@ INITIAL-INPUT can be given as the initial minibuffer input."
 (global-set-key (kbd "M-r") 'ivy-resume)
 (global-set-key (kbd "M-b") 'ivy-switch-buffer)
 
+;; ivy minibuffer keys
 ;; save results as occur lists
 (define-key ivy-minibuffer-map (kbd "C-s") 'ivy-occur)
 ;; tab key should never open a file, just complete
@@ -73,3 +98,6 @@ INITIAL-INPUT can be given as the initial minibuffer input."
 (define-key ivy-minibuffer-map (kbd "<return>") 'ivy-alt-done)
 ;; make this behave as normal
 (define-key ivy-minibuffer-map (kbd "C-w") 'backward-kill-word)
+;; make C-f and C-b work like everywhere else
+(define-key ivy-minibuffer-map (kbd "C-f") 'ivy-scroll-up-command)
+(define-key ivy-minibuffer-map (kbd "C-b") 'ivy-scroll-down-command)

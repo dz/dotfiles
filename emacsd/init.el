@@ -46,6 +46,7 @@
                       ;; helm-git-grep
                       ;; helm-ls-git
                       ;; helm-swoop
+                      imenu-anywhere
                       popwin
                       visual-regexp
                       visual-regexp-steroids
@@ -144,7 +145,7 @@
                   "git"
                   "github"
                   "killring"
-                  "counsel"
+                  "ivy"
                   ;; languages
                   "color_identifiers"
                   "python"
