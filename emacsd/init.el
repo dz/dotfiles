@@ -41,9 +41,9 @@
                       flycheck
                       ;; counsel
                       helm
+                      helm-git-grep
                       helm-ag
                       helm-flycheck
-                      helm-git-grep
                       helm-ls-git
                       helm-swoop
                       imenu-anywhere

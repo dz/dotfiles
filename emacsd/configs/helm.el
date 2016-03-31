@@ -169,6 +169,8 @@
 (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
 (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)
 
+(advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
+
 ;; helm mini for buffer switchig
 (global-set-key (kbd "M-b") 'helm-mini)
 
