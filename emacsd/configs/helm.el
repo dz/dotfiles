@@ -6,7 +6,6 @@
 
 (require 'helm-config)
 (require 'helm-files)
-(require 'helm-grep)
 (require 'helm-git-grep)
 (require 'helm-ls-git)
 
@@ -49,6 +48,7 @@
  helm-move-to-line-cycle-in-source nil ; move to end or beginning of source
  ido-use-virtual-buffers t      ; Needed in helm-buffers-list
  helm-ff-transformer-show-only-basename t
+ helm-grep-file-path-style 'relative
  )
 
 ;; make helm look more normal
