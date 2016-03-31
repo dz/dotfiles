@@ -7,9 +7,8 @@
 (require 'helm-config)
 (require 'helm-files)
 (require 'helm-grep)
-
-;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; (global-set-key (kbd "M-x") 'helm-M-x)
+(require 'helm-git-grep)
+(require 'helm-ls-git)
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
@@ -49,9 +48,7 @@
  helm-ff-file-name-history-use-recentf t
  helm-move-to-line-cycle-in-source nil ; move to end or beginning of source
  ido-use-virtual-buffers t      ; Needed in helm-buffers-list
- helm-buffers-fuzzy-matching t          ; fuzzy matching buffer names when non--nil
-                                        ; useful in helm-mini that lists buffers
- helm-ff-transformer-show-only-basename nil
+ helm-ff-transformer-show-only-basename t
  )
 
 ;; make helm look more normal
@@ -106,9 +103,9 @@
   (if (> (length helm-sources) 1)
       (set-face-attribute 'helm-source-header
                           nil
-                          :foreground helm-source-header-default-foreground
-                          :background helm-source-header-default-background
-                          :box helm-source-header-default-box
+                          :foreground "#94CBFE"
+                          :background nil
+                          :box nil
                           :height 1.0)
     (set-face-attribute 'helm-source-header
                         nil
@@ -133,13 +130,11 @@
 (helm-mode 1)
 
 ;; helm git integration
-(require 'helm-ls-git)
 (global-set-key (kbd "M-e") 'helm-ls-git-ls)
 (global-set-key (kbd "M-E") 'helm-browse-project)
 ;; because sbn has like 20000 files named "config.rb"
 (setq helm-ls-git-show-abs-or-relative 'absolute)
 
-(require 'helm-git-grep)
 (global-set-key (kbd "M-F") 'helm-git-grep)
 
 ;; resume a helm session
@@ -173,27 +168,6 @@
 (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
 (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
 (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)
-
-(require 'cl-lib)
-
-(with-eval-after-load 'helm-files
-  (advice-add 'helm-ff-filter-candidate-one-by-one
-              :before-while 'no-dots-display-file-p))
-
-(defvar no-dots-whitelist nil
-  "List of helm buffers in which to show dots.")
-
-(defun no-dots-in-white-listed-helm-buffer-p ()
-  (member helm-buffer no-dots-whitelist))
-
-(defun no-dots-display-file-p (file)
-  ;; in a whitelisted buffer display the file regardless of its name
-  (or (no-dots-in-white-listed-helm-buffer-p)
-      ;; not in a whitelisted buffer display all files
-      ;; which does not end with /. /..
-      (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
-
-(advice-add 'helm-execute-persistent-action :around #'dwim-helm-find-files-navigate-forward)
 
 ;; helm mini for buffer switchig
 (global-set-key (kbd "M-b") 'helm-mini)

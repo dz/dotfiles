@@ -160,6 +160,14 @@
    `(ivy-minibuffer-match-face-3 ((t (:foreground "#FF6C60"))))
    `(ivy-minibuffer-match-face-4 ((t (:foreground "#FF6C60"))))
 
+   ;; helm
+   `(helm-source-header ((t (:foreground "#FF6C60"))))
+   `(helm-selection ((t (:background "#003366"))))
+   `(helm-match ((t (:foreground "#FF6C60"))))
+   `(helm-match-item ((t (:foreground "#FF6C60"))))
+   `(helm-grep-match ((t (:foreground "#FF6C60"))))
+   `(helm-grep-hit ((t (:foreground "#FF6C60"))))
+
    ;; org-mode
    `(org-date ((t (:foreground, *light-purple*))))
    `(org-level-1 ((t (:foreground, *string*))))
