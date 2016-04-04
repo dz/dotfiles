@@ -1,4 +1,4 @@
-;;; ir-black-theme.el --- Port of ir-black theme
+;;; ir-black-dz.el --- Port of ir-black theme, with modifications by DZ
 
 ;; MODIFIED by David Zhou (C) 2016
 
@@ -29,14 +29,6 @@
 ;; operators, numbers, and regular expressions, and it could definitely use
 ;; some cleaning up. Improvements are welcome!
 ;;
-;; To use this theme, download it to ~/.emacs.d/themes. In your `.emacs' or
-;; `init.el', add this line:
-;;
-;;    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-;;
-;; Once you have reloaded your configuration (`eval-buffer'), do `M-x
-;; load-theme' and select "ir-black".
-
 ;;; Credits:
 
 ;; Thanks to Bozhidar Batsov for pointers and the autoloader from his
@@ -45,7 +37,7 @@
 
 ;;; Code:
 
-(deftheme ir-black "Port of ir-black theme")
+(deftheme ir-black-dz "Port of ir-black theme, modified by DZ")
 
 (let ((*background-color*   "#000000")
       (*brown*              "#E64")
@@ -198,5 +190,5 @@
 ;; no-byte-compile: t
 ;; End:
 
-(provide-theme 'ir-black)
+(provide-theme 'ir-black-dz)
 ;;; ir-black-theme.el ends here

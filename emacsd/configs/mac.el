@@ -10,7 +10,7 @@
                                      (list
                                       (cons 'font my-font)))))
 
-(load-theme 'ir-black t)
+(load-theme 'ir-black-dz t)
 
 ;; set larger line spacing
 (setq-default line-spacing 2)
