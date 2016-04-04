@@ -27,11 +27,14 @@
 (setq delete-by-moving-to-trash t)
 
 ;; I need my line numbers
-;; (require 'linum)
-;; (setq linum-format "%4d ")
+(require 'linum)
+(setq linum-format "%4d ")
 ;; (global-linum-mode 1)
 ;; ;; but not in all modes
-;; (require 'linum-off)
+(require 'linum-off)
+
+;; add keybinding to toggle
+(global-set-key "\M-L" 'linum-mode)
 
 ;; give windows a margin
 (add-hook 'window-configuration-change-hook
