@@ -27,11 +27,16 @@
 (setq delete-by-moving-to-trash t)
 
 ;; I need my line numbers
-(require 'linum)
-(setq linum-format "%4d ")
-(global-linum-mode 1)
-;; but not in all modes
-(require 'linum-off)
+;; (require 'linum)
+;; (setq linum-format "%4d ")
+;; (global-linum-mode 1)
+;; ;; but not in all modes
+;; (require 'linum-off)
+
+;; give windows a margin
+(add-hook 'window-configuration-change-hook
+          (lambda ()
+            (set-window-margins (car (get-buffer-window-list (current-buffer) nil t)) 1 1)))
 
 (scroll-bar-mode -1)
 (menu-bar-mode 1)

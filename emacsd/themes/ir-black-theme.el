@@ -166,6 +166,7 @@
    `(helm-match ((t (:foreground "#FF6C60"))))
    `(helm-match-item ((t (:foreground "#FF6C60"))))
    `(helm-grep-match ((t (:foreground "#FF6C60"))))
+   `(helm-git-grep-match ((t (:foreground "#FF6C60"))))
    `(helm-grep-hit ((t (:foreground "#FF6C60"))))
 
    ;; org-mode
