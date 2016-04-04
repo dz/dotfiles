@@ -72,7 +72,7 @@
       (*minibuffer-prompt*  "#888888"))
 
   (custom-theme-set-faces
-   'ir-black
+   'ir-black-dz
 
    `(bold ((t (:bold t))))
    `(button ((t (:foreground, *keywords*))))
