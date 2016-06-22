@@ -167,6 +167,8 @@ alias n='PATH=$(npm bin):$PATH'
 
 alias g='git'
 
+alias neural="ssh -i ~/neural.pem ubuntu@ec2-54-164-155-102.compute-1.amazonaws.com"
+
 source ~/.amazon_secrets
 
 source ~/.git-completion.bash
@@ -178,3 +180,5 @@ fi
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 source ~/.bash_profile
+
+

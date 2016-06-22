@@ -164,6 +164,24 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
+(project-def "billboards-web"
+             '((basedir          "/Users/dzhou/Vox/billboards-web")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/billboards-web/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "fastly"
+             '((basedir          "/Users/dzhou/Vox/fastly-vcls")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/fastly-vcls/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
 (project-def "campaigns"
              '((basedir          "/Users/dzhou/Documents/RPG/Campaigns")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))

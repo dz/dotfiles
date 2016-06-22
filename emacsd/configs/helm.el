@@ -16,12 +16,6 @@
 (define-key helm-map (kbd "C-b")  'helm-previous-page)
 (define-key helm-map (kbd "C-n") 'helm-next-line)
 (define-key helm-map (kbd "C-p")  'helm-previous-line)
-;; set control-w inside of helm to properly kill word
-(define-key helm-map (kbd "C-w") 'backward-kill-word)
-(define-key helm-map (kbd "C-a") 'beginning-of-line)
-;; control-h and control-l in helm should go forward or backwards
-(define-key helm-map (kbd "C-h") 'backward-char)
-(define-key helm-map (kbd "C-l") 'forward-char)
 
 (setq
  helm-google-suggest-use-curl-p t
@@ -30,6 +24,7 @@
  helm-idle-delay 0.01 ; be idle for this many seconds, before updating in delayed sources.
  helm-input-idle-delay 0.01 ; be idle for this many seconds, before updating candidate buffer
  helm-ff-search-library-in-sexp t ; search for library in `require' and `declare-function' sexp.
+ helm-buffer-max-length 100
 
  helm-split-window-default-side 'below ;; open helm buffer below
  helm-split-window-in-side-p t ;; open helm buffer inside current window, not occupy whole other window
@@ -132,6 +127,8 @@
 
 (global-set-key (kbd "M-F") 'helm-git-grep)
 
+(global-set-key (kbd "M-A") 'helm-ag)
+
 ;; resume a helm session
 (global-set-key (kbd "M-r") 'helm-resume)
 
@@ -181,3 +178,12 @@
 ;; helm git grep key bindings
 (define-key helm-git-grep-map (kbd "C-s") 'helm-git-grep-run-save-buffer)
 (define-key helm-git-grep-map (kbd "M-s") 'helm-git-grep-run-save-buffer)
+(define-key helm-git-grep-map (kbd "C-w") 'backward-kill-word)
+
+;; set control-w inside of helm to properly kill word
+(define-key helm-map (kbd "C-w") 'backward-kill-word)
+(define-key helm-map (kbd "C-a") 'beginning-of-line)
+
+;; control-h and control-l in helm should go forward or backwards
+(define-key helm-map (kbd "C-h") 'backward-char)
+(define-key helm-map (kbd "C-l") 'forward-char)

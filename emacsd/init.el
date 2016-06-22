@@ -67,6 +67,7 @@
                       scss-mode
                       web-mode
                       toml-mode
+                      vcl-mode
                       yaml-mode)
   "Default packages")
 
@@ -158,6 +159,7 @@
                   "docker"
                   "markdown"
                   "toml"
+                  "vcl"
                   ;; generic web mode multi-mode mode thing mode (mode) mode so many modes
                   "web"
                   ;; keybindings to override everything
