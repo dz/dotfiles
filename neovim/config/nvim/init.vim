@@ -128,6 +128,7 @@ nnoremap \\ :noh<return>
 " Remap control-g to esc
 map <C-g> <esc>
 noremap <C-g> <esc>
+cnoremap <C-g> <C-C><esc>
 
 "scrolling offset
 set scrolloff=5
