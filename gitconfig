@@ -1,8 +1,9 @@
 [alias]
   s = status
-  d = diff --color --color-words
 	g = grep --break --heading --line-number
 	sorry = "!git log --format=%s | while read line; do echo \"I am SO sorry but $line\"; done"
+  cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+	dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
 [github]
 	user = dz
 [user]
@@ -11,7 +12,6 @@
 [core]
 	excludesfile = /Users/dzhou/.gitignore
         whitespace = tab-in-indent,trailing-space,space-before-tab
-	pager = diff-so-fancy | less --tabs=4 -RFX
 [color]
   ui = always
 	branch = auto

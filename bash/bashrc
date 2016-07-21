@@ -21,6 +21,55 @@ fi
 
 VCPROMPT_EXECUTABLE=/usr/local/bin/vcprompt
 
+# FZF funcs
+# find file and open
+function fo() {
+  local out file key
+  out=$(fzf --query="$1" --exit-0 --expect=ctrl-o,ctrl-e)
+  key=$(head -1 <<< "$out")
+  file=$(head -2 <<< "$out" | tail -1)
+  if [ -n "$file" ]; then
+    [ "$key" = ctrl-o ] && open "$file" || ${EDITOR:-vim} "$file"
+  fi
+}
+
+# cdf - cd into the directory of the selected file
+function cdf() {
+   local file
+   local dir
+   file=$(fzf +m -q "$1") && dir=$(dirname "$file") && cd "$dir"
+ }
+
+# fd - cd to selected directory
+function fd() {
+  local dir
+  dir=$(find ${1:-*} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
+
+# fda - including hidden directories
+function fda() {
+  local dir
+  dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+}
+
+# fdr - cd to selected parent directory
+function fdr() {
+  local declare dirs=()
+  get_parent_dirs() {
+    if [[ -d "${1}" ]]; then dirs+=("$1"); else return; fi
+    if [[ "${1}" == '/' ]]; then
+      for _dir in "${dirs[@]}"; do echo $_dir; done
+    else
+      get_parent_dirs $(dirname "$1")
+    fi
+  }
+  local DIR=$(get_parent_dirs $(realpath "${1:-$(pwd)}") | fzf-tmux --tac)
+  cd "$DIR"
+}
+
 function vcprompt_branch() {
   $VCPROMPT_EXECUTABLE -f $'%b'
 }
@@ -58,13 +107,15 @@ function searchreplace() {
 }
 export -f searchreplace
 
-export BASEPROMPT='\[\e${GREEN_COLOR}\]\w \[\e${GRAY_COLOR}\]\[\e${GRAY_COLOR}\](\[\e${RED_COLOR}\]$(vcprompt_branch)\[\e${GREEN_COLOR}\]$(vcprompt_changed)\[\e${DEFAULT_COLOR}\])\[\e${GRAY_COLOR}\] \[\e${USER_COLOR}\]\u\[\e${DEFAULT_COLOR}\]'
+export BASEPROMPT='\[\e${GREEN_COLOR}\]\w \[\e${GRAY_COLOR}\]\[\e${GRAY_COLOR}\](\[\e${RED_COLOR}\]$(vcprompt_branch)\[\e${GREEN_COLOR}\]$(vcprompt_changed)\[\e${DEFAULT_COLOR}\])\[\e${GRAY_COLOR}\]'
 
 export PROMPT="${BASEPROMPT}$ "
 export PS1=$PROMPT
 
 export TERM=rxvt
 export GREP_OPTIONS='-i --color=auto' GREP_COLOR='1;32'
+
+export FZF_DEFAULT_OPTS='--exact --cycle --preview "cat {}" --preview-window right:40%'
 
 export CLICOLOR=1
 if [ `uname` == "Darwin" ]; then
@@ -119,9 +170,10 @@ alias slt='open -a "Sublime Text 2"'
 #vim aliases
 alias v='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
 alias vim='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
+alias n='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
 
 # set editor to vim
-export EDITOR='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
+export EDITOR='nvim'
 
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
@@ -163,7 +215,6 @@ alias docker-clean='docker rmi $(docker images -f "dangling=true" -q)'
 
 alias npm-exec='PATH=$(npm bin):$PATH'
 alias ne='PATH=$(npm bin):$PATH'
-alias n='PATH=$(npm bin):$PATH'
 
 alias g='git'
 

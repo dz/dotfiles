@@ -4,6 +4,8 @@
 set nocompatible
 filetype off "required for neobundle
 let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+
 set runtimepath+=/usr/local/bin
 let s:darwin = has('mac')
 
@@ -21,7 +23,6 @@ Plug 'Raimondi/delimitMate'
 Plug 'henrik/vim-indexed-search'
 Plug 'vim-scripts/matchit.zip'
 Plug 'sjl/gundo.vim'
-Plug 'vim-scripts/YankRing.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-eunuch'
 Plug 'jaxbot/semantic-highlight.vim'
@@ -52,18 +53,20 @@ call plug#end()
 filetype plugin indent on
 filetype on
 
-set background=dark
-color ir_black
+syntax enable
 syntax on
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+color ir_black
+set background=dark
 set shm=atI "disable intro screen
-set ttyfast lazyredraw
-set cursorline
 set mouse=a
 set virtualedit=onemore
 set history=1000
 set nofoldenable " disable code folding
 set display=lastline,uhex
 set switchbuf=useopen
+
+set hls!
 
 set backup
 set backupdir=$HOME/.vimbackup//
@@ -99,6 +102,11 @@ set shiftwidth=2
 set softtabstop=2
 set tabstop=2
 set bs=2
+
+" leader keys shoudln't itmeout
+set ttimeout
+set notimeout
+set ttimeoutlen=0
 
 "change softwrap to sane setting
 set wrap linebreak textwidth=0
@@ -161,6 +169,9 @@ nnoremap <Leader>0 :close<cr>
 nnoremap <Leader>2 :sp<cr>
 nnoremap <Leader>3 :vsp<cr>
 
+" In terminal mode, make escape key exit
+tnoremap <Esc> <C-\><C-n>
+
 command! SmartHomeKey call SmartHomeKey()
 function! SmartHomeKey()
   let l:lnum	=	line('.')
@@ -217,10 +228,6 @@ map <Leader>m :NERDTreeToggle<cr>
 " open nerdtree focused on the existing file
 map <Leader>n :NERDTreeFind<cr>
 
-" Quickly open/reload vim
-nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
-
 "NERDTree options
 let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
@@ -266,6 +273,7 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :set expandtab
 
 "fzf options
+let $FZF_DEFAULT_OPTS = '--exact --cycle --reverse --inline-info'
 function! s:fzf_statusline()
   " Override statusline as you like
   highlight fzf1 ctermfg=161 ctermbg=251
@@ -279,32 +287,29 @@ let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 " fzf keybindings
-nnoremap <silent> <leader><leader> :GitFiles<CR>
 nnoremap <silent> <leader>e :GitFiles<CR>
-nnoremap <silent> <leader>o :GitFiles<CR>
-nnoremap <silent> <leader>/ :GitFiles<CR>
+nnoremap <silent> <leader>/ :BLines<CR>
 nnoremap <silent> <leader>E :Files<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 nnoremap <silent> <leader>r :History<CR>
-set ttimeout
-set ttimeoutlen=0
+nnoremap <silent> <leader>f :Ag<CR>
 
-function! s:ag_to_qf(line)
+function! s:gitgrep_to_qf(line)
   let parts = split(a:line, ':')
-  return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
-        \ 'text': join(parts[3:], ':')}
+  return {'filename': parts[0], 'lnum': parts[1], 'col': 0,
+        \ 'text': join(parts[2:], ':')}
 endfunction
 
-function! s:ag_handler(lines)
-  if len(a:lines) < 2 | return | endif
+function! s:gitgrep_handler(lines)
+  if len(a:lines) < 2
+    return
+  endif
 
-  let cmd = get({'ctrl-x': 'split',
-               \ 'ctrl-v': 'vertical split',
-               \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
-  let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+  let cmd = get(get(g:, 'fzf_action', s:default_action), a:lines[0], 'e')
+  let list = map(a:lines[1:], 's:gitgrep_to_qf(v:val)')
 
   let first = list[0]
-  execute cmd escape(first.filename, ' %#\')
+  execute cmd s:escape(first.filename)
   execute first.lnum
   execute 'normal!' first.col.'|zz'
 
@@ -315,16 +320,15 @@ function! s:ag_handler(lines)
   endif
 endfunction
 
-command! -nargs=* Ag call fzf#run({
-\ 'source':  printf('ag --nogroup --column --color "%s"',
-\                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
-\ 'sink*':    function('<sid>ag_handler'),
-\ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
-\            '--multi --bind ctrl-a:select-all,ctrl-d:deselect-all '.
-\            '--color hl:68,hl+:110',
-\ 'down':    '50%'
-\ })
-
+command! -nargs=* G call fzf#run({
+  \ 'source':  printf('git grep --line-number "%s"',
+  \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\-')),
+  \ 'sink*':    function('<sid>gitgrep_handler'),
+  \ 'options': '--expect=ctrl-t,ctrl-v,ctrl-x --ansi --delimiter : --nth 4..,.. --prompt "GitGrep> " '.
+  \            '--multi --bind ctrl-s:select-all,ctrl-d:deselect-all '.
+  \            '--color hl:68,hl+:110',
+  \ 'down':    '50%'
+  \ })
 
 
 " LANGUAGE OPTIONS

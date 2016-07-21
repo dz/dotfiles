@@ -182,6 +182,15 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
+(project-def "vax-syllabus"
+             '((basedir          "/Users/dzhou/Vox/vax2016-syllabus")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/vax2016-syllabus/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
 (project-def "campaigns"
              '((basedir          "/Users/dzhou/Documents/RPG/Campaigns")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
