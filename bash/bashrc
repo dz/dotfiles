@@ -70,6 +70,24 @@ function fdr() {
   cd "$DIR"
 }
 
+# fb - checkout git branch (no remotes, local only)
+fbl() {
+  local branches branch
+  branches=$(git branch | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# fbr - checkout git branch (including remote branches)
+fbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
 function vcprompt_branch() {
   $VCPROMPT_EXECUTABLE -f $'%b'
 }
@@ -219,6 +237,9 @@ alias ne='PATH=$(npm bin):$PATH'
 alias g='git'
 
 alias neural="ssh -i ~/neural.pem ubuntu@ec2-54-164-155-102.compute-1.amazonaws.com"
+
+alias gb="fbl"
+alias gbr="fbr"
 
 source ~/.amazon_secrets
 
