@@ -20,14 +20,15 @@ Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
 Plug 'Raimondi/delimitMate'
-Plug 'henrik/vim-indexed-search'
 Plug 'vim-scripts/matchit.zip'
 Plug 'sjl/gundo.vim'
 Plug 'nathanaelkane/vim-indent-guides'
+Plug 'jeetsukumaran/vim-filebeagle'
 Plug 'tpope/vim-eunuch'
 Plug 'jaxbot/semantic-highlight.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'Dkendal/fzy-vim'
 
 " lol
 Plug 'junegunn/vim-emoji'
@@ -48,6 +49,9 @@ Plug 'tudorprodan/html_annoyance.vim'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-endwise'
 
+"VCL
+Plug 'smerrill/vcl-vim-plugin'
+
 call plug#end()
 
 filetype plugin indent on
@@ -56,8 +60,8 @@ filetype on
 syntax enable
 syntax on
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-color ir_black
 set background=dark
+color ir_black
 set shm=atI "disable intro screen
 set mouse=a
 set virtualedit=onemore
@@ -172,6 +176,7 @@ nnoremap <Leader>3 :vsp<cr>
 
 " In terminal mode, make escape key exit
 tnoremap <Esc> <C-\><C-n>
+let g:terminal_scrollback_buffer_size = 100000
 
 command! SmartHomeKey call SmartHomeKey()
 function! SmartHomeKey()
@@ -235,6 +240,16 @@ let NERDTreeDirArrows=1
 let NERDTreeWinSize=51
 let NERDTreeQuitOnOpen=1
 
+" explorer options
+let g:netrw_liststyle=3
+
+" filebeagle
+let g:filebeagle_suppress_keymaps = 1
+let g:filebeagle_check_gitignore = 1
+map <silent> <Leader>o  <Plug>FileBeagleOpenCurrentBufferDir
+map <silent> <Leader>O  <Plug>FileBeagleOpenCurrentWorkingDir
+map <silent> -          <Plug>FileBeagleOpenCurrentBufferDir
+
 " Fugitive options
 " if a fugitive buffer is hidden, just go ahead and delete it
 autocmd BufReadPost fugitive://* set bufhidden=delete
@@ -285,6 +300,7 @@ endfunction
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
 let g:fzf_layout = { 'window': 'enew', 'down': '~40%' }
 let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
+let $FZF_DEFAULT_COMMAND='ag -l -g ""'
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 " fzf keybindings

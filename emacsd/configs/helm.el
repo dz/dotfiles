@@ -130,13 +130,13 @@
 (global-set-key (kbd "M-A") 'helm-ag)
 
 ;; resume a helm session
-(global-set-key (kbd "M-r") 'helm-resume)
+(global-set-key (kbd "M-r") 'helm-recentf)
 
 ;; occur
 (global-set-key (kbd "M-C-f") 'helm-occur)
 
 ;; helm find files
-(global-set-key (kbd "M-o") 'helm-find-files)
+;; (global-set-key (kbd "M-o") 'helm-find-files)
 (defun dwim-helm-find-files-up-one-level-maybe ()
   (interactive)
   (if (looking-back "/" 1)

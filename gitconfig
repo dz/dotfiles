@@ -9,6 +9,7 @@
 [user]
 	email = david@nodnod.net
 	name = dz
+	signingKey = 1C033B28
 [core]
 	excludesfile = /Users/dzhou/.gitignore
         whitespace = tab-in-indent,trailing-space,space-before-tab
@@ -36,3 +37,7 @@
 	oldHighlight = red bold 52
 	newNormal = green bold
 	newHighlight = green bold 22
+[commit]
+	gpgsign = true
+[gpg]
+	program = /Users/dzhou/.gpg_with_passphrase

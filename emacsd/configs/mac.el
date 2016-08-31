@@ -145,3 +145,5 @@ If point was already at that position, move point to beginning of line."
 
 ;; make command-J pop mark ring
 (global-set-key "\M-J" 'pop-to-mark-command)
+
+(global-set-key "\M-o" 'ido-find-file)
