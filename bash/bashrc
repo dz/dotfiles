@@ -70,6 +70,15 @@ function fdr() {
   cd "$DIR"
 }
 
+# fmr - merge git branch (includes remotes)
+fmr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git merge $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
 # fb - checkout git branch (no remotes, local only)
 fbl() {
   local branches branch
@@ -238,8 +247,24 @@ alias g='git'
 
 alias neural="ssh -i ~/neural.pem ubuntu@ec2-54-164-155-102.compute-1.amazonaws.com"
 
+alias o="fo"
+alias b="fbl"
+alias m="fmr"
+
+alias gm="fmr"
 alias gb="fbl"
 alias gbr="fbr"
+
+alias push="git push"
+alias puhs="git push"
+alias psh="git push"
+alias pul="git pull"
+alias pull="git pull"
+alias pulll="git pull"
+
+alias merge="fmr"
+alias checkout="fbl"
+alias checkoutr="fbr"
 
 source ~/.amazon_secrets
 

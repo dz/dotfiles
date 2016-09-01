@@ -39,6 +39,10 @@
  ido-use-virtual-buffers t      ; Needed in helm-buffers-list
  helm-ff-transformer-show-only-basename t
  helm-grep-file-path-style 'relative
+ ;; helm ls-git
+ helm-ls-git-default-sources '(helm-source-ls-git-status
+                               helm-source-ls-git)
+ helm-ls-git-show-abs-or-relative 'relative
  )
 
 ;; make helm look more normal
