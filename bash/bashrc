@@ -168,8 +168,6 @@ export LESS=FRSX
 
 export LIBTOOLIZE=glibtoolize
 
-# chorus vagrant
-export CHORUS_GITHUB_TOKEN=3425f984c24a362b6794434dd30a875080d135fd
 alias v="vagrant ssh"
 alias vs="vagrant ssh"
 alias vss="vagrant ssh"
@@ -285,6 +283,9 @@ alias mm="git merge master"
 source ~/.amazon_secrets
 
 source ~/.git-completion.bash
+
+# general secrets
+[[ -f ~/.bashrc.secrets ]] && . ~/.bashrc.secrets
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
