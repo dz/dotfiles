@@ -2,7 +2,7 @@
 " DZ
 
 set nocompatible
-filetype off "required for neobundle
+filetype off
 let $GIT_SSL_NO_VERIFY = 'true' " required for bad ssl certs
 set runtimepath+=/usr/local/bin
 let s:darwin = has('mac')
@@ -17,16 +17,13 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-fugitive'
 Plug 'junegunn/gv.vim'
+Plug 'sjbach/lusty'
 Plug 'Raimondi/delimitMate'
-Plug 'henrik/vim-indexed-search'
 Plug 'vim-scripts/matchit.zip'
 Plug 'sjl/gundo.vim'
-Plug 'vim-scripts/YankRing.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-eunuch'
-Plug 'jaxbot/semantic-highlight.vim'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'ctrlpvim/ctrlp.vim'
 
 " lol
 Plug 'junegunn/vim-emoji'
@@ -47,6 +44,12 @@ Plug 'tudorprodan/html_annoyance.vim'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-endwise'
 
+"VCL
+Plug 'smerrill/vcl-vim-plugin'
+
+"VimWiki
+Plug 'vimwiki/vimwiki'
+
 call plug#end()
 
 filetype plugin indent on
@@ -65,6 +68,8 @@ set history=1000
 set nofoldenable " disable code folding
 set display=lastline,uhex
 set switchbuf=useopen
+
+set hls!
 
 set backup
 set backupdir=$HOME/.vimbackup//
@@ -104,9 +109,14 @@ set bs=2
 "change softwrap to sane setting
 set wrap linebreak textwidth=0
 
+" leader keys shoudln't itmeout
+set ttimeout
+set notimeout
+set ttimeoutlen=0
+
 "set mapleader
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = "\<Space>"
+let g:mapleader = "\<Space>"
 
 " allow buffers to be fully squashed
 set winminheight=0
@@ -114,6 +124,9 @@ set hidden
 
 nnoremap ' `
 nnoremap ` '
+
+" clear the annoying search highlights
+nnoremap \\ :noh<return>
 
 " Remap control-g to esc
 map <C-g> <esc>
@@ -144,6 +157,14 @@ map <C-up> <C-W><up>
 map <C-down> <C-W><down>
 map <C-left> <C-W><left>
 map <C-right> <C-W><right>
+nnoremap <Leader><up> <C-W><up>
+nnoremap <Leader><down> <C-W><down>
+nnoremap <Leader><left> <C-W><left>
+nnoremap <Leader><right> <C-W><right>
+nnoremap <Leader>k <C-W><up>
+nnoremap <Leader>j <C-W><down>
+nnoremap <Leader>h <C-W><left>
+nnoremap <Leader>l <C-W><right>
 "these should ideally be in gvimrc; duplicated there
 noremap <D-up> <C-W><up>
 noremap <D-down> <C-W><down>
@@ -159,6 +180,11 @@ noremap! <D-1> <esc>:only<cr>
 noremap! <D-0> <esc>:close<cr>
 noremap! <D-2> <esc>:sp<cr>
 noremap! <D-3> <esc>:vsp<cr>
+"map window manipulation to match emacs
+nnoremap <Leader>1 :only<cr>
+nnoremap <Leader>0 :close<cr>
+nnoremap <Leader>2 :sp<cr>
+nnoremap <Leader>3 :vsp<cr>
 
 command! SmartHomeKey call SmartHomeKey()
 function! SmartHomeKey()
@@ -211,17 +237,27 @@ nmap <C-q> <esc>:b#<cr>
 noremap <C-q> <esc>:b#<cr>
 noremap! <C-q> <esc>:b#<cr>
 
-map <Leader>t :NERDTreeToggle<cr>
-map <Leader>m :NERDTreeToggle<cr>
-map <Leader><Leader> :NERDTreeToggle
-" open nerdtree focused on the existing file
-map <Leader>n :NERDTreeFind<cr>
+"CtrlP options
+map <Leader>e :CtrlP<CR>
+noremap <D-e> :CtrlP<CR>
+noremap! <D-e> <esc>:CtrlP<cr>
+map <Leader>b :CtrlPBuffer<CR>
+noremap <D-b> :CtrlPBuffer<CR>
+noremap! <D-b> <esc>:CtrlPBuffer<cr>
+map <Leader>r :CtrlPMRU<CR>
+noremap <D-r> :CtrlPMRU<CR>
+noremap! <D-r> <esc>:CtrlPMRU<cr>
 
-" Quickly open/reload vim
-nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>sv :source $MYVIMRC<CR>
+"LustyExplorer options
+map <Leader>o :LustyFilesystemExplorer<CR>
+noremap <D-o> :LustyFilesystemExplorer<CR>
+noremap! <D-o> <esc>:LustyFilesystemExplorer<cr>
 
 "NERDTree options
+map <Leader>t :NERDTreeToggle<cr>
+map <Leader>m :NERDTreeToggle<cr>
+" open nerdtree focused on the existing file
+map <Leader>n :NERDTreeFind<cr>
 let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
 let NERDTreeWinSize=51
@@ -251,6 +287,7 @@ let g:BufKillActionWhenModifiedFileToBeKilled = "fail"
 let g:BufKillCreateMappings = 0
 noremap <D-k> :BD<CR>
 noremap! <D-k> <esc>:BD<cr>
+noremap <Leader>k :BD<CR>
 
 " strip whitespace
 fun! <SID>StripTrailingWhitespaces()
@@ -263,21 +300,6 @@ autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 
 "ensure no tabs
 autocmd BufWritePre * :set expandtab
-
-"fzf options
-let g:fzf_launcher = "in_a_new_term_function %s"
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
-let g:fzf_layout = { 'down': '~40%' }
-let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-
-autocmd VimEnter * command! Colors
-  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 
 " LANGUAGE OPTIONS
 "

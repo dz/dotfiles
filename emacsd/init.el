@@ -68,6 +68,7 @@
                       web-mode
                       toml-mode
                       vcl-mode
+                      elixir-mode
                       yaml-mode)
   "Default packages")
 
@@ -154,6 +155,7 @@
                   "javascript"
                   "ruby"
                   "yaml"
+                  "elixir"
                   "html"
                   "css"
                   "docker"

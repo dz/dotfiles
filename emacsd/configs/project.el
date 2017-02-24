@@ -191,6 +191,16 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
+(project-def "obscura"
+             '((basedir          "/Users/dzhou/Vox/obscura")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/obscura/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+
 (project-def "campaigns"
              '((basedir          "/Users/dzhou/Documents/RPG/Campaigns")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))

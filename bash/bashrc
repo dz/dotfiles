@@ -70,31 +70,44 @@ function fdr() {
   cd "$DIR"
 }
 
-# fmr - merge git branch (includes remotes)
-fmr() {
+# skm - merge git branch (local only)
+skm() {
+  local branches branch
+  branches=$(git branch | grep -v HEAD) &&
+  branch=$(echo "$branches" | sk --ansi --color=16 +m) &&
+  git merge $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# skmr - merge git branch (includes remotes)
+skmr() {
   local branches branch
   branches=$(git branch --all | grep -v HEAD) &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  branch=$(echo "$branches" | sk --ansi --color=16 +m) &&
   git merge $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
 # fb - checkout git branch (no remotes, local only)
-fbl() {
+skb() {
   local branches branch
   branches=$(git branch | grep -v HEAD) &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  branch=$(echo "$branches" | sk --ansi --color=16 +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
-# fbr - checkout git branch (including remote branches)
-fbr() {
+# skb - checkout git branch (including remote branches)
+skbr() {
   local branches branch
   branches=$(git branch --all | grep -v HEAD) &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  branch=$(echo "$branches" | sk --ansi --color=16 +m) &&
   git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# skdiff - diff git branch against current
+skdiff() {
+  local branches branch
+  branches=$(git branch | grep -v HEAD) &&
+  branch=$(echo "$branches" | sk --ansi --color=16 +m) &&
+  git diff $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
 function vcprompt_branch() {
@@ -104,7 +117,6 @@ function vcprompt_branch() {
 function vcprompt_changed() {
   $VCPROMPT_EXECUTABLE -f $'%m%u'
 }
-
 
 function lastcommandfailed() {
   code=$?
@@ -156,6 +168,13 @@ export LESS=FRSX
 
 export LIBTOOLIZE=glibtoolize
 
+# chorus vagrant
+export CHORUS_GITHUB_TOKEN=3425f984c24a362b6794434dd30a875080d135fd
+alias v="vagrant ssh"
+alias vs="vagrant ssh"
+alias vss="vagrant ssh"
+alias vssh="vagrant ssh"
+
 # python
 export PYTHONDONTWRITEBYTECODE=1
 
@@ -180,7 +199,6 @@ export SOLR_HOME=/usr/local/solr14
 export PATH=".bundle/bin:$PATH"
 eval "$(rbenv init -)"
 
-alias tm="tmux attach-session -t dz || tmux new-session -s dz"
 alias c="clear"
 alias l="ls"
 alias less="less -R"
@@ -194,13 +212,8 @@ export GREP_OPTIONS='--color=auto -i'
 #sublime text aliases
 alias slt='open -a "Sublime Text 2"'
 
-#vim aliases
-alias v='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
-alias vim='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
-alias n='NVIM_TUI_ENABLE_TRUE_COLOR=1 nvim'
-
 # set editor to vim
-export EDITOR='nvim'
+export EDITOR='vim'
 
 #things for bash history to ignore
 export HISTIGNORE="&:ls:[bf]g:exit:clear:c"
@@ -248,12 +261,11 @@ alias g='git'
 alias neural="ssh -i ~/neural.pem ubuntu@ec2-54-164-155-102.compute-1.amazonaws.com"
 
 alias o="fo"
-alias b="fbl"
-alias m="fmr"
-
-alias gm="fmr"
-alias gb="fbl"
-alias gbr="fbr"
+alias d="skdiff"
+alias b="skb"
+alias br="skbr"
+alias m="skm"
+alias mr="skmr"
 
 alias push="git push"
 alias puhs="git push"
@@ -261,10 +273,14 @@ alias psh="git push"
 alias pul="git pull"
 alias pull="git pull"
 alias pulll="git pull"
+alias dif="skdiff"
+alias diff="skdiff"
+alias difff="skdiff"
+alias merge="skm"
+alias checkout="skb"
+alias checkoutr="skbr"
 
-alias merge="fmr"
-alias checkout="fbl"
-alias checkoutr="fbr"
+alias mm="git merge master"
 
 source ~/.amazon_secrets
 
@@ -273,9 +289,4 @@ source ~/.git-completion.bash
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
-
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-source ~/.bash_profile
-
 

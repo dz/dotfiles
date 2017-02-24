@@ -29,3 +29,4 @@
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.json\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.eex\\'" . web-mode))

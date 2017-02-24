@@ -16,6 +16,10 @@
 (define-key helm-map (kbd "C-b")  'helm-previous-page)
 (define-key helm-map (kbd "C-n") 'helm-next-line)
 (define-key helm-map (kbd "C-p")  'helm-previous-line)
+;; set control-w inside of helm to properly kill word
+(define-key helm-map (kbd "C-w") 'backward-kill-word)
+(define-key helm-map (kbd "C-h") 'backward-char)
+(define-key helm-map (kbd "C-l") 'forward-char)
 
 (setq
  helm-google-suggest-use-curl-p t
@@ -133,9 +137,6 @@
 
 (global-set-key (kbd "M-A") 'helm-ag)
 
-;; resume a helm session
-(global-set-key (kbd "M-r") 'helm-recentf)
-
 ;; occur
 (global-set-key (kbd "M-C-f") 'helm-occur)
 
@@ -169,6 +170,7 @@
 
 ;; helm mini for buffer switchig
 (global-set-key (kbd "M-b") 'helm-mini)
+(global-set-key (kbd "M-r") 'helm-mini)
 
 ;; symbols via imenu
 (global-set-key (kbd "M-d") 'helm-semantic-or-imenu)
@@ -183,11 +185,3 @@
 (define-key helm-git-grep-map (kbd "C-s") 'helm-git-grep-run-save-buffer)
 (define-key helm-git-grep-map (kbd "M-s") 'helm-git-grep-run-save-buffer)
 (define-key helm-git-grep-map (kbd "C-w") 'backward-kill-word)
-
-;; set control-w inside of helm to properly kill word
-(define-key helm-map (kbd "C-w") 'backward-kill-word)
-(define-key helm-map (kbd "C-a") 'beginning-of-line)
-
-;; control-h and control-l in helm should go forward or backwards
-(define-key helm-map (kbd "C-h") 'backward-char)
-(define-key helm-map (kbd "C-l") 'forward-char)

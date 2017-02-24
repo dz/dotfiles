@@ -153,7 +153,7 @@
 ;; recently opened files rock
 (require 'recentf)
 (recentf-mode 1)
-(setq recentf-max-saved-items 5000)
+(setq recentf-max-saved-items 15000)
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
 
 (defun count-buffers (&optional display-anyway)
