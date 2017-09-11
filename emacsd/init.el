@@ -28,6 +28,8 @@
 (load "package")
 (package-initialize)
 (add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives
              '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
              '("marmalade" . "http://marmalade-repo.org/packages/") t)
@@ -38,7 +40,14 @@
                       deft
                       expand-region
                       exec-path-from-shell
+                      undo-tree
+                      evil
+                      evil-surround
                       flycheck
+                      ;; orgmode stuff
+                      org
+                      org-plus-contrib
+                      org-download
                       ;; counsel
                       helm
                       helm-git-grep
@@ -56,6 +65,7 @@
                       ido-completing-read+
                       magit
                       env-var-import
+                      default-text-scale
                       ;; lagnauge modes
                       color-identifiers-mode
                       dockerfile-mode
@@ -147,6 +157,7 @@
                   "git"
                   "github"
                   "killring"
+                  "org"
                   ;; "ivy"
                   ;; languages
                   "color_identifiers"

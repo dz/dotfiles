@@ -187,7 +187,6 @@ export FALLBACK_DYLD_LIBRARY_PATH=/usr/local/lib
 bind '"\e[A"':history-search-backward
 bind '"\e[B"':history-search-forward
 
-export PYTHONPATH="/usr/local/lib/python2.7/site-packages:$PYTHONPATH"
 export PATH=/usr/local/bin:/usr/local/sbin:$PATH
 export SSL_CERT_FILE=/usr/local/etc/openssl/certs/cert.pem
 export GOPATH=/Users/dzhou/Code/go
@@ -224,9 +223,6 @@ alias bun="bundle"
 
 # node and npm shit
 export NODE_PATH="/usr/local/lib/node:/usr/local/lib/jsctags"
-export PYTHONPATH="/usr/local/lib/python2.7/site-packages:/Library/Python/2.7/site-packages:~/Library/Application Support/Titanium:$PYTHONPATH"
-export TITANIUM_SDK_VERSION="3.0.0.GA"
-export TITANIUM_SDK=$HOME/Library/Application\ Support/Titanium/mobilesdk/osx/$TITANIUM_SDK_VERSION
 
 export PROJECTS_PATH="/Users/dzhou/Vox"
 
@@ -291,3 +287,5 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
+source ~/.nvm/nvm.sh
+export PATH="/Users/dzhou/Documents/Vox/anthem/node_modules/.bin:$PATH"

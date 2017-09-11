@@ -46,6 +46,16 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
+(project-def "anthem"
+             '((basedir          "/Users/dzhou/Vox/anthem")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.scss"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/anthem/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
 (project-def "hermano"
              '((basedir          "/Users/dzhou/Vox/hermano")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml"))
@@ -200,12 +210,29 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
+(project-def "campfirebot"
+             '((basedir          "/Users/dzhou/Vox/campfirebot")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/campfirebot/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
 
 (project-def "campaigns"
              '((basedir          "/Users/dzhou/Documents/RPG/Campaigns")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
                (file-list-cache  "/Users/dzhou/.emacs.d/projects/campaigns/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "sousvid"
+             '((basedir          "/Users/dzhou/Vox/sousvid")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/sousvid/file-list-cache")
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))

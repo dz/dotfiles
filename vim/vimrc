@@ -23,7 +23,6 @@ Plug 'vim-scripts/matchit.zip'
 Plug 'sjl/gundo.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'tpope/vim-eunuch'
-Plug 'ctrlpvim/ctrlp.vim'
 
 " lol
 Plug 'junegunn/vim-emoji'
