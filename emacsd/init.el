@@ -43,7 +43,10 @@
                       undo-tree
                       evil
                       evil-surround
+                      evil-goggles
                       flycheck
+                      projectile
+                      helm-projectile
                       ;; orgmode stuff
                       org
                       org-plus-contrib
@@ -143,7 +146,8 @@
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
-                  "project" ;; project definitions
+                  "projectile"
+                  ;; "project" ;; project definitions
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"

@@ -128,7 +128,6 @@
 (helm-mode 1)
 
 ;; helm git integration
-(global-set-key (kbd "M-e") 'helm-ls-git-ls)
 (global-set-key (kbd "M-E") 'helm-browse-project)
 ;; because sbn has like 20000 files named "config.rb"
 (setq helm-ls-git-show-abs-or-relative 'absolute)

@@ -20,10 +20,6 @@
      (add-hook 'js2-post-parse-callbacks 'my-add-jslint-declarations)))
 
 
-;; js2
-(add-to-list 'auto-mode-alist `(,(rx ".js" string-end) . js2-mode))
-(add-to-list 'auto-mode-alist `(,(rx ".es6" string-end) . js2-mode))
-
 ;; highlight all the things plz
 (setq js2-highlight-level 3)
 

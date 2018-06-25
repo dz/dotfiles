@@ -236,3 +236,58 @@
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
+
+
+(project-def "hymnal"
+             '((basedir          "/Users/dzhou/Vox/hymnal")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/hymnal/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "bulkcloset"
+             '((basedir          "/Users/dzhou/Code/bulkcloset")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/bulkcloset/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "anw"
+             '((basedir          "/Users/dzhou/Vox/sbnation-anw-contest")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/anw/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "chorus-ads"
+             '((basedir          "/Users/dzhou/Vox/chorus-ads")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/chorus-ads/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "vax"
+             '((basedir          "/Users/dzhou/Vox/vax")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/vax/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "concert-ads"
+             '((basedir          "/Users/dzhou/Vox/concert-ads")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.erb" "*.txt" "*.sh" "*.rxml" "*.jsx" "*.esx" "*.eex"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/concert-ads/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))

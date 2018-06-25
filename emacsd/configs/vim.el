@@ -1,6 +1,10 @@
 (setq evil-shift-width 2)
 (require 'evil)
 (require 'evil-surround)
+( require 'evil-goggles )
+
+(evil-goggles-mode)
+(setq evil-goggles-pulse t)
 
 (loop for (mode . state) in '((inferior-emacs-lisp-mode . emacs)
                               (nrepl-mode . insert)

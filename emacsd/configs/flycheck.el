@@ -1,5 +1,6 @@
 (require 'flycheck)
 
-(setq flycheck-display-errors-delay 0)
 ;; highlight the entire line
 (setq flycheck-highlighting-mode 'lines)
+
+(setq flycheck-display-errors-function 'flycheck-display-error-messages-unless-error-list)

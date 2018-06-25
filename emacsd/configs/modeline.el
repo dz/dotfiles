@@ -20,7 +20,7 @@
            (propertize " RO " 'face 'mode-line-read-only-face))
           ((buffer-modified-p)
            (propertize " * " 'face 'mode-line-modified-face))
-          (t "   "))) 
+          (t "   ")))
    "    "
    ; directory and buffer/file name
    (:propertize "%b"
@@ -30,6 +30,9 @@
    " %n "
    ; mode indicators: vc, recursive edit, major mode, minor modes, process, global
    (vc-mode vc-mode)
+   "    "
+   (:propertize projectile-mode-line
+                face mode-line-process-face)
    "  %["
    (:propertize mode-name
                 face mode-line-mode-face)

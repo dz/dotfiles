@@ -194,6 +194,8 @@ export GOROOT=/usr/local/go
 export PATH="$PATH:$GOPATH/bin"
 export SOLR_HOME=/usr/local/solr14
 export PATH=".bundle/bin:$PATH"
+export RBENV_ROOT=/usr/local/var/rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 alias c="clear"
@@ -274,6 +276,8 @@ alias merge="skm"
 alias checkout="skb"
 alias checkoutr="skbr"
 
+alias dc="docker-compose"
+
 alias mm="git merge master"
 
 source ~/.amazon_secrets
@@ -287,5 +291,6 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
   . $(brew --prefix)/etc/bash_completion
 fi
 
-source ~/.nvm/nvm.sh
 export PATH="/Users/dzhou/Documents/Vox/anthem/node_modules/.bin:$PATH"
+
+source `which virtualenvwrapper.sh`

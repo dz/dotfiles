@@ -4,6 +4,7 @@
 	sorry = "!git log --format=%s | while read line; do echo \"I am SO sorry but $line\"; done"
   cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
 	dsf = "!f() { [ -z \"$GIT_PREFIX\" ] || cd \"$GIT_PREFIX\" && git diff --color \"$@\" | diff-so-fancy  | less --tabs=4 -RFX; }; f"
+	cloner = clone --recursive
 [github]
 	user = dz
 [user]
