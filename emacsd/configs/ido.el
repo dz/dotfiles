@@ -3,7 +3,6 @@
 (require 'ido-ubiquitous)
 (require 'ido-vertical-mode)
 (ido-mode 1)
-(ido-everywhere)
 (ido-ubiquitous)
 (ido-vertical-mode 1)
 
@@ -11,6 +10,10 @@
 (setq ido-enable-flex-matching t)
 (setq ido-enable-last-directory-history nil)
 (setq ido-enable-regexp nil)
+
+(with-eval-after-load 'helm
+	(add-to-list 'helm-completing-read-handlers-alist '(find-file . ido))
+)
 
 ;; override ido flex wth improved flx matching
 ;; https://github.com/lewang/flx

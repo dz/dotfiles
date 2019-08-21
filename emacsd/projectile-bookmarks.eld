@@ -1,1 +1,1 @@
-("~/Documents/Vox/sbn/" "~/Documents/Vox/concert-ads/" "~/Documents/Code/dotfiles/")
+("~/Code/dotfiles/" "~/Documents/Code/dotfiles/")

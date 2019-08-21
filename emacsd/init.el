@@ -51,6 +51,7 @@
                       org
                       org-plus-contrib
                       org-download
+                      evil-org
                       ;; counsel
                       helm
                       helm-git-grep

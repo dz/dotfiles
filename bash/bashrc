@@ -292,5 +292,3 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 
 export PATH="/Users/dzhou/Documents/Vox/anthem/node_modules/.bin:$PATH"
-
-source `which virtualenvwrapper.sh`

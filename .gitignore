@@ -1,5 +1,7 @@
 .DS_Store
 recentf
+emacsd/transient/
+emacsd/network-security.data
 elpa
 sublime3/Cache
 sublime3/Local

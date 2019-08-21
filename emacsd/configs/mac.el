@@ -2,8 +2,10 @@
 ;; also to make the ui look prettier
 
 ;;set font
-(setq my-font "Inconsolata_dz-15")
+(setq my-font "Inconsolata-dz-15")
 (set-frame-font my-font)
+(setq initial-frame-alist '((font . "Inconsolata-dz-15")))
+(setq default-frame-alist '((font . "Inconsolata-dz-15")))
 (add-hook 'after-make-frame-functions
           (lambda (cur-frame)
             (modify-frame-parameters cur-frame
