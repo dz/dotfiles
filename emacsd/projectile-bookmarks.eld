@@ -1,1 +1,1 @@
-("~/Code/dotfiles/" "~/Documents/Code/dotfiles/")
+("~/Code/dotfiles/" "~/Mailchimp/Code/cavendish-pages/" "~/Documents/Code/dotfiles/")

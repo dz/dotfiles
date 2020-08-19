@@ -11,11 +11,18 @@
 ;; use curl to fetch images
 (setq org-download-backend "curl")
 
+;; let me use shift-arrows to select
+(setq org-support-shift-select 'always)
+
 ;; give me back my arrow movements
 (define-key org-mode-map (kbd "M-<right>") nil)
 (define-key org-mode-map (kbd "M-<left>") nil)
 (define-key org-mode-map (kbd "M-<up>") nil)
 (define-key org-mode-map (kbd "M-<down>") nil)
+
+;; make enter key expand
+(define-key org-mode-map (kbd "<return>") 'org-show-children)
+
 
 ;;  make org mode with with evil
 (require 'evil-org)

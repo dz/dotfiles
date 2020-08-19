@@ -83,6 +83,7 @@
                       toml-mode
                       vcl-mode
                       elixir-mode
+                      markdown-mode
                       yaml-mode)
   "Default packages")
 
@@ -147,8 +148,8 @@
                   "ido" ;; ido changes and enhancements
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
-                  "projectile"
-                  ;; "project" ;; project definitions
+                  ;; "projectile"
+                   "project" ;; project definitions
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"

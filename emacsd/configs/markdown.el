@@ -9,3 +9,5 @@
             (local-unset-key (kbd "M-<right>"))
             (local-unset-key (kbd "M-<up>"))
             (local-unset-key (kbd "M-<down>"))))
+
+(setq markdown-asymmetric-header t)
