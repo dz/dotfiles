@@ -236,6 +236,7 @@ alias gg="git g"
 
 alias be="bundle exec"
 
+export PATH="/Users/dzhou/Library/Python/2.7/bin:$PATH"
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 

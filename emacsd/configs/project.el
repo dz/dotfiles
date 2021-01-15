@@ -55,3 +55,24 @@
                (startup-hook     nil)
                (vcs              git)
                (shutdown-hook    nil)))
+
+(project-def "nodnod"
+             '((basedir          "/Users/dzhou/Code/nodnod")
+               (src-patterns     ("*.html" "*.php" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/nodnod/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+
+(project-def "shopify"
+             '((basedir          "/Users/dzhou/Code/shopify")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/shopify/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))

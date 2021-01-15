@@ -29,9 +29,9 @@
 ;; I need my line numbers
 (require 'linum)
 (setq linum-format "%4d ")
-;; (global-linum-mode 1)
+(global-linum-mode 1)
 ;; ;; but not in all modes
-(require 'linum-off)
+;; (require 'linum-off)
 
 ;; add keybinding to toggle
 (global-set-key "\M-L" 'linum-mode)
