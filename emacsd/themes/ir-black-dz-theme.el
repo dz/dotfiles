@@ -44,11 +44,12 @@
       (*comments*           "#7C7C7C")
       (*constant*           "#99CC99")
       (*current-line*       "#151515")
-      (*cursor-block*       "#FFFFFFF")
+      (*cursor-block*       "#fabd43")
       (*cursor-underscore*  "#888888")
       (*keywords*           "#96CBFE")
       (*light-purple*       "#FFCCFF")
       (*line-number-fg*     "#666666")
+      (*line-number-active-fg*     "#CCCCCC")
       (*line-number-bg*     "#121212")
       (*method-declaration* "#FFD2A7")
       (*mode-line-bg*       "#202020")
@@ -109,10 +110,11 @@
 
    ;; GUI
    `(fringe ((t (:background, *background-color*))))
-   `(linum ((t (:background, *line-number-bg* :foreground, *line-number-fg*))))
+   `(line-number ((t (:background, *line-number-bg* :foreground, *line-number-fg*))))
+   `(line-number-current-line ((t (:background, *line-number-bg* :foreground, *line-number-active-fg*))))
    `(minibuffer-prompt ((t (:foreground, *minibuffer-prompt*))))
-   `(cursor ((t (:background, *cursor-underscore*))))
-   `(text-cursor ((t (:background, *cursor-underscore*))))
+   `(cursor ((t (:background, *cursor-block*))))
+   `(text-cursor ((t (:background, *cursor-block*))))
    `(vertical-border ((t (:foreground, *vertical-split*)))) ;; between splits
 
    ;; indentation

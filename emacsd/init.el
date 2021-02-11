@@ -27,9 +27,11 @@
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages") t)
+             '("melpa" . "http://melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("gnu" . "https://elpa.gnu.org/packages") t)
+             '("gnu" . "http://elpa.gnu.org/packages/") t)
+
+(require 'compile)
 
 (defvar dz/packages '(
                       popup
@@ -42,8 +44,8 @@
                       evil-surround
                       evil-goggles
                       flycheck
-                      projectile
-                      helm-projectile
+                      ;; projectile
+                      ;; helm-projectile
                       ;; orgmode stuff
                       org
                       org-plus-contrib
@@ -65,7 +67,7 @@
                       xterm-color
                       ido-completing-read+
                       magit
-                      env-var-import
+                      exec-path-from-shell
                       default-text-scale
                       ;; lagnauge modes
                       color-identifiers-mode
@@ -94,6 +96,7 @@
   (package-refresh-contents)
   (dolist (pkg dz/packages)
     (when (not (package-installed-p pkg))
+      (message "intalling %s" pkg)
       (package-install pkg))))
 
 (defun package-list-unaccounted-packages ()
@@ -120,9 +123,6 @@
 ;; on shell path
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-
-;; set up environment vars
-(require 'env-var-import)
 
 ;; autoload config files in the config folder
 (defconst emacs-config-dir "~/.emacs.d/configs/" "")
