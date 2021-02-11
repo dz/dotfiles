@@ -10,11 +10,6 @@
 ;; No splash screen please ... jeez
 (setq inhibit-startup-message t)
 
-;;turn on server mode
-(require 'server)
-(unless (server-running-p)
-  (server-start))
-
 (add-to-list 'load-path "~/.emacs.d/vendor")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 
@@ -25,14 +20,16 @@
 (require 'cl)
 
 ;; ELPA/MELPA/Marlade package stuff
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+(setq package-check-signature nil)
 (load "package")
 (package-initialize)
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.milkbox.net/packages/") t)
+             '("melpa" . "https://melpa.org/packages") t)
 (add-to-list 'package-archives
-             '("marmalade" . "http://marmalade-repo.org/packages/") t)
+             '("gnu" . "https://elpa.gnu.org/packages") t)
 
 (defvar dz/packages '(
                       popup
