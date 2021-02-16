@@ -1,1 +1,0 @@
-("~/Code/dotfiles/" "~/Mailchimp/Code/cavendish-pages/" "~/Documents/Code/dotfiles/")
