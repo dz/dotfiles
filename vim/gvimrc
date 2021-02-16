@@ -25,5 +25,3 @@ noremap <C-j> <C-W><down>
 noremap <C-h> <C-W><left>
 noremap <C-l> <C-W><right>
 
-" mac vim disable some shortcut keys
-macmenu File.Open\.\.\.				key=<nop>
