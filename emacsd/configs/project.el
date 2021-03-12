@@ -36,26 +36,6 @@
                (vcs              git)
                (shutdown-hook    nil)))
 
-(project-def "cavendish"
-             '((basedir          "/Users/dzhou/Mailchimp/Code/cavendish-pages")
-               (src-patterns     ("*.html" "*.php" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
-               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
-               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
-               (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
-               (startup-hook     nil)
-               (vcs              git)
-               (shutdown-hook    nil)))
-
-(project-def "voting"
-             '((basedir          "/Users/dzhou/Mailchimp/Code/early-voting")
-               (src-patterns     ("*.html" "*.php" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
-               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
-               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
-               (file-list-cache  "/Users/dzhou/.emacs.d/projects/vox/file-list-cache")
-               (startup-hook     nil)
-               (vcs              git)
-               (shutdown-hook    nil)))
-
 (project-def "nodnod"
              '((basedir          "/Users/dzhou/Code/nodnod")
                (src-patterns     ("*.html" "*.php" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
@@ -67,8 +47,28 @@
                (shutdown-hook    nil)))
 
 
-(project-def "shopify"
-             '((basedir          "/Users/dzhou/Code/shopify")
+(project-def "shopify-core"
+             '((basedir          "/Users/dzhou/Code/shopify/shopify")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/shopify/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "shopify-web"
+             '((basedir          "/Users/dzhou/Code/shopify/web")
+               (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
+               (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
+               (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
+               (file-list-cache  "/Users/dzhou/.emacs.d/projects/shopify/file-list-cache")
+               (startup-hook     nil)
+               (vcs              git)
+               (shutdown-hook    nil)))
+
+(project-def "self-serve"
+             '((basedir          "/Users/dzhou/Code/shopify/self-serve")
                (src-patterns     ("*.html" "*.rb" "*.js" "*.sass" "*.less" "*.txt" "*.sh" "*.rxml" "*.scss"))
                (ignore-patterns  ("*.jpg" "*.gif" "*.png" "*.pyc" "~*" "#*" "\.*" "*.scssc"))
                (ignore-path-patterns ("*/.bundle/*" "*/log/*" "*/tmp/*" "*/public/cache/*"))
