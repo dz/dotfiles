@@ -1,6 +1,7 @@
 .DS_Store
 recentf
 emacsd/transient/
+emacs/config/project.el
 emacsd/network-security.data
 elpa
 sublime3/Cache
