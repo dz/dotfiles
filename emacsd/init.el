@@ -57,6 +57,7 @@
                       helm-ag
                       helm-flycheck
                       helm-ls-git
+                      helm-cmd-t
                       helm-swoop
                       imenu-anywhere
                       popwin

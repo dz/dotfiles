@@ -8,6 +8,7 @@
 (require 'helm-files)
 (require 'helm-git-grep)
 (require 'helm-ls-git)
+(require 'helm-cmd-t)
 
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebihnd tab to do persistent action
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
@@ -41,13 +42,18 @@
  helm-ff-file-name-history-use-recentf t
  helm-move-to-line-cycle-in-source nil ; move to end or beginning of source
  ido-use-virtual-buffers t      ; Needed in helm-buffers-list
- helm-ff-transformer-show-only-basename t
+ helm-ff-transformer-show-only-basename nil
  helm-grep-file-path-style 'relative
+
  ;; helm ls-git
  helm-ls-git-default-sources '(helm-source-ls-git-status
                                helm-source-ls-git)
  helm-ls-git-show-abs-or-relative 'relative
+
+ ;; helm cmd-t
+ helm-cmd-t-candidate-number-limit 100
  )
+
 
 ;; make helm look more normal
 (add-to-list 'display-buffer-alist
@@ -129,8 +135,8 @@
 
 ;; helm git integration
 (global-set-key (kbd "M-E") 'helm-browse-project)
-(global-set-key "\M-e" 'helm-ls-git-ls)
-(global-set-key "\M-p" 'helm-ls-git-ls)
+(global-set-key "\M-e" 'helm-cmd-t)
+(global-set-key "\M-p" 'helm-cmd-t)
 
 ;; because sbn has like 20000 files named "config.rb"
 (setq helm-ls-git-show-abs-or-relative 'absolute)
