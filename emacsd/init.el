@@ -57,7 +57,6 @@
                       helm-ag
                       helm-flycheck
                       helm-ls-git
-                      helm-cmd-t
                       helm-swoop
                       imenu-anywhere
                       popwin
@@ -147,7 +146,7 @@
                   "mac" ;; mac specific key bindings and ui changes
                   "modeline"
                   ;; "projectile"
-                   "project" ;; project definitions
+                  ;;"project" ;; project definitions
                   "vim" ;; vim keybindings yo
                   "grep"
                   "ack"
